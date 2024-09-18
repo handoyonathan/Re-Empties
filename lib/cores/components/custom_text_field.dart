@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:re_empties/constant/colors.dart';
+import 'package:re_empties/cores/constant/colors.dart';
 
 class CustomTextField extends StatefulWidget {
   final String hint;
@@ -72,7 +72,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             color: filledColor
                 ? Colors.transparent
                 : widget.hasError
-                    ? CustomColor.red1
+                    ? colors.red1
                     : color,
             width: 2.0),
         borderRadius: BorderRadius.circular(15.0),
@@ -88,7 +88,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) => Container(
       decoration: BoxDecoration(
-          color: CustomColor.gray2, borderRadius: BorderRadius.circular(15.0)),
+          color: colors.gray2, borderRadius: BorderRadius.circular(15.0)),
       height: widget.height,
       child: Focus(
           onFocusChange: widget.onOutOfFocus,
@@ -105,21 +105,21 @@ class _CustomTextFieldState extends State<CustomTextField> {
               contentPadding: widget.customPadding ??
                   EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
               hintText: widget.hint,
-              hintStyle: const TextStyle(
-                color: CustomColor.green1,
+              hintStyle: TextStyle(
+                color: colors.green1,
                 fontSize: 15.0,
               ),
               filled: filledColor,
               fillColor: widget.filledColor,
               focusedBorder: getBorder(
-                CustomColor.green1,
+                colors.green1,
               ),
-              border: getBorder(CustomColor.gray2),
-              errorBorder: getBorder(CustomColor.red1),
-              focusedErrorBorder: getBorder(CustomColor.red2),
-              errorStyle: const TextStyle(
+              border: getBorder(colors.gray2),
+              errorBorder: getBorder(colors.red1),
+              focusedErrorBorder: getBorder(colors.red2),
+              errorStyle: TextStyle(
                 fontSize: 10.0,
-                color: CustomColor.red1,
+                color: colors.red1,
               ),
               prefixIcon: widget.prefixIcon,
               suffixIcon: widget.isPassword
@@ -129,7 +129,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                           isObscured
                               ? Icons.visibility_outlined
                               : Icons.visibility_off_outlined,
-                          color: CustomColor.blueText),
+                          color: colors.blueText),
                     )
                   : null,
             ),
