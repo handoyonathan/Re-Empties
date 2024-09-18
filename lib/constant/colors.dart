@@ -26,4 +26,7 @@ class CustomColor {
 // gray color palette
   static const Color gray1 = Color(0xFFCFC9B8);
   static const Color gray2 = Color(0xFFF1ECE4);
+
+  // blue color palette ()
+  static const Color blueText = Color(0xFF374362);
 }
