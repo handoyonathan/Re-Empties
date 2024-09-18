@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:re_empties/components/custom_text_field.dart';
-
-import 'package:re_empties/constant/colors.dart';
+import 'package:re_empties/cores/components/custom_text_field.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:re_empties/cores/constant/colors.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -24,7 +23,7 @@ class LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Stack(
         children: [
-          SvgPicture.asset('lib/assets/background/login_background.svg',
+          SvgPicture.asset('assets/images/login_background.svg',
               fit: BoxFit.cover,
               width: double.infinity,
               height: double.infinity),
@@ -35,13 +34,13 @@ class LoginPageState extends State<LoginPage> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    const Column(
+                    Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
                           "Login",
                           style: TextStyle(
-                              color: CustomColor.green2,
+                              color: colors.green2,
                               fontSize: 35.0,
                               fontWeight: FontWeight.bold),
                           textAlign: TextAlign.left,
@@ -49,7 +48,7 @@ class LoginPageState extends State<LoginPage> {
                         Text(
                           "Login with your account.",
                           style: TextStyle(
-                              color: CustomColor.green2,
+                              color: colors.green2,
                               fontSize: 20.0,
                               fontWeight: FontWeight.w300),
                           textAlign: TextAlign.left,
@@ -65,9 +64,9 @@ class LoginPageState extends State<LoginPage> {
                       focusNode: emailFocusNode,
                       keyboardType: TextInputType.emailAddress,
                       inputAction: TextInputAction.next,
-                      prefixIcon: const Icon(
+                      prefixIcon: Icon(
                         Icons.email_outlined,
-                        color: CustomColor.blueText,
+                        color: colors.blueText,
                       ),
                       isMultiline: false,
                       onSubmit: (value) {
@@ -123,7 +122,7 @@ class LoginPageState extends State<LoginPage> {
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
                             vertical: 15.0, horizontal: 130.0),
-                        backgroundColor: CustomColor.green2,
+                        backgroundColor: colors.green2,
                       ),
                       child: const Text(
                         'Login',
@@ -151,10 +150,10 @@ class LoginPageState extends State<LoginPage> {
                           onPressed: () {
                             Text("berhasil di klik brok");
                           },
-                          child: const Text(
+                          child: Text(
                             "Register Here",
                             style: TextStyle(
-                                color: CustomColor.red3,
+                                color: colors.textButton,
                                 fontSize: 15.0,
                                 fontWeight: FontWeight.w700),
                             textAlign: TextAlign.center,
