@@ -7,11 +7,13 @@ enum ButtonState { primary, cancel }
 class AppMainButton extends StatelessWidget {
   final ButtonState state;
   final String text;
+  final void Function() onPressed; // Callback function for different actions
 
   const AppMainButton({
     super.key,
     required this.state,
     required this.text,
+    required this.onPressed, // Initialize onPressed as a required parameter
   });
 
   @override
@@ -30,22 +32,13 @@ class AppMainButton extends StatelessWidget {
     double buttonWidth = screenWidth - 40; // 20px margin on left and right
 
     return ElevatedButton(
-      onPressed: () {
-        if (state == ButtonState.cancel) {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return const CustomAlertDialog();
-            },
-          );
-        }
-      }, // Define your button action here
+      onPressed: onPressed, // Use the onPressed callback passed to the button
       style: ElevatedButton.styleFrom(
         minimumSize: Size(buttonWidth, 48), // Set button size
         backgroundColor: backgroundColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(15), // Set corner radius to 15
-        ), // Set background color
+        ),
       ),
       child: Text(
         text,
@@ -53,7 +46,7 @@ class AppMainButton extends StatelessWidget {
           color: Colors.white, // Set text color to white
           fontSize: 20, // Set text size to 20
           fontWeight: FontWeight.w500, // Semi-bold text
-        ), // Set text color
+        ),
       ),
     );
   }
