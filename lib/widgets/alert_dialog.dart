@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:re_empties/constant/colors.dart';
+import 'package:re_empties/cores/constant/colors.dart';
 
 class CustomAlertDialog extends StatelessWidget {
   const CustomAlertDialog({super.key});
@@ -7,7 +7,7 @@ class CustomAlertDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      backgroundColor: CustomColor.yellow5,
+      backgroundColor: colors.bgColor,
       contentPadding: EdgeInsets.zero,
       content: SizedBox(
         width: MediaQuery.of(context).size.width / 2,
@@ -17,8 +17,8 @@ class CustomAlertDialog extends StatelessWidget {
           children: [
             const SizedBox(height: 10),
             // Warning icon with circle background
-            const CircleAvatar(
-              backgroundColor: CustomColor.red1, // Circle background color
+            CircleAvatar(
+              backgroundColor: colors.red1, // Circle background color
               radius: 35, // Adjust size as needed
               child: Icon(
                 Icons.warning, // Warning icon
@@ -27,20 +27,20 @@ class CustomAlertDialog extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 10), // Space between icon and text
-            const Text(
+            Text(
               'Cancel',
               style: TextStyle(
-                color: CustomColor.green1,
+                color: colors.green1,
                 fontWeight: FontWeight.w900,
                 fontSize: 20,
               ),
               textAlign: TextAlign.center,
             ),
 
-            const Text(
+            Text(
               'Are you sure you want to cancel? \n This can\'t be undone.',
               style: TextStyle(
-                color: CustomColor.green1,
+                color: colors.green1,
                 fontWeight: FontWeight.normal,
                 fontSize: 12,
               ),
@@ -65,7 +65,7 @@ class CustomAlertDialog extends StatelessWidget {
                         Navigator.pop(context); // Close the dialog on back
                       },
                       style: TextButton.styleFrom(
-                        foregroundColor: CustomColor.green1,
+                        foregroundColor: colors.green1,
                       ),
                       child: const Text(
                         'Back',
@@ -90,7 +90,7 @@ class CustomAlertDialog extends StatelessWidget {
                         // Define the cancel action here
                       },
                       style: TextButton.styleFrom(
-                        foregroundColor: CustomColor.red1,
+                        foregroundColor: colors.red1,
                       ),
                       child: const Text(
                         'Cancel',

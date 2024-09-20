@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:re_empties/constant/colors.dart';
+import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/widgets/alert_dialog.dart';
 
 enum ButtonState { primary, cancel }
@@ -18,13 +18,13 @@ class AppMainButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color textColor = CustomColor.yellow5;
-    Color backgroundColor = CustomColor.green2;
+    Color textColor = colors.bgColor;
+    Color backgroundColor = colors.green2;
 
     if (state == ButtonState.primary) {
-      backgroundColor = CustomColor.green2;
+      backgroundColor = colors.green2;
     } else if (state == ButtonState.cancel) {
-      backgroundColor = CustomColor.red1;
+      backgroundColor = colors.red1;
     }
 
     // Get the screen width and calculate the button width to be responsive
