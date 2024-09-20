@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'features/authentication/login.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:re_empties/features/authentication/login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -8,9 +9,18 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(title: 'Login ReEmpties', home: LoginPage());
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      builder: (context, child) {
+        return const MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Re-Empties',
+          home: LoginPage(),
+        );
+      },
+    );
   }
 }

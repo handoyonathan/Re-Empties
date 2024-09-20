@@ -4,14 +4,15 @@ const String _patternPath = 'assets/patterns';
 
 class _ImagePath {
   // icons //////////////////////////////////////////////
-  final String arrowBack = '$_iconPath/Arrow_Back.svg';
+  // final String arrowBack = '$_iconPath/Arrow_Back.svg';
 
 
   // images ////////////////////////////////////////////////////
-  final String detailFlexas = '$_imagePath/Detail_Flexas.png';
+  final String registerLogo = '$_imagePath/register_logos.png';
+  final String loginBg = '$_imagePath/login_bg.png';
 
   // patterns ///////////////////////////////////////
-  final String headerMenuUtama = '$_patternPath/Header_MenuUtama.png';
+  // final String headerMenuUtama = '$_patternPath/Header_MenuUtama.png';
   
   // bottom nav bar /////////////////////////////////
   final Map<bool, String> homeTab = {

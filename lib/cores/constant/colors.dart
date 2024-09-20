@@ -26,6 +26,7 @@ class _CustomColors {
 // gray color palette
   final Color gray1 = const Color(0xFFCFC9B8);
   final Color gray2 = const Color(0xFFF1ECE4);
+  final Color gray3 = const Color(0xFF96A39B);
 
   // blue color palette ()
   final Color blueText = const Color(0xFF374362);

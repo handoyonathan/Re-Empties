@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:re_empties/cores/components/custom_text_field.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:re_empties/cores/components/image_asset.dart';
+import 'package:re_empties/cores/components/svg_asset.dart';
+import 'package:re_empties/cores/components/tap_detector.dart';
 import 'package:re_empties/cores/constant/colors.dart';
+import 'package:re_empties/cores/constant/image_path.dart';
+import 'package:gap/gap.dart';
+import 'package:re_empties/cores/constant/text_theme.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -23,13 +30,14 @@ class LoginPageState extends State<LoginPage> {
     return Scaffold(
       body: Stack(
         children: [
-          SvgPicture.asset('assets/images/login_background.svg',
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: double.infinity),
+          ImageAsset(
+            imagePath: images.loginBg,
+            height: double.infinity,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 40.0, vertical: 100.0),
+            padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 100.h),
             child: Form(
                 key: _formKey,
                 child: Column(
@@ -39,25 +47,17 @@ class LoginPageState extends State<LoginPage> {
                       children: [
                         Text(
                           "Login",
-                          style: TextStyle(
-                              color: colors.green2,
-                              fontSize: 35.0,
-                              fontWeight: FontWeight.bold),
+                          style: textTheme.headline1,
                           textAlign: TextAlign.left,
                         ),
                         Text(
                           "Login with your account.",
-                          style: TextStyle(
-                              color: colors.green2,
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w300),
+                          style: textTheme.headline2,
                           textAlign: TextAlign.left,
                         ),
                       ],
                     ),
-                    const SizedBox(height: 20.0),
-
-                    // Email Text Field
+                    Gap(20.h),
                     CustomTextField(
                       hint: "Email",
                       controller: emailController,
@@ -84,10 +84,7 @@ class LoginPageState extends State<LoginPage> {
                       },
                       borderRadius: 15.0,
                     ),
-                    const SizedBox(
-                      height: 20.0,
-                    ),
-
+                    Gap(20.h),
                     // Password TextField
                     CustomTextField(
                       hint: "Password",
@@ -110,66 +107,46 @@ class LoginPageState extends State<LoginPage> {
                         return null;
                       },
                     ),
-                    const SizedBox(
-                      height: 30.0,
-                    ),
-
-                    // Login Dummy Button
+                    Gap(25.h),
                     ElevatedButton(
                       onPressed: () {
                         const Text("Successful login");
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 130.0),
+                            vertical: 15.0, horizontal: 120.0),
                         backgroundColor: colors.green2,
                       ),
-                      child: const Text(
+                      child: Text(
                         'Login',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.w600),
+                        style: textTheme.button.copyWith(fontSize: 15),
                       ),
                     ),
-                    const SizedBox(height: 10.0),
+                    Gap(25.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Text(
+                        Text(
                           "Don't have an account?",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.w400,
-                          ),
+                          style: textTheme.subtitle.copyWith(fontSize: 16),
                           textAlign: TextAlign.center,
                         ),
-                        TextButton(
-                          onPressed: () {
-                            Text("berhasil di klik brok");
+                        Gap(5.w),
+                        TapDetector(
+                          onTap: () {
+                            print('hai');
                           },
                           child: Text(
                             "Register Here",
-                            style: TextStyle(
-                                color: colors.textButton,
-                                fontSize: 15.0,
-                                fontWeight: FontWeight.w700),
+                            style: textTheme.subtitle
+                                .copyWith(color: colors.textButton, fontSize: 16, fontWeight: FontWeight.w700),
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        // Text(
-                        //   "Register Here",
-                        //   style: TextStyle(
-                        //       color: CustomColor.red3,
-                        //       fontSize: 15.0,
-                        //       fontWeight: FontWeight.w700),
-                        //   textAlign: TextAlign.center,
-                        // ),
                       ],
                     ),
-                    const SizedBox(height: 20.0),
+                    // Gap(20.h),
                   ],
                 )),
           ),
