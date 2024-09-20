@@ -1,18 +1,19 @@
 const String _iconPath = 'assets/icons';
 const String _imagePath = 'assets/images';
 const String _patternPath = 'assets/patterns';
+const String _logoPath = 'assets/logo';
 
 class _ImagePath {
   // icons //////////////////////////////////////////////
   // final String arrowBack = '$_iconPath/Arrow_Back.svg';
 
-
   // images ////////////////////////////////////////////////////
   final String registerLogo = '$_imagePath/register_logos.png';
   final String loginBg = '$_imagePath/login_bg.png';
+  final String logoSignUp = '$_logoPath/logo.png';
 
   // patterns ///////////////////////////////////////
-  // final String headerMenuUtama = '$_patternPath/Header_MenuUtama.png';
+  final String headerMenuUtama = '$_patternPath/Header_MenuUtama.png';
   
   // bottom nav bar /////////////////////////////////
   final Map<bool, String> homeTab = {

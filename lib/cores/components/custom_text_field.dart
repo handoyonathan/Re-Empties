@@ -115,7 +115,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
               focusedBorder: getBorder(
                 colors.green1,
               ),
-              border: getBorder(colors.gray2),
+              enabledBorder: getBorder(widget.filledColor ?? colors.gray2),
+              border: getBorder(Colors.transparent),
               errorBorder: getBorder(colors.red1),
               focusedErrorBorder: getBorder(colors.red2),
               errorStyle: TextStyle(
