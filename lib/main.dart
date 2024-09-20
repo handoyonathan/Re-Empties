@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:re_empties/constant/colors.dart';
+import 'package:re_empties/widgets/alert_dialog.dart';
 import 'package:re_empties/widgets/button_main_app.dart';
 
 void main() {
