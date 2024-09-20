@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:re_empties/cores/constant/colors.dart';
+import 'package:re_empties/cores/constant/text_theme.dart';
 
 class CustomTextField extends StatefulWidget {
   final String hint;
@@ -126,14 +127,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
                   ? GestureDetector(
                       onTap: eyeIconPressed,
                       child: Icon(
-                          isObscured
+                          !isObscured
                               ? Icons.visibility_outlined
                               : Icons.visibility_off_outlined,
                           color: colors.blueText),
                     )
                   : null,
             ),
-            style: const TextStyle(color: Colors.black),
+            style: textTheme.textFieldLabel,
             validator: (value) {
               String? errorMessage = widget.validator?.call(value ?? '');
               widget.onValidate?.call(errorMessage);
