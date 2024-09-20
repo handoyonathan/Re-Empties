@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:re_empties/cores/components/button_main_app.dart';
 import 'package:re_empties/cores/components/custom_text_field.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:re_empties/cores/components/image_asset.dart';
@@ -82,7 +83,7 @@ class LoginPageState extends State<LoginPage> {
                         }
                         return null;
                       },
-                      borderRadius: 15.0,
+                      borderRadius: 15.r,
                     ),
                     Gap(20.h),
                     // Password TextField
@@ -108,20 +109,26 @@ class LoginPageState extends State<LoginPage> {
                       },
                     ),
                     Gap(25.h),
-                    ElevatedButton(
-                      onPressed: () {
-                        const Text("Successful login");
-                      },
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 15.0, horizontal: 120.0),
-                        backgroundColor: colors.green2,
-                      ),
-                      child: Text(
-                        'Login',
-                        style: textTheme.button.copyWith(fontSize: 15),
-                      ),
-                    ),
+                    // ElevatedButton(
+                    //   onPressed: () {
+                    //     const Text("Successful login");
+                    //   },
+                    //   style: ElevatedButton.styleFrom(
+                    //     padding: const EdgeInsets.symmetric(
+                    //         vertical: 15.0, horizontal: 120.0),
+                    //     backgroundColor: colors.green2,
+                    //   ),
+                    //   child: Text(
+                    //     'Login',
+                    //     style: textTheme.button.copyWith(fontSize: 15),
+                    //   ),
+                    // ),
+                    AppMainButton(
+                        state: ButtonState.primary,
+                        text: 'Login',
+                        onPressed: () {
+                          print('hai login');
+                        }),
                     Gap(25.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -139,8 +146,10 @@ class LoginPageState extends State<LoginPage> {
                           },
                           child: Text(
                             "Register Here",
-                            style: textTheme.subtitle
-                                .copyWith(color: colors.textButton, fontSize: 16, fontWeight: FontWeight.w700),
+                            style: textTheme.subtitle.copyWith(
+                                color: colors.textButton,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w700),
                             textAlign: TextAlign.center,
                           ),
                         ),

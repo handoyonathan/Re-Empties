@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:re_empties/cores/constant/colors.dart';
-import 'package:re_empties/widgets/alert_dialog.dart';
+import 'package:re_empties/cores/components/alert_dialog.dart';
+import 'package:re_empties/cores/constant/text_theme.dart';
 
 enum ButtonState { primary, cancel }
 
@@ -18,7 +19,6 @@ class AppMainButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color textColor = colors.bgColor;
     Color backgroundColor = colors.green2;
 
     if (state == ButtonState.primary) {
@@ -42,11 +42,7 @@ class AppMainButton extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: const TextStyle(
-          color: Colors.white, // Set text color to white
-          fontSize: 20, // Set text size to 20
-          fontWeight: FontWeight.w500, // Semi-bold text
-        ),
+        style: textTheme.button,
       ),
     );
   }

@@ -18,6 +18,11 @@ setupRouter({required String initialRoute}) {
         name: paths.auth,
         // builder: (context, state) => const AuthView(),
       ),
+      GoRoute(
+        path: '/article',
+        name: paths.article,
+        // builder: (context, state) => const AuthView(),
+      ),
     ],
     initialLocation: initialRoute,
   );
