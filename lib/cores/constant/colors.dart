@@ -33,6 +33,7 @@ class _CustomColors {
 
   final Color black = const Color(0xFF030D04);
 
+  final Color background = const Color(0xFFFFF9F0);
 }
 
 final colors = _CustomColors();
