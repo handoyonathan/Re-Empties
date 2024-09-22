@@ -1,7 +1,7 @@
 const String _iconPath = 'assets/icons';
 const String _imagePath = 'assets/images';
 const String _patternPath = 'assets/patterns';
-const String _logoPath = 'assets/logo';
+const String _logoPath = 'assets/images/logo';
 
 class _ImagePath {
   // icons //////////////////////////////////////////////

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_empties/cores/components/loading_indicator.dart';
+import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/cores/template/notifer.dart';
 
 class BaseView<T extends BaseNotifier> extends ConsumerWidget {
@@ -30,7 +31,7 @@ class BaseView<T extends BaseNotifier> extends ConsumerWidget {
   }
 
   Widget _buildScreenContent(BuildContext context, T viewModel) => Container(
-        color: Colors.white,
+        color: colors.bgColor,
         child: GestureDetector(
           onTap: () {
             FocusScope.of(context).unfocus();
