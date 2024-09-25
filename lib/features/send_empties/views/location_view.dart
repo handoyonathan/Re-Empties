@@ -5,17 +5,19 @@ import 'package:gap/gap.dart';
 import 'package:re_empties/cores/components/button_main_app.dart';
 import 'package:re_empties/cores/components/custom_app_bar.dart';
 import 'package:re_empties/cores/components/custom_text_field.dart';
+import 'package:re_empties/cores/components/image_asset.dart';
 import 'package:re_empties/cores/constant/colors.dart';
+import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
 import 'package:re_empties/cores/template/view.dart';
 import 'package:re_empties/features/send_empties/viewModel/location_view_model.dart';
-import 'package:re_empties/features/send_empties/widget/location_card.dart';
+import 'package:re_empties/features/send_empties/widget/user_location_card.dart';
+import 'package:re_empties/features/send_empties/widget/waste_location_dart.dart';
 
 class LocationView extends StatelessWidget {
   LocationView({super.key})
-      : _viewModel = ChangeNotifierProvider.autoDispose<LocationVM>(
-          LocationVM.new,
-        );
+      : _viewModel =
+            ChangeNotifierProvider.autoDispose<LocationVM>(LocationVM.new);
 
   final AutoDisposeChangeNotifierProvider<LocationVM> _viewModel;
 
@@ -23,10 +25,7 @@ class LocationView extends StatelessWidget {
   Widget build(BuildContext context) => BaseView(
         provider: _viewModel,
         appBar: (_) => CustomAppBar(
-          title: Text(
-            'Set Your Location',
-            style: textTheme.appbarTitle,
-          ),
+          title: Text( 'Set Your Location', style: textTheme.appbarTitle),
         ),
         builder: _buildScreen,
       );
@@ -48,37 +47,69 @@ class LocationView extends StatelessWidget {
                 child: const Center(child: Text("Map Placeholder")),
               ),
               Gap(16.h),
-              CustomTextField(
-                hint: 'Search your location...',
-                controller: vm.stationController,
-                onSubmit: (value) {},
-                isMultiline: false,
-                filledColor: colors.yellow3,
-              ),
-              Gap(16.h),
-              CustomTextField(
-                hint: 'Search waste station...',
-                controller: vm.stationController,
-                onSubmit: (value) {},
-                isMultiline: false,
-                filledColor: colors.green6,
+              Row(
+                children: [
+                  ImageAsset(
+                    imagePath: images.location,
+                    height: 90.h,
+                    width: 26.w,
+                  ),
+                  Gap(5.w),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomTextField(
+                          hint: 'Search your location...',
+                          controller: vm.userController,
+                          isMultiline: false,
+                          filledColor: colors.yellow3,
+                          onTap: () => vm.toggleShowLocations(),
+                          onSubmit: (value) {},
+                        ),
+                        Gap(16.h),
+                        CustomTextField(
+                          hint: 'Search waste station...',
+                          controller: vm.stationController,
+                          isMultiline: false,
+                          filledColor: colors.green6,
+                          onTap: () => vm.toggleShowWasteStations(),
+                          onSubmit: (value) {},
+                        ),
+                      ],
+                    ),
+                  )
+                ],
               ),
               Gap(25.h),
-              Divider(height: 1.h, color: colors.gray4,),
+              Divider(height: 1.h, color: colors.gray4),
               Gap(16.h),
               Expanded(
                 child: ListView.separated(
-                  itemCount: 5,
+                  itemCount: vm.showLocations
+                      ? vm.locations.length
+                      : vm.wasteStations.length,
                   separatorBuilder: (_, __) => Gap(8.h),
                   itemBuilder: (context, index) {
-                    return LocationCard(
-                      title: 'Binus University Kampus Anggrek',
-                      address:
-                          'Jl. Raya Kb. Jeruk No.27, RT.1/RW.9, Kemanggisan, Kec. Palmerah, Kota Jakarta Barat, Daerah Khusus Ibukota Jakarta 11530',
-                      isSelected: index == 0,
-                      onTap: () {
-                      },
-                    );
+                    if (vm.showLocations) {
+                      final location = vm.locations[index];
+                      return UserLocationCard(
+                        title: location.name,
+                        address: location.address,
+                        isSelected: vm.selectedLocation == location.name,
+                        onTap: () => vm.selectLocation(location.name),
+                      );
+                    } else {
+                      final station = vm.wasteStations[index];
+                      return WasteLocationCard(
+                        title: station.name,
+                        address: station.address,
+                        openHour: station.openHour,
+                        isSelected: vm.selectedWasteStation == station.name,
+                        onTap: () => vm.selectWasteStation(station.name),
+                        distance: station.distance,
+                      );
+                    }
                   },
                 ),
               ),
@@ -93,6 +124,7 @@ class LocationView extends StatelessWidget {
             state: ButtonState.primary,
             text: 'Choose this location',
             onPressed: () {
+              // Handle location selection
             },
           ),
         ),

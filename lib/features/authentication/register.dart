@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:re_empties/cores/components/custom_text_field.dart';
 import 'package:re_empties/cores/constant/colors.dart';
+import 'package:re_empties/cores/constant/image_path.dart';
+import 'package:gap/gap.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -37,8 +40,7 @@ class RegisterPageState extends State<RegisterPage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    const Image(
-                        image: AssetImage('assets/image/logo/logo.png')),
+                    Image(image: AssetImage(images.logo)),
                     Text(
                       "Register",
                       style: TextStyle(
@@ -55,7 +57,7 @@ class RegisterPageState extends State<RegisterPage> {
                           fontWeight: FontWeight.w300),
                       textAlign: TextAlign.left,
                     ),
-                    const SizedBox(height: 10.0),
+                    Gap(10.h),
                   ],
                 ),
 

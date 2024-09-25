@@ -14,6 +14,7 @@ class CustomTextField extends StatefulWidget {
   final void Function(String?)? onValidate;
   final Function(String)? onSubmit;
   final Function(String)? onChanged;
+  final Function()? onTap;
   final bool hasError;
   final EdgeInsets? customPadding;
   final Color? filledColor;
@@ -38,6 +39,7 @@ class CustomTextField extends StatefulWidget {
     this.onValidate,
     required this.onSubmit,
     this.onChanged,
+    this.onTap,
     this.hasError = false,
     this.customPadding,
     this.filledColor,
@@ -100,6 +102,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             keyboardType: widget.keyboardType,
             controller: widget.controller,
             onChanged: widget.onChanged,
+            onTap: widget.onTap,
             obscureText: isObscured,
             maxLines: widget.isMultiline ? 4 : 1,
             decoration: InputDecoration(
