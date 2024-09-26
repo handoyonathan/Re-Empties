@@ -204,6 +204,12 @@ class _TextTheme {
     fontWeight: FontWeight.w400,
     color: colors.black,
   );
+  final errorText = TextStyle(
+    fontSize: 14.sp,
+    height: 1.5,
+    fontWeight: FontWeight.normal,
+    color: colors.red1,
+  );
   // buat angka qty waste, tnc & how to redeem title (redeem point detail)
   final subtitle2 = TextStyle(
     fontSize: 12.sp,

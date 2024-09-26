@@ -14,6 +14,7 @@ class CustomTextField extends StatefulWidget {
   final void Function(String?)? onValidate;
   final Function(String)? onSubmit;
   final Function(String)? onChanged;
+  final Function()? onTap;
   final bool hasError;
   final EdgeInsets? customPadding;
   final Color? filledColor;
@@ -38,6 +39,7 @@ class CustomTextField extends StatefulWidget {
     this.onValidate,
     required this.onSubmit,
     this.onChanged,
+    this.onTap,
     this.hasError = false,
     this.customPadding,
     this.filledColor,
@@ -48,7 +50,7 @@ class CustomTextField extends StatefulWidget {
     required this.isMultiline,
     this.onOutOfFocus,
     this.autofocus =
-        false, // bikin true, kalo misalkan buat password biar jd bintang bintang
+        false, EdgeInsets? contentPadding, Widget? prefixWidget, Widget? suffixWidget, // bikin true, kalo misalkan buat password biar jd bintang bintang
   });
 
   @override
@@ -100,6 +102,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             keyboardType: widget.keyboardType,
             controller: widget.controller,
             onChanged: widget.onChanged,
+            onTap: widget.onTap,
             obscureText: isObscured,
             maxLines: widget.isMultiline ? 4 : 1,
             decoration: InputDecoration(
@@ -119,9 +122,10 @@ class _CustomTextFieldState extends State<CustomTextField> {
               border: getBorder(Colors.transparent),
               errorBorder: getBorder(colors.red1),
               focusedErrorBorder: getBorder(colors.red2),
-              errorStyle: TextStyle(
-                fontSize: 10.0,
-                color: colors.red1,
+              errorStyle: const TextStyle(
+                fontSize: 0,
+                color: Colors.transparent,
+                height: 0.001,
               ),
               prefixIcon: widget.prefixIcon,
               suffixIcon: widget.isPassword

@@ -1,7 +1,7 @@
 const String _iconPath = 'assets/icons';
 const String _imagePath = 'assets/images';
 const String _patternPath = 'assets/patterns';
-const String _logoPath = 'assets/logo';
+const String _logoPath = 'assets/images/logo';
 
 class _ImagePath {
   // icons //////////////////////////////////////////////
@@ -11,6 +11,8 @@ class _ImagePath {
   final String registerLogo = '$_imagePath/register_logos.png';
   final String loginBg = '$_imagePath/login_bg.png';
   final String logoSignUp = '$_logoPath/logo.png';
+  final String logo = '$_logoPath/logo.png';
+  final String location = '$_imagePath/location.png';
 
   // patterns ///////////////////////////////////////
   final String headerMenuUtama = '$_patternPath/Header_MenuUtama.png';
