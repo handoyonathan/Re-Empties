@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
-// import 'package:re_empties/features/authentication/register.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:re_empties/features/authentication/login.dart';
+import 'package:re_empties/cores/router/router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:firebase_core/firebase_core.dart'; // Import Firebase Core
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Memastikan widget binding sudah siap
+  await Firebase.initializeApp(); // Inisialisasi Firebase
+  setupRouter(initialRoute: '/login'); // Setup router
+  runApp(
+    const ProviderScope(
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -12,16 +20,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(375, 812),
+    // Inisialisasi ScreenUtil di sini
+    ScreenUtil.init(
+      context,
+      designSize: Size(375, 812), // Ganti dengan ukuran desain Anda
       minTextAdapt: true,
-      builder: (context, child) {
-        return const MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Re-Empties',
-          home: LoginPage(),
-        );
-      },
+      splitScreenMode: true,
+    );
+
+    return MaterialApp.router(
+      title: 'Re-Empties',
+      routerConfig: router,
+      debugShowCheckedModeBanner: false,
     );
   }
 }
