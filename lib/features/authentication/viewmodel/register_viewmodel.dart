@@ -117,6 +117,7 @@ class RegisterVM extends BaseFormNotifier<RegisterModel>
                 validationList: [
                   Validator.confirmPassword,
                 ],
+                confirmValue: form.password.text,
               )),
     );
   }
