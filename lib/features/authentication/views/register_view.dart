@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:re_empties/cores/components/button_main_app.dart';
 import 'package:re_empties/cores/components/custom_text_field.dart';
+import 'package:re_empties/cores/components/image_asset.dart';
 import 'package:re_empties/cores/constant/colors.dart';
+import 'package:re_empties/cores/constant/image_path.dart';
+import 'package:gap/gap.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -26,41 +31,40 @@ class RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: colors.background,
-        child: Padding(
-          padding:
-              const EdgeInsets.symmetric(horizontal: 40.0, vertical: 100.0),
+      backgroundColor: colors.bgColor,
+      body: SingleChildScrollView(
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+        child: Container(
+          color: colors.background,
+          padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 100.h),
           child: Form(
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    const Image(
-                        image: AssetImage('assets/image/logo/logo.png')),
-                    Text(
-                      "Register",
-                      style: TextStyle(
-                          color: colors.green2,
-                          fontSize: 35.0,
-                          fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.left,
-                    ),
-                    Text(
-                      "Create a new account.",
-                      style: TextStyle(
-                          color: colors.green2,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w300),
-                      textAlign: TextAlign.left,
-                    ),
-                    const SizedBox(height: 10.0),
-                  ],
+                ImageAsset(
+                  imagePath: images.logo,
+                  height: 107.h,
+                  width: 70.w,
                 ),
-
-                // Form Register
-                // full name
+                Text(
+                  "Register",
+                  style: TextStyle(
+                      color: colors.green2,
+                      fontSize: 35.0,
+                      fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.left,
+                ),
+                Text(
+                  "Create a new account.",
+                  style: TextStyle(
+                      color: colors.green2,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w300),
+                  textAlign: TextAlign.left,
+                ),
+                Gap(10.h),
+      
+                // Full name
                 CustomTextField(
                   hint: "Full Name",
                   controller: fullNameController,
@@ -80,18 +84,13 @@ class RegisterPageState extends State<RegisterPage> {
                     if (value == null || value.isEmpty) {
                       return "Please enter your full name";
                     }
-                    if (!RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value)) {
-                      return "Please enter a valid email";
-                    }
                     return null;
                   },
                   borderRadius: 15.0,
                 ),
-                const SizedBox(
-                  height: 10.0,
-                ),
-
-                //email
+                Gap(10.h),
+      
+                // Email
                 CustomTextField(
                   hint: "Email",
                   controller: emailController,
@@ -118,10 +117,8 @@ class RegisterPageState extends State<RegisterPage> {
                   },
                   borderRadius: 15.0,
                 ),
-                const SizedBox(
-                  height: 10.0,
-                ),
-
+                Gap(10.h),
+      
                 // Phone Number
                 CustomTextField(
                   hint: "Phone Number",
@@ -149,11 +146,9 @@ class RegisterPageState extends State<RegisterPage> {
                   },
                   borderRadius: 15.0,
                 ),
-                const SizedBox(
-                  height: 10.0,
-                ),
-
-                // password
+                Gap(10.h),
+      
+                // Password
                 CustomTextField(
                   hint: "Password",
                   controller: passwordController,
@@ -176,11 +171,9 @@ class RegisterPageState extends State<RegisterPage> {
                     return null;
                   },
                 ),
-                const SizedBox(
-                  height: 10.0,
-                ),
-
-                // confirm password
+                Gap(10.h),
+      
+                // Confirm Password
                 CustomTextField(
                   hint: "Confirm Password",
                   controller: confirmPasswordController,
@@ -189,9 +182,7 @@ class RegisterPageState extends State<RegisterPage> {
                   isMultiline: false,
                   prefixIcon: const Icon(Icons.lock_outline_rounded),
                   onSubmit: (value) {
-                    confirmPasswordFocusNode
-                        .unfocus(); // Hide keyboard on submit
-                    // Call login function
+                    confirmPasswordFocusNode.unfocus(); // Hide keyboard on submit
                   },
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -206,30 +197,19 @@ class RegisterPageState extends State<RegisterPage> {
                     return null;
                   },
                 ),
-                const SizedBox(
-                  height: 10.0,
-                ),
-
-                // Register Dummy Button
-                ElevatedButton(
+                Gap(50.h),
+      
+                // Register button
+                AppMainButton(
+                  state: ButtonState.primary,
+                  text: 'Register',
                   onPressed: () {
-                    const Text("Successful login");
+                    print('hai regis');
                   },
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 15.0, horizontal: 130.0),
-                    backgroundColor: colors.green2,
-                  ),
-                  child: const Text(
-                    'Register',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 12.0,
-                        fontWeight: FontWeight.w600),
-                  ),
                 ),
-                const SizedBox(height: 10.0),
-
+                Gap(10.h),
+      
+                // Login option
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -257,7 +237,7 @@ class RegisterPageState extends State<RegisterPage> {
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "864789121424",
+    "project_id": "re-empties",
+    "storage_bucket": "re-empties.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:864789121424:android:89b11ed6fbb2f8a2fb8b15",
+        "android_client_info": {
+          "package_name": "com.onetry.reempties"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAfZ0S37VfMMFk5D5vVqud3SgqUa3EGq84"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
