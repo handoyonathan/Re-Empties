@@ -24,23 +24,23 @@ class TestWidget extends StatelessWidget {
             child: Column(
               children: [
                 const Text("Test Widget"),
-                // const SizedBox(height: 10),
-                // AppMainButton(
-                //   state: ButtonState.primary,f
-                //   text: "Register",
-                //   onPressed: () {
-                //     print("Register button pressed");
-                //     // Perform action for Register
-                //   },
-                // ),
-                // const SizedBox(height: 10),
-                // AppMainButton(
-                //   state: ButtonState.cancel,
-                //   text: "Cancel",
-                //   onPressed: () {
-                //     showCancelDialog(context); // Show cancel dialog
-                //   },
-                // ),
+                const SizedBox(height: 10),
+                AppMainButton(
+                  state: ButtonState.primary,
+                  text: "Register",
+                  onPressed: () {
+                    print("Register button pressed");
+                    // Perform action for Register
+                  },
+                ),
+                const SizedBox(height: 10),
+                AppMainButton(
+                  state: ButtonState.cancel,
+                  text: "Cancel",
+                  onPressed: () {
+                    showCancelDialog(context); // Show cancel dialog
+                  },
+                ),
                 const SizedBox(height: 10),
                 HomePointsCard(onTap: () {
                   print("points");
