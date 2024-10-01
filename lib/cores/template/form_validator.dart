@@ -5,7 +5,8 @@ mixin FormValidatorMixin on BaseNotifier {
       r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$');
   final RegExp emailRegex =
       RegExp(r'^[\w-\.]+@[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+$');
-  final RegExp phoneRegex = RegExp(r'^[0-9]+$');
+  final RegExp phoneRegex = RegExp(r'^\+62\d{9,12}$');
+  final RegExp nameRegex = RegExp(r'^[a-zA-Z]{4,}(?: [a-zA-Z]+){0,2}$');
 
   String? getValidation({
     required String value,
@@ -27,9 +28,9 @@ mixin FormValidatorMixin on BaseNotifier {
       return '$label kurang dari 8 karakter';
     }
 
-    if (validationList.contains(Validator.numericOnly) &&
+    if (validationList.contains(Validator.phoneFormat) &&
         !phoneRegex.hasMatch(value)) {
-      return '$label hanya boleh berisi angka';
+      return '$label hanya boleh berisi angka dan diawali dengan +62';
     }
 
     // Email validation
@@ -48,6 +49,12 @@ mixin FormValidatorMixin on BaseNotifier {
       return 'Password yang Anda masukkan tidak sesuai';
     }
 
+    // full name validation
+    if (validationList.contains(Validator.nameFormat) &&
+        !nameRegex.hasMatch(value)) {
+      return 'Nama yang Anda masukkan tidak sesuai';
+    }
+
     return null;
   }
 }
@@ -57,5 +64,6 @@ enum Validator {
   emailFormat,
   passwordFormat,
   confirmPassword,
-  numericOnly,
+  phoneFormat,
+  nameFormat,
 }
