@@ -14,6 +14,7 @@ class _CustomColors {
   final Color yellow3 = const Color(0xFFFFF4D4);
   final Color yellow4 = const Color(0xFFFFF3E1);
   final Color bgColor = const Color(0xFFFFF9F0);
+  final Color yellow5 = const Color(0xFFEFD27F);
 
 // red color palette
   final Color red1 = const Color(0xFFB2311D);
