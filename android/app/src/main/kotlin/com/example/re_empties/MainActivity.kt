@@ -1,4 +1,4 @@
-package com.example.re_empties
+package com.example.reempties
 
 import io.flutter.embedding.android.FlutterActivity
 
