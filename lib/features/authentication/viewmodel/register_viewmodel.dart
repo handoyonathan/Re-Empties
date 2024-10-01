@@ -48,32 +48,6 @@ class RegisterVM extends BaseFormNotifier<RegisterModel>
     }
   }
 
-  // Future<void> registerUser({
-  //   required String fullName,
-  //   required String email,
-  //   required String phoneNumber,
-  //   required String password,
-  // }) async {
-  //   try {
-  //     // bikin new user di firebase auth
-  //     UserCredential userCredential = await _auth
-  //         .createUserWithEmailAndPassword(email: email, password: password);
-
-  //     // add user data to firestore
-  //     RegisterModel user = RegisterModel(
-  //       fullName: fullName,
-  //       email: email,
-  //       phoneNumber: phoneNumber,
-  //     );
-  //     await _firestore
-  //         .collection('users')
-  //         .doc(userCredential.user?.uid)
-  //         .set(user.toMap());
-  //   } catch (e) {
-  //     print("Error in registration: $e");
-  //   }
-  // }
-
   @override
   late RegisterModel form;
 
