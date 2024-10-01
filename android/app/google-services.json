@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:864789121424:android:89b11ed6fbb2f8a2fb8b15",
+        "mobilesdk_app_id": "1:864789121424:android:b8c05a882fcd2468fb8b15",
         "android_client_info": {
-          "package_name": "com.onetry.reempties"
+          "package_name": "com.example.reempties"
         }
       },
       "oauth_client": [],

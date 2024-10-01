@@ -2,7 +2,7 @@
     <application
         android:label="re_empties"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/reempties_logo">
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -30,6 +30,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+            <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyBQPhvI_8LjcS1wICIPhN_9VFoKwiGb81k"/>
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and
