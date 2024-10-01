@@ -48,6 +48,7 @@ dependencies:
   gap: ^3.0.1
   google_maps_flutter: ^2.9.0
   geolocator: ^13.0.1
+  cloud_firestore: ^5.4.2
 
 dev_dependencies:
   flutter_test:

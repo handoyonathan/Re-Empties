@@ -5,7 +5,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart'; // Import Firebase Core
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Memastikan widget binding sudah siap
+  WidgetsFlutterBinding
+      .ensureInitialized(); // Memastikan widget binding sudah siap
   await Firebase.initializeApp(); // Inisialisasi Firebase
   setupRouter(initialRoute: '/login'); // Setup router
   runApp(
