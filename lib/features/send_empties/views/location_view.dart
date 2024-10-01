@@ -24,10 +24,10 @@ class LocationView extends StatefulWidget {
   final AutoDisposeChangeNotifierProvider<LocationVM> _viewModel;
 
   @override
-  _LocationViewState createState() => _LocationViewState();
+  LocationViewState createState() => LocationViewState();
 }
 
-class _LocationViewState extends State<LocationView> {
+class LocationViewState extends State<LocationView> {
   @override
   Widget build(BuildContext context) => BaseView(
         provider: widget._viewModel,
@@ -54,8 +54,7 @@ class _LocationViewState extends State<LocationView> {
                 child: vm.userPosition != null
                     ? GoogleMap(
                         initialCameraPosition: CameraPosition(
-                          target: LatLng(37.7749,
-                              -122.4194), // Pastikan nilai target sudah valid
+                          target: vm.userPosition!,
                           zoom: 14.0,
                         ),
                         myLocationEnabled: true,

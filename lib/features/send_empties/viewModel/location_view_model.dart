@@ -32,7 +32,6 @@ class LocationVM extends BaseNotifier {
   LocationVM(super.ref) {
     userController.addListener(_onUserSearchChanged);
     stationController.addListener(_onStationSearchChanged);
-    _getCurrentLocation();
   }
 
   void onMapCreated(GoogleMapController controller) {
@@ -86,7 +85,7 @@ class LocationVM extends BaseNotifier {
       notifyListeners();
     } catch (e) {
       print('rusak');
-      // Handle error mendapatkan lokasi
+      print('Error mendapatkan lokasi: $e');
     }
   }
 

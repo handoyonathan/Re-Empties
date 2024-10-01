@@ -6,7 +6,8 @@
 	<string>We need your location to show nearby waste stations.</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>We need your location to show nearby waste stations.</string>
-
+	<key>GMSApiKey</key>
+<string>AIzaSyBQPhvI_8LjcS1wICIPhN_9VFoKwiGb81k</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
