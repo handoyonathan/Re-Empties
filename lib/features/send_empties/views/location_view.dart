@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:re_empties/cores/components/button_main_app.dart';
 import 'package:re_empties/cores/components/custom_app_bar.dart';
 import 'package:re_empties/cores/components/custom_text_field.dart';
 import 'package:re_empties/cores/components/image_asset.dart';
+import 'package:re_empties/cores/components/loading_indicator.dart';
 import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
@@ -14,7 +16,7 @@ import 'package:re_empties/features/send_empties/viewModel/location_view_model.d
 import 'package:re_empties/features/send_empties/widget/user_location_card.dart';
 import 'package:re_empties/features/send_empties/widget/waste_location_dart.dart';
 
-class LocationView extends StatelessWidget {
+class LocationView extends StatefulWidget {
   LocationView({super.key})
       : _viewModel =
             ChangeNotifierProvider.autoDispose<LocationVM>(LocationVM.new);
@@ -22,10 +24,15 @@ class LocationView extends StatelessWidget {
   final AutoDisposeChangeNotifierProvider<LocationVM> _viewModel;
 
   @override
+  _LocationViewState createState() => _LocationViewState();
+}
+
+class _LocationViewState extends State<LocationView> {
+  @override
   Widget build(BuildContext context) => BaseView(
-        provider: _viewModel,
+        provider: widget._viewModel,
         appBar: (_) => CustomAppBar(
-          title: Text( 'Set Your Location', style: textTheme.appbarTitle),
+          title: Text('Set Your Location', style: textTheme.appbarTitle),
         ),
         builder: _buildScreen,
       );
@@ -44,7 +51,20 @@ class LocationView extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   color: Colors.grey[300],
                 ),
-                child: const Center(child: Text("Map Placeholder")),
+                child: vm.userPosition != null
+                    ? GoogleMap(
+                        initialCameraPosition: CameraPosition(
+                          target: LatLng(37.7749,
+                              -122.4194), // Pastikan nilai target sudah valid
+                          zoom: 14.0,
+                        ),
+                        myLocationEnabled: true,
+                        myLocationButtonEnabled: true,
+                        onMapCreated: vm.onMapCreated,
+                      )
+                    : const Center(
+                        child: LoadingIndicator(),
+                      ),
               ),
               Gap(16.h),
               Row(
