@@ -11,10 +11,13 @@ class _ImagePath {
   final String registerLogo = '$_imagePath/register_logos.png';
   final String loginBg = '$_imagePath/login_bg.png';
   final String logoSignUp = '$_logoPath/logo.png';
+  final String pointImg = '$_imagePath/point.png';
+  final String sendWaste = '$_imagePath/sendWaste.png';
+  final String dropWaste = '$_imagePath/dropWaste.png';
 
   // patterns ///////////////////////////////////////
   final String headerMenuUtama = '$_patternPath/Header_MenuUtama.png';
-  
+
   // bottom nav bar /////////////////////////////////
   final Map<bool, String> homeTab = {
     false: '$_iconPath/Menu_Home_Inactive.svg',

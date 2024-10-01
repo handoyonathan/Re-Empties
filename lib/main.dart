@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'package:re_empties/features/authentication/register.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:re_empties/cores/components/test.dart';
 import 'package:re_empties/features/authentication/login.dart';
 
 void main() {
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
         return const MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Re-Empties',
-          home: LoginPage(),
+          home: TestWidget(),
         );
       },
     );
