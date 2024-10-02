@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:re_empties/cores/router/router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firebase_core/firebase_core.dart'; // Import Firebase Core
+import 'package:firebase_core/firebase_core.dart';
+import 'package:re_empties/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Memastikan widget binding sudah siap
-  await Firebase.initializeApp(); // Inisialisasi Firebase
+  await Firebase.initializeApp( options: DefaultFirebaseOptions.currentPlatform,); // Inisialisasi Firebase
   setupRouter(initialRoute: '/login'); // Setup router
   runApp(
     const ProviderScope(
@@ -23,7 +24,7 @@ class MyApp extends StatelessWidget {
     // Inisialisasi ScreenUtil di sini
     ScreenUtil.init(
       context,
-      designSize: Size(375, 812), // Ganti dengan ukuran desain Anda
+      designSize: const Size(375, 812), // Ganti dengan ukuran desain Anda
       minTextAdapt: true,
       splitScreenMode: true,
     );

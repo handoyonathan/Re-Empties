@@ -2,7 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:re_empties/cores/constant/colors.dart';
 
 class CustomAlertDialog extends StatelessWidget {
-  const CustomAlertDialog({super.key});
+  final VoidCallback onConfirm; // Callback for the confirm button
+  final VoidCallback onCancel; // Callback for the cancel button
+
+  const CustomAlertDialog({
+    super.key,
+    required this.onConfirm,
+    required this.onCancel,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +27,7 @@ class CustomAlertDialog extends StatelessWidget {
             CircleAvatar(
               backgroundColor: colors.red1, // Circle background color
               radius: 35, // Adjust size as needed
-              child: Icon(
+              child: const Icon(
                 Icons.warning, // Warning icon
                 color: Colors.white, // Icon color
                 size: 45, // Icon size
@@ -47,26 +54,22 @@ class CustomAlertDialog extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
-            // Horizontal line
-            // Horizontal line spanning the entire width
             const Divider(
               thickness: 1,
               color: Color(0xFFDADADA),
               height: 0, // Set height to 0 for perfect line fit
             ),
-// Row with two buttons and a vertical divider
+            // Row with two buttons and a vertical divider
             Expanded(
               child: Row(
                 children: [
                   // Back button
                   Expanded(
                     child: TextButton(
-                      onPressed: () {
-                        Navigator.pop(context); // Close the dialog on back
-                      },
+                      onPressed: onCancel, // Pass onCancel callback
                       style: TextButton.styleFrom(
-                        foregroundColor: colors.green1,
-                      ),
+                          foregroundColor: colors.green1,
+                          overlayColor: Colors.transparent),
                       child: const Text(
                         'Back',
                         style: TextStyle(
@@ -76,22 +79,17 @@ class CustomAlertDialog extends StatelessWidget {
                       ),
                     ),
                   ),
-
-                  // Vertical line between buttons
                   Container(
-                    width: 1, // Set width for the vertical line
-                    color: const Color(0xFFDADADA), // Line color
+                    width: 1,
+                    color: const Color(0xFFDADADA), // Vertical line
                   ),
-
-                  // Cancel button
+                  // Confirm button
                   Expanded(
                     child: TextButton(
-                      onPressed: () {
-                        // Define the cancel action here
-                      },
+                      onPressed: onConfirm, // Pass onConfirm callback
                       style: TextButton.styleFrom(
-                        foregroundColor: colors.red1,
-                      ),
+                          foregroundColor: colors.red1,
+                          overlayColor: Colors.transparent),
                       child: const Text(
                         'Cancel',
                         style: TextStyle(
