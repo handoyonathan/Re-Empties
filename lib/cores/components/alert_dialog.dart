@@ -27,7 +27,7 @@ class CustomAlertDialog extends StatelessWidget {
             CircleAvatar(
               backgroundColor: colors.red1, // Circle background color
               radius: 35, // Adjust size as needed
-              child: Icon(
+              child: const Icon(
                 Icons.warning, // Warning icon
                 color: Colors.white, // Icon color
                 size: 45, // Icon size

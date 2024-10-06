@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:re_empties/cores/router/router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firebase_core/firebase_core.dart'; // Import Firebase Core
+import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
   WidgetsFlutterBinding
@@ -34,5 +34,11 @@ class MyApp extends StatelessWidget {
       routerConfig: router,
       debugShowCheckedModeBanner: false,
     );
+
+    // return const MaterialApp(
+    //   title: "Re-Empties",
+    //   debugShowCheckedModeBanner: false,
+    //   home: TestWidget(),
+    // );
   }
 }
