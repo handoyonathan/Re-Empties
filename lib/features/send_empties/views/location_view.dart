@@ -83,7 +83,9 @@ class LocationViewState extends State<LocationView> {
                           controller: vm.userController,
                           isMultiline: false,
                           filledColor: colors.yellow3,
-                          onTap: () => vm.toggleShowLocations(),
+                          onTap: () {
+                            vm.toggleShowLocations();
+                          },
                           onSubmit: (value) {},
                         ),
                         Gap(16.h),
@@ -97,7 +99,7 @@ class LocationViewState extends State<LocationView> {
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
               Gap(25.h),
@@ -113,20 +115,29 @@ class LocationViewState extends State<LocationView> {
                     if (vm.showLocations) {
                       final location = vm.locations[index];
                       return UserLocationCard(
-                        title: location.name,
-                        address: location.address,
-                        isSelected: vm.selectedLocation == location.name,
-                        onTap: () => vm.selectLocation(location.name),
-                      );
+                          title: location.name,
+                          address:
+                              location.address ?? '  ADDRESS NOT AVAILABLE',
+                          isSelected: vm.userController.text == location.name ||
+                              vm.userController.text == location.address,
+                          onTap: () {
+                            vm.selectLocation(location.name);
+                            vm.toggleShowLocations();
+                          });
                     } else {
                       final station = vm.wasteStations[index];
                       return WasteLocationCard(
-                        title: station.name,
+                        title: station.stationName,
                         address: station.address,
-                        openHour: station.openHour,
-                        isSelected: vm.selectedWasteStation == station.name,
-                        onTap: () => vm.selectWasteStation(station.name),
-                        distance: station.distance,
+                        openHour: '24:00',
+                        isSelected:
+                            vm.stationController.text == station.stationName ||
+                                vm.stationController.text == station.address,
+                        onTap: () {
+                          vm.selectWasteStation(station.stationName);
+                          vm.toggleShowWasteStations();
+                        },
+                        distance: '10 km',
                       );
                     }
                   },
@@ -142,9 +153,7 @@ class LocationViewState extends State<LocationView> {
           child: AppMainButton(
             state: ButtonState.primary,
             text: 'Choose this location',
-            onPressed: () {
-              // Handle location selection
-            },
+            onPressed: () {},
           ),
         ),
       );

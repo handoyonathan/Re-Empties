@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:re_empties/cores/components/string_extension.dart';
 import 'package:re_empties/cores/template/notifer.dart';
 import 'package:re_empties/features/send_empties/model/location_model.dart';
 import 'package:geolocator/geolocator.dart';
@@ -9,77 +11,146 @@ class LocationVM extends BaseNotifier {
   final TextEditingController userController = TextEditingController();
   final TextEditingController stationController = TextEditingController();
 
-  List<Location> _allLocations = [];
-  List<Location> _locations = [];
-  List<Location> get locations => _locations;
+  List<User> _locations = [];
+  List<User> get locations => _locations;
 
-  List<WasteStation> _allWasteStations = [];
-  List<WasteStation> _wasteStations = [];
-  List<WasteStation> get wasteStations => _wasteStations;
+  List<Admin> _wasteStations = [];
+  List<Admin> get wasteStations => _wasteStations;
 
-  String? _selectedLocation;
-  String? get selectedLocation => _selectedLocation;
+  User? _selectedUserLocation;
+  User? get selectedUserLocation => _selectedUserLocation;
 
-  String? _selectedWasteStation;
-  String? get selectedWasteStation => _selectedWasteStation;
-
-  bool _showLocations = true; // Track which list to show
-  bool get showLocations => _showLocations;
+  Admin? _selectedWasteStation;
+  Admin? get selectedWasteStation => _selectedWasteStation;
 
   LatLng? userPosition;
   GoogleMapController? mapController;
 
+  bool _showLocations = true;
+  bool get showLocations => _showLocations;
+
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   LocationVM(super.ref) {
-    userController.addListener(_onUserSearchChanged);
-    stationController.addListener(_onStationSearchChanged);
+    userController.addListener(onUserSearchChanged);
+    stationController.addListener(onStationSearchChanged);
   }
 
   void onMapCreated(GoogleMapController controller) {
     mapController = controller;
   }
 
-  Future<void> _determinePosition() async {
-  bool serviceEnabled;
-  LocationPermission permission;
+  Future<void> fetchLocations({String? query}) async {
+    try {
+      QuerySnapshot snapshot;
+      if (query.isNotNullOrEmpty) {
+        snapshot = await _firestore.collection('users').get();
 
-  // Test if location services are enabled.
-  serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  if (!serviceEnabled) {
-    // Location services are not enabled don't continue
-    // accessing the position and request users of the 
-    // App to enable the location services.
-    return Future.error('Location services are disabled.');
-  }
+        _locations = snapshot.docs.map((doc) {
+          final data = doc.data() as Map<String, dynamic>;
+          return User(
+            name: data['userName'],
+            email: data['userEmail'],
+            id: data['userID'],
+            rewardsPoint: data['rewardsPoint'],
+            phone: data['userPhoneNumber'],
+            address: data['userAddress'],
+          );
+        }).where((user) {
+          return user.name.toLowerCase().contains(query!.toLowerCase()) ||
+              user.address!.toLowerCase().contains(query.toLowerCase());
+        }).toList();
+      } else {
+        snapshot = await _firestore.collection('users').get();
+        _locations = snapshot.docs.map((doc) {
+          final data = doc.data() as Map<String, dynamic>;
+          return User(
+            name: data['userName'],
+            email: data['userEmail'],
+            id: data['userID'],
+            rewardsPoint: data['rewardsPoint'],
+            phone: data['userPhoneNumber'],
+            address: data['userAddress'],
+          );
+        }).toList();
+      }
 
-  permission = await Geolocator.checkPermission();
-  if (permission == LocationPermission.denied) {
-    permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.denied) {
-      // Permissions are denied, next time you could try
-      // requesting permissions again (this is also where
-      // Android's shouldShowRequestPermissionRationale 
-      // returned true. According to Android guidelines
-      // your App should show an explanatory UI now.
-      return Future.error('Location permissions are denied');
+      notifyListeners();
+    } catch (e) {
+      print('Error fetching locations: $e');
     }
   }
-  
-  if (permission == LocationPermission.deniedForever) {
-    // Permissions are denied forever, handle appropriately. 
-    return Future.error(
-      'Location permissions are permanently denied, we cannot request permissions.');
-  } 
 
-  // When we reach here, permissions are granted and we can
-  // continue accessing the position of the device.
-  return await _getCurrentLocation();
-}
+  Future<void> fetchWasteStations({String? query}) async {
+    try {
+      QuerySnapshot snapshot;
+      if (query != null && query.isNotEmpty) {
+        snapshot = await _firestore.collection('admin').get();
+        _wasteStations = snapshot.docs.map((doc) {
+          final data = doc.data() as Map<String, dynamic>;
+          return Admin(
+            id: data['adminID'],
+            address: data['addressName'],
+            adminName: data['adminName'],
+            stationName: data['stationName'],
+            location: data['wasteLocation'],
+          );
+        }).where((admin) {
+          return admin.stationName
+                  .toLowerCase()
+                  .contains(query.toLowerCase()) ||
+              admin.address.toLowerCase().contains(query.toLowerCase());
+        }).toList();
+      } else {
+        snapshot = await _firestore.collection('admin').get();
+        _wasteStations = snapshot.docs.map((doc) {
+          final data = doc.data() as Map<String, dynamic>;
+          return Admin(
+            id: data['adminID'],
+            address: data['addressName'],
+            adminName: data['adminName'],
+            stationName: data['stationName'],
+            location: data['wasteLocation'],
+          );
+        }).toList();
+      }
+
+      notifyListeners();
+    } catch (e) {
+      print('Error fetching waste stations: $e');
+    }
+  }
+
+  Future<void> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    return await _getCurrentLocation();
+  }
 
   Future<void> _getCurrentLocation() async {
     try {
-      
       Position position = await Geolocator.getCurrentPosition(
-          locationSettings: const LocationSettings(accuracy: LocationAccuracy.high));
+          locationSettings:
+              const LocationSettings(accuracy: LocationAccuracy.high));
       userPosition = LatLng(position.latitude, position.longitude);
       print(userPosition);
       notifyListeners();
@@ -100,97 +171,66 @@ class LocationVM extends BaseNotifier {
   }
 
   void _resetLocations() {
-    _locations = List.from(_allLocations);
+    fetchLocations();
     notifyListeners();
   }
 
   void _resetWasteStations() {
-    _wasteStations = List.from(_allWasteStations);
+    fetchWasteStations();
     notifyListeners();
   }
 
   @override
   FutureOr<void> init() {
     _determinePosition();
-    _initializeLocations();
-    _initializeWasteStations();
+    fetchLocations();
+    fetchWasteStations();
     _resetLocations();
     _resetWasteStations();
   }
 
-  void _initializeLocations() {
-    _allLocations = [
-      Location(
-          name: "Binus University Kampus Anggrek",
-          address: "Jl. Raya Kb. Jeruk No.27, Jakarta"),
-      Location(
-          name: "Plaza Indonesia", address: "Jl. MH Thamrin No.28, Jakarta"),
-      Location(name: "Senayan City", address: "Jl. Asia Afrika, Jakarta"),
-    ];
-  }
-
-  void _initializeWasteStations() {
-    _allWasteStations = [
-      WasteStation(
-          name: "Station A",
-          address: "Jl. A no.1, Jakarta",
-          openHour: "11.00-12.00",
-          distance: "2km"),
-      WasteStation(
-          name: "Station B",
-          address: "Jl. B no.2, Jakarta",
-          openHour: "12.00-13.00",
-          distance: "3km"),
-      WasteStation(
-          name: "Station C",
-          address: "Jl. C no.3, Jakarta",
-          openHour: "13.00-14.00",
-          distance: "4km"),
-    ];
-  }
-
-  void selectLocation(String locationName) {
-    _selectedLocation = locationName;
-    userController.text = locationName;
-    _resetLocations();
-    notifyListeners();
-  }
-
-  void selectWasteStation(String stationName) {
-    _selectedWasteStation = stationName;
-    stationController.text = stationName;
-    _resetWasteStations();
-    notifyListeners();
-  }
-
-  void _onUserSearchChanged() {
+  void onUserSearchChanged() {
     final query = userController.text.toLowerCase();
-    _locations = query.isEmpty
-        ? List.from(_allLocations)
-        : _allLocations
-            .where((location) =>
-                location.name.toLowerCase().contains(query) ||
-                location.address.toLowerCase().contains(query))
-            .toList();
+    if (query.isNotNullOrEmpty) {
+      fetchLocations(query: query);
+    } else {
+      fetchLocations();
+    }
+    _showLocations = true;
     notifyListeners();
   }
 
-  void _onStationSearchChanged() {
+  void onStationSearchChanged() {
     final query = stationController.text.toLowerCase();
-    _wasteStations = query.isEmpty
-        ? List.from(_allWasteStations)
-        : _allWasteStations
-            .where((station) =>
-                station.name.toLowerCase().contains(query) ||
-                station.address.toLowerCase().contains(query))
-            .toList();
+    if (query.isNotNullOrEmpty) {
+      fetchWasteStations(query: query);
+    } else {
+      fetchWasteStations();
+    }
+    _showLocations = false;
+    notifyListeners();
+  }
+
+  void selectLocation(String query) {
+    final selected = _locations.firstWhere(
+        (location) => location.name == query || location.address == query);
+    _selectedUserLocation = selected;
+    userController.text = query;
+    notifyListeners();
+  }
+
+  void selectWasteStation(String query) {
+    final selected = _wasteStations.firstWhere(
+        (station) => station.stationName == query || station.address == query);
+    _selectedWasteStation = selected;
+    stationController.text = query;
     notifyListeners();
   }
 
   @override
   void dispose() {
-    userController.removeListener(_onUserSearchChanged);
-    stationController.removeListener(_onStationSearchChanged);
+    userController.removeListener(onUserSearchChanged);
+    stationController.removeListener(onStationSearchChanged);
     userController.dispose();
     stationController.dispose();
     super.dispose();
