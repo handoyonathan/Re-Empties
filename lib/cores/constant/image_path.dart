@@ -16,6 +16,11 @@ class _ImagePath {
   final String dropWaste = '$_imagePath/dropWaste.png';
   final String logo = '$_logoPath/logo.png';
   final String location = '$_imagePath/location.png';
+  final String gosend = '$_imagePath/gosend.jpg';
+  final String grabExpress = '$_imagePath/grabexpress.png';
+  final String paxel = '$_imagePath/paxel.png';
+  final String gopay = '$_imagePath/gopay.png';
+  final String shopeePay = '$_imagePath/shopeepay.jpg';
 
   // patterns ///////////////////////////////////////
   final String headerMenuUtama = '$_patternPath/Header_MenuUtama.png';
