@@ -1,23 +1,35 @@
-class Location {
-  final String name;
-  final String address;
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-  Location({
+class User {
+  final String? id;
+  final String name;
+  final String? address;
+  final int? rewardsPoint;
+  final String phone;
+  final String email;
+
+  User({
+    this.id,
     required this.name,
-    required this.address,
+    this.address,
+    this.rewardsPoint,
+    required this.phone,
+    required this.email,
   });
 }
 
-class WasteStation {
-  final String name;
+class Admin {
+  final String id;
+  final String adminName;
   final String address;
-  final String openHour;
-  final String distance;
+  final String stationName;
+  final GeoPoint location;
 
-  WasteStation({
-    required this.name,
+  Admin({
+    required this.id,
+    required this.adminName,
     required this.address,
-    required this.openHour,
-    required this.distance,
+    required this.stationName,
+    required this.location,
   });
 }
