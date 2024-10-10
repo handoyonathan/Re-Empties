@@ -15,7 +15,7 @@ class _ImagePath {
   final String sendWaste = '$_imagePath/sendWaste.png';
   final String dropWaste = '$_imagePath/dropWaste.png';
   final String logo = '$_logoPath/logo.png';
-  final String location = '$_imagePath/location.png';
+  final String errorIllustration = '$_imagePath/error_illustration.png';
 
   // patterns ///////////////////////////////////////
   final String headerMenuUtama = '$_patternPath/Header_MenuUtama.png';

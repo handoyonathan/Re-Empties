@@ -141,7 +141,7 @@ class RegisterPage extends StatelessWidget {
                       ),
                       TapDetector(
                         onTap: () {
-                          print('hai');
+                         
                         },
                         child: Text(
                           "Register Here",
