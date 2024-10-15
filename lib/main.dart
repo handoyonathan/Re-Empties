@@ -7,11 +7,14 @@ import 'package:re_empties/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding
+      
       .ensureInitialized(); // Memastikan widget binding sudah siap
   await Firebase.initializeApp(
+   
     options: DefaultFirebaseOptions.currentPlatform,
+  
   ); // Inisialisasi Firebase
-  setupRouter(initialRoute: '/login'); // Setup router
+  setupRouter(initialRoute: '/article_detail'); // Setup router
   runApp(
     const ProviderScope(
       child: MyApp(),

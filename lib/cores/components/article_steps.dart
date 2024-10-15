@@ -1,67 +1,58 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 class ArticleSteps extends StatefulWidget {
   final String titleIsi;
   final String isi;
-  final String photo;
+  final String photoUrl;
 
   const ArticleSteps(
       {super.key,
       required this.titleIsi,
       required this.isi,
-      required this.photo});
+      required this.photoUrl});
 
   @override
   State<ArticleSteps> createState() => _ArticleSteps();
 }
 
 class _ArticleSteps extends State<ArticleSteps> {
-  String? imageUrl;
-
   @override
-  void initState() {
-    super.initState();
-    _loadImageFromFirebase();
-  }
-
-  Future<void> _loadImageFromFirebase() async {
-    try {
-      // buat convert link gs ke link http
-      String url = await FirebaseStorage.instance
-          .refFromURL(widget.photo)
-          .getDownloadURL();
-      setState(() {
-        imageUrl = url;
-      });
-    } catch (e) {
-      print('Error loading image: $e');
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) => Row(
+  Widget build(BuildContext context) => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           // JUDUL
-          Text(widget.titleIsi, style: textTheme.articleDetail),
+          Text(widget.titleIsi, style: textTheme.introTitle),
           Gap(5.h),
           // Photo
-          imageUrl != null
-              ? Image.network(
-                  imageUrl!,
-                  width: double.infinity,
-                  height: double.infinity,
-                  fit: BoxFit.cover,
-                )
-              : const CircularProgressIndicator(),
+          Padding(
+            padding: const EdgeInsets.only(left: 25),
+            child: widget.photoUrl.isNotEmpty
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(15.0),
+                    child: Image.network(
+                      widget.photoUrl,
+                      width: double.infinity,
+                      height: 150.h,
+                      fit: BoxFit.cover,
+                      alignment: Alignment.center,
+                    ),
+                  )
+                : Icon(Icons.error, color: colors.red1),
+          ),
           Gap(5.h),
           // Description
-          Text(widget.isi, style: textTheme.articleDesc),
-          Gap(5.h),
+          Padding(
+            padding: const EdgeInsets.only(left: 27, top: 2),
+            child: Text(widget.isi, style: textTheme.badgesText),
+          ),
+          Gap(20.h),
+          // Divider(
+          //   color: colors.gray4,
+          // )
         ],
       );
 }
