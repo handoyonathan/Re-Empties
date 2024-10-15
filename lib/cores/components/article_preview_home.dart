@@ -15,9 +15,9 @@ class ArticlePreviewHome extends StatefulWidget {
 }
 
 class _ArticlePreviewHomeState extends State<ArticlePreviewHome> {
-  final List<String> titles = ["Article 1", "Article 2", "Article 3"];
+  final List<String> titles = ["Tutorial", "article 2", "Article 3"];
   final List<String> descriptions = [
-    "Description for Article 1",
+    "Types of Waste Accepted",
     "Description for Article 2",
     "Description for Article 3"
   ];
@@ -62,13 +62,16 @@ class ArticleCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
+          gradient: const LinearGradient(
             colors: [
-              Colors.yellow.shade500, // Start color
-              Colors.orange.shade600, // End color
+              Color(0xFFFCF5D8),
+              Color(0xFFFCF5D8), // Start color
+              // Start color
+              Color(0xFFFFCC75), // End color
             ],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
+            stops: [0.0, 0.5, 1.0],
           ),
           borderRadius: BorderRadius.circular(15.r),
         ),
@@ -84,36 +87,52 @@ class ArticleCard extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
             child: Row(
               children: [
-                // Sample image placeholder, replace with actual widget
-                Container(
+                ImageAsset(
+                  imagePath: images.articlePreview,
+                  height: 122.h,
                   width: 80.w,
-                  height: 80.h,
-                  child: Center(
-                    child: Icon(Icons.image, size: 40.w),
-                  ),
+                  fit: BoxFit.cover,
+                  // Sample image placeholder, replace with actual widget
                 ),
-                Gap(100.w),
+                Gap(10.w),
                 // Text section for each article
                 Expanded(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment
+                        .end, // Aligns the children to the right
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         title,
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        textAlign: TextAlign.right,
+                        style: textTheme.importantNotes
+                            .copyWith(fontWeight: FontWeight.w500),
                       ),
                       Gap(5.h),
                       Text(
                         description,
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: Colors.grey.shade600,
-                        ),
+                        textAlign: TextAlign.right,
+                        style: textTheme.voucher
+                            .copyWith(fontWeight: FontWeight.w700, height: 1.0),
                       ),
+                      Gap(18.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment
+                            .end, // Aligns the entire Row to the right
+                        children: [
+                          Text(
+                            "Learn More",
+                            style: textTheme.pointLabel,
+                          ),
+                          Gap(2.w),
+                          Icon(
+                            Icons.arrow_forward, // Arrow icon
+                            size: 12,
+                            color: colors
+                                .red2, // Adjust the size to match the text
+                          ),
+                        ],
+                      )
                     ],
                   ),
                 ),

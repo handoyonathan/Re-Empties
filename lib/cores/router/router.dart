@@ -4,6 +4,7 @@ import 'package:re_empties/features/article/view/article_view.dart';
 import 'package:re_empties/features/authentication/views/login_view.dart';
 import 'package:re_empties/features/authentication/views/register_view.dart';
 import 'package:re_empties/features/home/view/home_view.dart';
+import 'package:re_empties/cores/components/test.dart';
 
 late GoRouter _router;
 GoRouter get router => _router;
@@ -16,6 +17,7 @@ setupRouter({required String initialRoute}) {
         path: '/',
         name: paths.home,
         builder: (context, state) =>
+           
             const HomeView(), // Tambahkan builder untuk halaman utama
       ),
       GoRoute(
@@ -33,6 +35,10 @@ setupRouter({required String initialRoute}) {
         name: paths.article,
         builder: (context, state) => const ArticleView(),
       )
+      GoRoute(
+          path: '/test',
+          name: paths.test,
+          builder: (context, state) => const TestWidget()),
     ],
     initialLocation: initialRoute,
   );
