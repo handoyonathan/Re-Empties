@@ -107,7 +107,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             maxLines: widget.isMultiline ? 4 : 1,
             decoration: InputDecoration(
               contentPadding: widget.customPadding ??
-                  EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
+                  const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10.0),
               hintText: widget.hint,
               hintStyle: TextStyle(
                 color: colors.green1,

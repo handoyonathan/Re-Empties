@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:re_empties/cores/constant/colors.dart';
-import 'package:re_empties/cores/components/alert_dialog.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
 
 enum ButtonState { primary, cancel }

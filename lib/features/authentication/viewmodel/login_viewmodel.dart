@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:re_empties/cores/template/form_notifier.dart';
 import 'package:re_empties/cores/template/form_validator.dart';
 import 'package:re_empties/cores/template/text_input_model.dart';
-import 'package:re_empties/features/authentication/model/user_model.dart';
+import 'package:re_empties/features/authentication/model/auth_model.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final loginVM = ChangeNotifierProvider.autoDispose(LoginVM.new);
