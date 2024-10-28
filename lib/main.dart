@@ -6,8 +6,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:re_empties/firebase_options.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Memastikan widget binding sudah siap
-  await Firebase.initializeApp( options: DefaultFirebaseOptions.currentPlatform,); // Inisialisasi Firebase
+  WidgetsFlutterBinding
+      .ensureInitialized(); // Memastikan widget binding sudah siap
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  ); // Inisialisasi Firebase
   setupRouter(initialRoute: '/login'); // Setup router
   runApp(
     const ProviderScope(
@@ -34,5 +37,11 @@ class MyApp extends StatelessWidget {
       routerConfig: router,
       debugShowCheckedModeBanner: false,
     );
+
+    // return const MaterialApp(
+    //   title: "Re-Empties",
+    //   debugShowCheckedModeBanner: false,
+    //   home: TestWidget(),
+    // );
   }
 }

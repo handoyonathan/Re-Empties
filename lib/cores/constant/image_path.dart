@@ -21,6 +21,12 @@ class _ImagePath {
   final String paxel = '$_imagePath/paxel.png';
   final String gopay = '$_imagePath/gopay.png';
   final String shopeePay = '$_imagePath/shopeepay.jpg';
+  final String articlePreview = '$_imagePath/articlePreview.png';
+  final String level1 = '$_imagePath/level1.png';
+  final String level2 = '$_imagePath/level2.png';
+  final String level3 = '$_imagePath/level3.png';
+  final String level4 = '$_imagePath/level4.png';
+  final String level5 = '$_imagePath/level5.png';
 
   // patterns ///////////////////////////////////////
   final String headerMenuUtama = '$_patternPath/Header_MenuUtama.png';
