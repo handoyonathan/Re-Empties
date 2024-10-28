@@ -3,7 +3,6 @@ import 'package:re_empties/cores/constant/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:re_empties/cores/components/image_asset.dart';
-import 'package:re_empties/cores/components/tap_detector.dart';
 import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
 
@@ -50,11 +49,11 @@ class ArticleCard extends StatelessWidget {
   final VoidCallback onTap;
 
   const ArticleCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.description,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

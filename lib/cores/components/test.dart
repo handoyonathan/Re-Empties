@@ -83,7 +83,7 @@ class TestWidget extends StatelessWidget {
                         style: textTheme.title,
                       ),
                     ),
-                    ArticlePreviewHome(),
+                    const ArticlePreviewHome(),
                   ],
                 ),
               ),

@@ -83,7 +83,7 @@ class HomeView extends StatelessWidget {
                         style: textTheme.title,
                       ),
                     ),
-                    ArticlePreviewHome(),
+                    const ArticlePreviewHome(),
                   ],
                 ),
               ),

@@ -27,6 +27,7 @@ class _ImagePath {
   final String level3 = '$_imagePath/level3.png';
   final String level4 = '$_imagePath/level4.png';
   final String level5 = '$_imagePath/level5.png';
+  final String address = '$_imagePath/address.png';
 
   // patterns ///////////////////////////////////////
   final String headerMenuUtama = '$_patternPath/Header_MenuUtama.png';

@@ -3,7 +3,6 @@ import 'package:re_empties/cores/constant/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:re_empties/cores/components/image_asset.dart';
-import 'package:re_empties/cores/components/tap_detector.dart';
 import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
 import 'package:percent_indicator/percent_indicator.dart';
@@ -137,7 +136,7 @@ class BannerHome extends StatelessWidget {
                         width: 265.w,
                         lineHeight: 20.0,
                         percent: 0.5,
-                        barRadius: Radius.circular(15),
+                        barRadius: Radius.circular(15.r),
                         progressColor: colors.yellow1,
                         backgroundColor: colors.gray1,
                       ),
