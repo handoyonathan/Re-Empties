@@ -29,7 +29,7 @@ void showPaymentOptionsModal({
 
               return ListTile(
                 leading: ClipOval(
-                    child: Image.asset(
+                    child: Image.network(
                   data['image']!,
                   width: 55.w,
                   height: 55.h,

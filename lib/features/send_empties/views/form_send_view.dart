@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -6,15 +8,12 @@ import 'package:go_router/go_router.dart';
 import 'package:re_empties/cores/components/button_main_app.dart';
 import 'package:re_empties/cores/components/custom_app_bar.dart';
 import 'package:re_empties/cores/components/image_asset.dart';
-import 'package:re_empties/cores/components/success_page.dart';
 import 'package:re_empties/cores/components/tap_detector.dart';
 import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
-import 'package:re_empties/cores/router/router.dart';
 import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:re_empties/cores/template/view.dart';
-import 'package:re_empties/features/send_empties/viewModel/location_view_model.dart';
 import 'package:re_empties/features/send_empties/viewModel/send_form_view_model.dart';
 import 'package:re_empties/features/send_empties/widget/bottom_sheet.dart';
 import 'package:re_empties/features/send_empties/widget/delivery_detail_container.dart';
@@ -112,7 +111,7 @@ class SendFormState extends State<SendFormView> {
                 WasteCategoryStepper(
                     title: 'Glass',
                     description:
-                        'Glass that is  recycled includes all types of used skincare and makeup packaging.',
+                        'Glass that is recycled includes all types of used skincare and makeup packaging.',
                     imageAssetPath: images.gopay),
                 Gap(10.h),
                 Divider(
@@ -209,7 +208,6 @@ class SendFormState extends State<SendFormView> {
             state: ButtonState.primary,
             text: 'Confirm',
             onPressed: () {
-              // _showPaymentOptions();
               ctx.pushNamed(
                 paths.success,
                 extra: {
@@ -222,30 +220,42 @@ class SendFormState extends State<SendFormView> {
         ),
       );
 
-  void _showPaymentOptions() {
-    List<Map<String, String>> paymentOptions = [
-      {'image': images.gopay, 'title': 'Gopay', 'desc': 'Pay with Gopay'},
-      {
-        'image': images.shopeePay,
-        'title': 'ShopeePay',
-        'desc': 'Pay with ShopeePay'
-      },
-      // {
-      //   'image': 'assets/images/card_icon.png',
-      //   'title': 'Card',
-      //   'desc': 'Pay with Credit/Debit Card'
-      // },
-    ];
+  void _showPaymentOptions() async {
+    try {
+      List<Map<String, String>> paymentOptions = await fetchPaymentOptions();
 
-    showPaymentOptionsModal(
-      context: context,
-      paymentOptions: paymentOptions,
-      selectedValue: _selectedPaymentMethod,
-      onSelected: (int value) {
-        setState(() {
-          _selectedPaymentMethod = value;
-        });
-      },
-    );
+      showPaymentOptionsModal(
+        context: ctx,
+        paymentOptions: paymentOptions,
+        selectedValue: _selectedPaymentMethod,
+        onSelected: (int value) {
+          setState(() {
+            _selectedPaymentMethod = value;
+          });
+        },
+      );
+    } catch (e) {
+      print("Error fetching payment options: $e");
+    }
   }
+
+  Future<List<Map<String, String>>> fetchPaymentOptions() async {
+    List<Map<String, String>> paymentOptions = [];
+
+    final paymentCollection = FirebaseFirestore.instance.collection('payment');
+    final snapshot = await paymentCollection.get();
+
+    for (var doc in snapshot.docs) {
+      final data = doc.data();
+      paymentOptions.add({
+        'image': data['image'], 
+        'title': data['Title'],
+        'desc': data['Description'],
+      });
+    }
+
+    return paymentOptions;
+  }
+
+  
 }

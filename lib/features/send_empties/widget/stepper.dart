@@ -74,7 +74,7 @@ class WasteCategoryStepperState extends State<WasteCategoryStepper> {
                         style: textTheme.label.copyWith(fontWeight: FontWeight.w300),
                       ),
                     ),
-                    Flexible(child: SizedBox(), flex: 1,)
+                    const Flexible(flex: 1,child: SizedBox(),)
                   ],
                 ),
                 Gap(5.h),
