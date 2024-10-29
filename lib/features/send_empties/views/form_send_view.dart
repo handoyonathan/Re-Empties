@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,7 +13,6 @@ import 'package:re_empties/cores/constant/text_theme.dart';
 import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:re_empties/cores/template/view.dart';
 import 'package:re_empties/features/send_empties/viewModel/send_form_view_model.dart';
-import 'package:re_empties/features/send_empties/widget/bottom_sheet.dart';
 import 'package:re_empties/features/send_empties/widget/delivery_detail_container.dart';
 import 'package:re_empties/features/send_empties/widget/stepper.dart';
 
@@ -31,8 +28,6 @@ class SendFormView extends StatefulWidget {
 }
 
 class SendFormState extends State<SendFormView> {
-  int _selectedPaymentMethod = 0;
-
   @override
   Widget build(BuildContext context) => BaseView(
         provider: widget._viewModel,
@@ -97,47 +92,29 @@ class SendFormState extends State<SendFormView> {
                   height: 1.h,
                 ),
                 Gap(5.h),
-                WasteCategoryStepper(
-                    title: 'Plastic',
-                    description:
-                        'Recyclable plastics include all types of used skincare and makeup packaging.',
-                    imageAssetPath: images.gopay),
+                ...vm.wasteCategories.map((category) {
+                  return Column(
+                    children: [
+                      WasteCategoryStepper(
+                        title: category.title,
+                        description: category.desc,
+                        imagePath: category.image,
+                      ),
+                      Gap(10.h),
+                      Divider(color: colors.gray4, height: 1.h),
+                      Gap(10.h),
+                    ],
+                  );
+                }),
                 Gap(10.h),
-                Divider(
-                  color: colors.gray4,
-                  height: 1.h,
-                ),
-                Gap(10.h),
-                WasteCategoryStepper(
-                    title: 'Glass',
-                    description:
-                        'Glass that is recycled includes all types of used skincare and makeup packaging.',
-                    imageAssetPath: images.gopay),
-                Gap(10.h),
-                Divider(
-                  color: colors.gray4,
-                  height: 1.h,
-                ),
-                Gap(10.h),
-                WasteCategoryStepper(
-                    title: 'Cardboard',
-                    description:
-                        'Cardboard boxes that are recycled includes all types of used skincare and makeup packaging.',
-                    imageAssetPath: images.gopay),
-                Gap(20.h),
-                Divider(
-                  color: colors.gray4,
-                  height: 1.h,
-                ),
-                Gap(20.h),
                 Text(
                   'Delivery Options',
                   style: textTheme.title,
                 ),
                 TapDetector(
-                  onTap: _showPaymentOptions,
+                  onTap: () => vm.showDeliveryOptions(context),
                   child: Container(
-                    height: 50,
+                    height: 50.h,
                     width: double.infinity,
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
                     decoration: BoxDecoration(
@@ -147,7 +124,7 @@ class SendFormState extends State<SendFormView> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Gosend',
+                          vm.selectedDeliveryTitle,
                           style: textTheme.formName,
                         ),
                         RotatedBox(
@@ -172,9 +149,9 @@ class SendFormState extends State<SendFormView> {
                   style: textTheme.title,
                 ),
                 TapDetector(
-                  onTap: _showPaymentOptions,
+                  onTap: () => vm.showPaymentOptions(context),
                   child: Container(
-                    height: 50,
+                    height: 50.h,
                     width: double.infinity,
                     padding: EdgeInsets.symmetric(horizontal: 16.w),
                     decoration: BoxDecoration(
@@ -183,7 +160,7 @@ class SendFormState extends State<SendFormView> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('Gosend', style: textTheme.formName),
+                        Text(vm.selectedPaymentTitle, style: textTheme.formName),
                         RotatedBox(
                             quarterTurns: 2,
                             child: Icon(
@@ -195,7 +172,7 @@ class SendFormState extends State<SendFormView> {
                     ),
                   ),
                 ),
-                Gap(20.h)
+                Gap(20.h),
               ],
             ),
           ),
@@ -219,43 +196,4 @@ class SendFormState extends State<SendFormView> {
           ),
         ),
       );
-
-  void _showPaymentOptions() async {
-    try {
-      List<Map<String, String>> paymentOptions = await fetchPaymentOptions();
-
-      showPaymentOptionsModal(
-        context: ctx,
-        paymentOptions: paymentOptions,
-        selectedValue: _selectedPaymentMethod,
-        onSelected: (int value) {
-          setState(() {
-            _selectedPaymentMethod = value;
-          });
-        },
-      );
-    } catch (e) {
-      print("Error fetching payment options: $e");
-    }
-  }
-
-  Future<List<Map<String, String>>> fetchPaymentOptions() async {
-    List<Map<String, String>> paymentOptions = [];
-
-    final paymentCollection = FirebaseFirestore.instance.collection('payment');
-    final snapshot = await paymentCollection.get();
-
-    for (var doc in snapshot.docs) {
-      final data = doc.data();
-      paymentOptions.add({
-        'image': data['image'], 
-        'title': data['Title'],
-        'desc': data['Description'],
-      });
-    }
-
-    return paymentOptions;
-  }
-
-  
 }

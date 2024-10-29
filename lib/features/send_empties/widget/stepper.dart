@@ -7,13 +7,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class WasteCategoryStepper extends StatefulWidget {
   final String title;
   final String description;
-  final String imageAssetPath;
+  final String imagePath;
 
   const WasteCategoryStepper({
     super.key,
     required this.title,
     required this.description,
-    required this.imageAssetPath,
+    required this.imagePath,
   });
 
   @override
@@ -53,7 +53,7 @@ class WasteCategoryStepperState extends State<WasteCategoryStepper> {
               color: colors.background,
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Image.asset(widget.imageAssetPath, fit: BoxFit.contain),
+            child: Image.network(widget.imagePath, fit: BoxFit.contain),
           ),
           Gap(16.w),
           Expanded(
@@ -101,9 +101,15 @@ class WasteCategoryStepperState extends State<WasteCategoryStepper> {
                       ),
                     ),
                     Gap(10.w),
-                    Text(
-                      '$quantity',
-                      style: textTheme.subtitle2,
+                    SizedBox(
+                      width: 23.h,
+                      child: Center(
+                        child: Text(
+                          '$quantity',
+                          style: textTheme.subtitle2,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                     ),
                     Gap(10.w),
                     Container(
