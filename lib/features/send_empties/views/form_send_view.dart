@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:re_empties/cores/components/button_main_app.dart';
 import 'package:re_empties/cores/components/custom_app_bar.dart';
 import 'package:re_empties/cores/components/image_asset.dart';
+import 'package:re_empties/cores/components/success_page.dart';
+import 'package:re_empties/cores/components/tap_detector.dart';
 import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
+import 'package:re_empties/cores/router/router.dart';
+import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:re_empties/cores/template/view.dart';
 import 'package:re_empties/features/send_empties/viewModel/location_view_model.dart';
 import 'package:re_empties/features/send_empties/viewModel/send_form_view_model.dart';
@@ -62,7 +67,7 @@ class SendFormState extends State<SendFormView> {
                     Expanded(
                       child: Column(
                         children: [
-                          DeliveryDetailContainer(
+                          const DeliveryDetailContainer(
                             isUser: true,
                             name: 'john',
                             phoneNumber: '+621234556',
@@ -70,7 +75,7 @@ class SendFormState extends State<SendFormView> {
                                 'Jl. Poris Indah, RW.4, Cipondoh Indah, Kec. Cipondoh, Kota Tangerang, Banten 15148',
                           ),
                           Gap(15.h),
-                          DeliveryDetailContainer(
+                          const DeliveryDetailContainer(
                             isUser: false,
                             name: 'john',
                             phoneNumber: '+621234556',
@@ -130,28 +135,31 @@ class SendFormState extends State<SendFormView> {
                   'Delivery Options',
                   style: textTheme.title,
                 ),
-                Container(
-                  height: 50,
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  decoration: BoxDecoration(
-                      color: colors.gray2,
-                      borderRadius: BorderRadius.circular(15.r)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Gosend',
-                        style: textTheme.formName,
-                      ),
-                      RotatedBox(
-                          quarterTurns: 2,
-                          child: Icon(
-                            Icons.arrow_back_ios_new_sharp,
-                            color: colors.green1,
-                            size: 20,
-                          )),
-                    ],
+                TapDetector(
+                  onTap: _showPaymentOptions,
+                  child: Container(
+                    height: 50,
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    decoration: BoxDecoration(
+                        color: colors.gray2,
+                        borderRadius: BorderRadius.circular(15.r)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Gosend',
+                          style: textTheme.formName,
+                        ),
+                        RotatedBox(
+                            quarterTurns: 2,
+                            child: Icon(
+                              Icons.arrow_back_ios_new_sharp,
+                              color: colors.green1,
+                              size: 20,
+                            )),
+                      ],
+                    ),
                   ),
                 ),
                 Gap(20.h),
@@ -164,25 +172,28 @@ class SendFormState extends State<SendFormView> {
                   'Payment Options',
                   style: textTheme.title,
                 ),
-                Container(
-                  height: 50,
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(horizontal: 16.w),
-                  decoration: BoxDecoration(
-                      color: colors.gray2,
-                      borderRadius: BorderRadius.circular(15.r)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('Gosend', style: textTheme.formName),
-                      RotatedBox(
-                          quarterTurns: 2,
-                          child: Icon(
-                            Icons.arrow_back_ios_new_sharp,
-                            color: colors.green1,
-                            size: 20,
-                          )),
-                    ],
+                TapDetector(
+                  onTap: _showPaymentOptions,
+                  child: Container(
+                    height: 50,
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    decoration: BoxDecoration(
+                        color: colors.gray2,
+                        borderRadius: BorderRadius.circular(15.r)),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('Gosend', style: textTheme.formName),
+                        RotatedBox(
+                            quarterTurns: 2,
+                            child: Icon(
+                              Icons.arrow_back_ios_new_sharp,
+                              color: colors.green1,
+                              size: 20,
+                            )),
+                      ],
+                    ),
                   ),
                 ),
                 Gap(20.h)
@@ -198,7 +209,14 @@ class SendFormState extends State<SendFormView> {
             state: ButtonState.primary,
             text: 'Confirm',
             onPressed: () {
-              _showPaymentOptions();
+              // _showPaymentOptions();
+              ctx.pushNamed(
+                paths.success,
+                extra: {
+                  'isDrop': true,
+                  'points': '100000',
+                },
+              );
             },
           ),
         ),
