@@ -58,23 +58,23 @@ class ArticleView extends ConsumerWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // title
-                            // Text(
-                            //   article['articleName'] ?? '',
-                            //   style: textTheme.articleTitle,
-                            //   textAlign: TextAlign.left,
-                            // ),
                             Text(
-                              article['articleDescription'] ?? '',
+                              article['articleName'] ?? '',
                               style: textTheme.articleTitle,
                               textAlign: TextAlign.left,
                             ),
-                            Gap(2),
                             Text(
                               "${article['author']} | ${article['publishedDate']} ",
                               style: textTheme.badgesText,
                               textAlign: TextAlign.left,
                             ),
                             Gap(5),
+                            Text(
+                              article['articleDescription'] ?? '',
+                              style: textTheme.articleIntro,
+                              textAlign: TextAlign.left,
+                            ),
+                            Gap(2),
                             // Text(
                             //   article['articleDescription'] ?? '',
                             //   style: textTheme.articleTitle,

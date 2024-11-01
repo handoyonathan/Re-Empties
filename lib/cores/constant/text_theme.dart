@@ -92,7 +92,7 @@ class _TextTheme {
     color: colors.black,
   );
   // bisa dipake untuk value trackingID atau Estimated Delivery
-  // tinggal ganti warna nya aja ke green1 
+  // tinggal ganti warna nya aja ke green1
   final textButton = TextStyle(
     fontSize: 16.sp,
     height: 1.5,
@@ -184,7 +184,7 @@ class _TextTheme {
     fontWeight: FontWeight.w400,
     color: colors.green1,
   );
-  //label untuk dropID desc, textfield Label, 
+  //label untuk dropID desc, textfield Label,
   final textFieldLabel = TextStyle(
     fontSize: 14.sp,
     height: 1.5,
@@ -298,6 +298,13 @@ class _TextTheme {
     fontSize: 8.sp,
     height: 1.5,
     fontWeight: FontWeight.w600,
+    color: colors.green1,
+  );
+
+  final articleIntro = TextStyle(
+    fontSize: 15.sp,
+    height: 1.5,
+    fontWeight: FontWeight.w500,
     color: colors.green1,
   );
 }

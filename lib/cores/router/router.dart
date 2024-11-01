@@ -34,7 +34,7 @@ setupRouter({required String initialRoute}) {
         path: '/article_detail',
         name: paths.article,
         builder: (context, state) => ArticleView(),
-      )
+      ),
       GoRoute(
           path: '/test',
           name: paths.test,
