@@ -40,7 +40,6 @@ class ArticleVM extends BaseNotifier {
         articles = [];
       }
       notifyListeners();
-      print("Data Article : $snapshot");
     } catch (e) {
       print('Error fetching article data: $e');
     } finally {
@@ -54,7 +53,6 @@ class ArticleVM extends BaseNotifier {
           await FirebaseStorage.instance.refFromURL(photoPath).getDownloadURL();
       return url;
     } catch (e) {
-      print('Error loading image: $e');
       return 'Get Image not success';
     }
   }

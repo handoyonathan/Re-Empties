@@ -38,7 +38,6 @@ class ArticleCarouselVM extends ChangeNotifier {
             carouselPhoto: imageUrl));
         imageUrls.add(imageUrl);
       }
-      print("Data Carousel : $snapshot");
     } catch (e) {
       print("Error fetching articles: $e");
     } finally {
