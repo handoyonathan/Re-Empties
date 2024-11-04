@@ -12,33 +12,39 @@ import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:flutter_screenutil/src/size_extension.dart';
 
 class ArticleView extends ConsumerWidget {
-  ArticleView({super.key})
+  final String articleId;
+  final AutoDisposeChangeNotifierProvider<ArticleVM> _viewModel;
+
+  ArticleView({super.key, required this.articleId})
       : _viewModel =
             ChangeNotifierProvider.autoDispose((ref) => ArticleVM(ref));
 
-  final AutoDisposeChangeNotifierProvider<ArticleVM> _viewModel;
-
   @override
-  Widget build(BuildContext context, WidgetRef ref) => BaseView(
-      provider: _viewModel,
-      appBar: (_) => CustomAppBar(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Text(
-                  'Article Detail',
-                  style: textTheme.textButton.copyWith(color: colors.green1),
-                  textAlign: TextAlign.left,
-                ),
-              ],
+  Widget build(BuildContext context, WidgetRef ref) {
+    // Fetch article data using the articleId passed to the view
+    ref.read(_viewModel).fetchArticleData(articleId);
+    return BaseView(
+        provider: _viewModel,
+        appBar: (_) => CustomAppBar(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Article Detail',
+                    style: textTheme.textButton.copyWith(color: colors.green1),
+                    textAlign: TextAlign.left,
+                  ),
+                ],
+              ),
             ),
-          ),
-      builder: _buildScreen);
+        builder: _buildScreen);
+  }
 
   Widget _buildScreen(BuildContext context, ArticleVM vm) => Scaffold(
       backgroundColor: colors.bgColor,
       body: vm.isLoading
           ? Center(
+            
               child: CircularProgressIndicator(
                   color: colors.green1, backgroundColor: colors.background))
           : vm.articles.isEmpty
@@ -68,19 +74,18 @@ class ArticleView extends ConsumerWidget {
                               style: textTheme.badgesText,
                               textAlign: TextAlign.left,
                             ),
-                            Gap(5),
+                            Gap(15),
                             Text(
                               article['articleDescription'] ?? '',
                               style: textTheme.articleIntro,
                               textAlign: TextAlign.left,
                             ),
-                            Gap(2),
+                            Gap(10),
                             // Text(
                             //   article['articleDescription'] ?? '',
                             //   style: textTheme.articleTitle,
                             //   textAlign: TextAlign.left,
                             // ),
-                            Gap(5),
 
                             ListView.builder(
                                 physics: const NeverScrollableScrollPhysics(),
@@ -88,14 +93,31 @@ class ArticleView extends ConsumerWidget {
                                 itemCount:
                                     (article['articleIsi'] as List).length,
                                 itemBuilder: (context, stepIndex) {
+                                  final titles =
+                                      article['articleTitleIsi'] as List;
+                                  final descriptions =
+                                      article['articleIsi'] as List;
+                                  final photos =
+                                      article['articlePhotos'] as List;
+
+                                  // Check if the current index is within bounds of each list.
+                                  final title = stepIndex < titles.length
+                                      ? titles[stepIndex]
+                                      : '';
+                                  final description =
+                                      stepIndex < descriptions.length
+                                          ? descriptions[stepIndex]
+                                          : '';
+                                  final photoUrl = stepIndex < photos.length
+                                      ? photos[stepIndex]
+                                      : '';
+
                                   return ArticleSteps(
-                                      titleIsi:
-                                          "${stepIndex + 1}. ${article['articleTitleIsi'][stepIndex]}",
-                                      isi: article['articleIsi'][stepIndex],
-                                      photoUrl: article['articlePhotos']
-                                          [stepIndex]);
+                                      titleIsi: "${stepIndex + 1}. $title",
+                                      isi: description,
+                                      photoUrl: photoUrl);
                                 }),
-                            Gap(5),
+                            const Gap(5),
                           ],
                         ),
                     ],

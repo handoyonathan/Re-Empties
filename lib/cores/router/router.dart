@@ -17,7 +17,6 @@ setupRouter({required String initialRoute}) {
         path: '/',
         name: paths.home,
         builder: (context, state) =>
-           
             const HomeView(), // Tambahkan builder untuk halaman utama
       ),
       GoRoute(
@@ -29,11 +28,6 @@ setupRouter({required String initialRoute}) {
         path: '/register',
         name: paths.register,
         builder: (context, state) => const RegisterPage(),
-      ),
-      GoRoute(
-        path: '/article_detail',
-        name: paths.article,
-        builder: (context, state) => ArticleView(),
       ),
       GoRoute(
           path: '/test',

@@ -1,8 +1,5 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:re_empties/cores/template/notifer.dart';
 
@@ -11,17 +8,25 @@ class ArticleVM extends BaseNotifier {
 
   ArticleVM(super.ref);
 
-  Future<void> fetchArticleData() async {
+  Future<void> fetchArticleData(String articleId) async {
     try {
       isLoading = true;
-      QuerySnapshot snapshot =
-          await FirebaseFirestore.instance.collection('article').get();
+      // QuerySnapshot snapshot =
+      //     await FirebaseFirestore.instance.collection('article').get();
 
-      // Process each article and fetch images from Firebase Storage
-      articles = await Future.wait(snapshot.docs.map((doc) async {
-        Map<String, dynamic> articleData = doc.data() as Map<String, dynamic>;
+      // // Process each article and fetch images from Firebase Storage
+      // articles = await Future.wait(snapshot.docs.map((doc) async {
+      //   Map<String, dynamic> articleData = doc.data() as Map<String, dynamic>;
 
-        // Fetching the article photos (Firebase images)
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection('article')
+          .doc(articleId)
+          .get();
+
+      if (snapshot.exists) {
+        Map<String, dynamic> articleData =
+            snapshot.data() as Map<String, dynamic>;
+
         List<String> articlePhotos = await Future.wait(
           (articleData['articlePhotos'] as List<dynamic>)
               .map((photoPath) async {
@@ -29,15 +34,17 @@ class ArticleVM extends BaseNotifier {
           }).toList(),
         );
 
-        // Add the fetched image URLs to the article data
         articleData['articlePhotos'] = articlePhotos;
-
-        return articleData;
-      }).toList());
-
+        articles = [articleData];
+      } else {
+        articles = [];
+      }
       notifyListeners();
+      print("Data Article : $snapshot");
     } catch (e) {
       print('Error fetching article data: $e');
+    } finally {
+      isLoading = false;
     }
   }
 
@@ -53,7 +60,5 @@ class ArticleVM extends BaseNotifier {
   }
 
   @override
-  FutureOr<void> init() {
-    fetchArticleData();
-  }
+  FutureOr<void> init() {}
 }

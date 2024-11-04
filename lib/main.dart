@@ -10,11 +10,9 @@ void main() async {
       
       .ensureInitialized(); // Memastikan widget binding sudah siap
   await Firebase.initializeApp(
-   
     options: DefaultFirebaseOptions.currentPlatform,
-  
   ); // Inisialisasi Firebase
-  setupRouter(initialRoute: '/article_detail'); // Setup router
+  setupRouter(initialRoute: '/'); // Setup router
   runApp(
     const ProviderScope(
       child: MyApp(),
