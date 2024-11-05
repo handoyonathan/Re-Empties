@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:gap/gap.dart';
+
 import 'package:re_empties/cores/components/article_steps.dart';
 import 'package:re_empties/cores/components/custom_app_bar.dart';
 import 'package:re_empties/cores/components/image_asset.dart';
+import 'package:re_empties/cores/constant/colors.dart';
+import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
 import 'package:re_empties/cores/template/view.dart';
 import 'package:re_empties/features/article/viewmodel/articel_view_model.dart';
-import 'package:re_empties/cores/constant/colors.dart';
-import 'package:re_empties/cores/constant/image_path.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
 
 class ArticleView extends ConsumerWidget {
   final String articleId;

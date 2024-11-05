@@ -11,13 +11,6 @@ class ArticleVM extends BaseNotifier {
   Future<void> fetchArticleData(String articleId) async {
     try {
       isLoading = true;
-      // QuerySnapshot snapshot =
-      //     await FirebaseFirestore.instance.collection('article').get();
-
-      // // Process each article and fetch images from Firebase Storage
-      // articles = await Future.wait(snapshot.docs.map((doc) async {
-      //   Map<String, dynamic> articleData = doc.data() as Map<String, dynamic>;
-
       DocumentSnapshot snapshot = await FirebaseFirestore.instance
           .collection('article')
           .doc(articleId)

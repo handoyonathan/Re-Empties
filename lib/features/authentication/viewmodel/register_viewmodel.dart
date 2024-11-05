@@ -1,11 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/src/change_notifier_provider.dart';
+
 import 'package:re_empties/cores/template/form_notifier.dart';
 import 'package:re_empties/cores/template/form_validator.dart';
 import 'package:re_empties/cores/template/text_input_model.dart';
 import 'package:re_empties/features/authentication/model/auth_model.dart';
-import 'package:flutter_riverpod/src/change_notifier_provider.dart';
 
 final registerVM = ChangeNotifierProvider.autoDispose(RegisterVM.new);
 

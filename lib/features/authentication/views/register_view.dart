@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
+import 'package:gap/gap.dart';
+
 import 'package:re_empties/cores/components/button_main_app.dart';
 import 'package:re_empties/cores/components/form_text_field.dart';
 import 'package:re_empties/cores/components/image_asset.dart';
@@ -8,23 +11,12 @@ import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
 import 'package:re_empties/cores/template/view.dart';
 import 'package:re_empties/features/authentication/viewmodel/register_viewmodel.dart';
-import 'package:flutter_screenutil/src/size_extension.dart';
+import 'package:re_empties/features/authentication/views/login_view.dart';
+
 import '../../../cores/components/hidden_app_bar.dart';
-import 'package:gap/gap.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
-
-  @override
-  Widget build(BuildContext context) => BaseView<RegisterVM>(
-        provider: registerVM,
-        appBar: (_) => const HiddenAppBar(
-          backgroundColor: Colors.transparent,
-        ),
-        builder: _buildScreen,
-        extendBodyBehindAppBar: true,
-        disableSafeArea: true,
-      );
 
   Widget _buildScreen(BuildContext context, RegisterVM vm) => Scaffold(
         backgroundColor: colors.bgColor,
@@ -123,7 +115,7 @@ class RegisterPage extends StatelessWidget {
                     text: 'Register',
                     onPressed: vm.onRegister,
                   ),
-                  Gap(10.h),
+                  Gap(25.h),
 
                   // Login option
                   Row(
@@ -139,12 +131,16 @@ class RegisterPage extends StatelessWidget {
                         ),
                         textAlign: TextAlign.center,
                       ),
+                      Gap(5.w),
                       TapDetector(
                         onTap: () {
-                         
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const LoginPage()));
                         },
                         child: Text(
-                          "Register Here",
+                          "Login Here",
                           style: textTheme.subtitle.copyWith(
                               color: colors.textButton,
                               fontSize: 16,
@@ -159,5 +155,16 @@ class RegisterPage extends StatelessWidget {
             ),
           ),
         ),
+      );
+
+  @override
+  Widget build(BuildContext context) => BaseView<RegisterVM>(
+        provider: registerVM,
+        appBar: (_) => const HiddenAppBar(
+          backgroundColor: Colors.transparent,
+        ),
+        builder: _buildScreen,
+        extendBodyBehindAppBar: true,
+        disableSafeArea: true,
       );
 }
