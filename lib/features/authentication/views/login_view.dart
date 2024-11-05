@@ -86,7 +86,7 @@ class LoginPage extends StatelessWidget {
                   AppMainButton(
                     state: ButtonState.primary,
                     text: 'Login',
-                    onPressed: vm.onLogin,
+                    onPressed: () => vm.onLogin(context),
                   ),
                   Gap(25.h),
                   Row(

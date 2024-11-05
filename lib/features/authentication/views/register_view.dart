@@ -113,7 +113,7 @@ class RegisterPage extends StatelessWidget {
                   AppMainButton(
                     state: ButtonState.primary,
                     text: 'Register',
-                    onPressed: vm.onRegister,
+                    onPressed: () => vm.onRegister(context),
                   ),
                   Gap(25.h),
 

@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/src/change_notifier_provider.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:re_empties/cores/template/form_notifier.dart';
 import 'package:re_empties/cores/template/form_validator.dart';
@@ -18,7 +20,7 @@ class RegisterVM extends BaseFormNotifier<RegisterModel>
 
   RegisterVM(super.ref);
 
-  void onRegister() async {
+  void onRegister(BuildContext context) async {
     if (validate()) {
       try {
         //  bikin new user di firebase auth
@@ -41,7 +43,8 @@ class RegisterVM extends BaseFormNotifier<RegisterModel>
             .collection('users')
             .doc(userCredential.user?.uid)
             .set(user.toMap());
-        print('User data added to Firestore');
+
+        context.go('/home');
       } on FirebaseAuthException catch (e) {
         // Tangani kesalahan login
         print('Failed with error code: ${e.code}');
