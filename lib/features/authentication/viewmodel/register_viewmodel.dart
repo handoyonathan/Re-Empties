@@ -10,6 +10,7 @@ import 'package:re_empties/cores/template/form_notifier.dart';
 import 'package:re_empties/cores/template/form_validator.dart';
 import 'package:re_empties/cores/template/text_input_model.dart';
 import 'package:re_empties/features/authentication/model/auth_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final registerVM = ChangeNotifierProvider.autoDispose(RegisterVM.new);
 
@@ -43,6 +44,12 @@ class RegisterVM extends BaseFormNotifier<RegisterModel>
             .collection('users')
             .doc(userCredential.user?.uid)
             .set(user.toMap());
+
+        // shared preferences
+        SharedPreferences preferences = await SharedPreferences.getInstance();
+        await preferences.setBool('isRegisterIn', true);
+        await preferences.setString('userId', userCredential.user?.uid ?? '');
+        print('User Registered: ${userCredential.user?.uid}');
 
         context.go('/home');
       } on FirebaseAuthException catch (e) {
