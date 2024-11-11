@@ -7,6 +7,7 @@ class _RouterPaths {
   final String login = 'login';
   final String register = 'register';
   final String test = 'test';
+  final String splash = 'splash';
 }
 
 final paths = _RouterPaths();

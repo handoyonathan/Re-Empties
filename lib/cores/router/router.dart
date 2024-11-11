@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:re_empties/cores/components/splash_screen.dart';
 import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:re_empties/features/authentication/views/login_view.dart';
 import 'package:re_empties/features/authentication/views/register_view.dart';
@@ -14,6 +15,12 @@ setupRouter({required String initialRoute}) {
     routes: [
       GoRoute(
         path: '/',
+        name: paths.splash,
+        builder: (context, state) =>
+            const SplashScreen(), // Tambahkan builder untuk halaman utama
+      ),
+      GoRoute(
+        path: '/home',
         name: paths.home,
         builder: (context, state) =>
             const HomeView(), // Tambahkan builder untuk halaman utama

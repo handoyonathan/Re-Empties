@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'package:re_empties/cores/components/alert_dialog.dart';
 import 'package:re_empties/cores/components/article_preview_home.dart';
 import 'package:re_empties/cores/components/banner_home.dart';
-import 'package:re_empties/cores/components/button_main_app.dart';
-import 'package:re_empties/cores/components/alert_dialog.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gap/gap.dart';
 import 'package:re_empties/cores/components/points_card_home.dart';
 import 'package:re_empties/cores/components/send_drop_card.dart';
 import 'package:re_empties/cores/components/status_preview_home.dart';
-import 'package:re_empties/cores/components/tap_detector.dart';
 import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
+import 'package:re_empties/features/authentication/viewmodel/login_viewmodel.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeView extends StatelessWidget {
+class HomeView extends ConsumerWidget {
   const HomeView({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final vm = ref.watch(loginVM);
+
     return MaterialApp(
       home: Scaffold(
         backgroundColor: colors.background,
@@ -84,6 +86,11 @@ class HomeView extends StatelessWidget {
                       ),
                     ),
                     ArticlePreviewHome(),
+                    ElevatedButton(
+                        onPressed: () {
+                          vm.logout(context);
+                        },
+                        child: Text('Logout'))
                   ],
                 ),
               ),

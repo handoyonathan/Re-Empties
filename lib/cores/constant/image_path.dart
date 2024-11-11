@@ -16,6 +16,7 @@ class _ImagePath {
   final String dropWaste = '$_imagePath/dropWaste.png';
   final String logo = '$_logoPath/logo.png';
   final String location = '$_imagePath/location.png';
+  final String errorIllustration = '$_imagePath/error_illustration.png';
   final String articlePreview = '$_imagePath/articlePreview.png';
   final String level1 = '$_imagePath/level1.png';
   final String level2 = '$_imagePath/level2.png';
