@@ -1,7 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:re_empties/cores/components/splash_screen.dart';
 import 'package:re_empties/cores/router/router_constant.dart';
-import 'package:re_empties/features/admin/view/admin_view.dart';
 import 'package:re_empties/features/authentication/views/login_view.dart';
 import 'package:re_empties/features/authentication/views/register_view.dart';
 import 'package:re_empties/features/home/view/home_view.dart';
@@ -29,7 +28,7 @@ setupRouter({required String initialRoute}) {
       GoRoute(
         path: '/login',
         name: paths.login,
-        builder: (context, state) => AdminView(),
+        builder: (context, state) => const LoginPage()
       ),
       GoRoute(
         path: '/register',
