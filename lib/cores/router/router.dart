@@ -28,7 +28,7 @@ setupRouter({required String initialRoute}) {
       GoRoute(
         path: '/login',
         name: paths.login,
-        builder: (context, state) => const LoginPage(),
+        builder: (context, state) => const LoginPage()
       ),
       GoRoute(
         path: '/register',

@@ -1,12 +1,9 @@
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart' hide ChangeNotifierProvider;
 import 'package:re_empties/cores/router/router_constant.dart';
-
 import 'package:re_empties/cores/template/form_notifier.dart';
 import 'package:re_empties/cores/template/form_validator.dart';
 import 'package:re_empties/cores/template/text_input_model.dart';
@@ -76,6 +73,7 @@ class LoginVM extends BaseFormNotifier<LoginModel> with FormValidatorMixin {
       ),
     );
   }
+  
 
   @override
   late LoginModel form;
