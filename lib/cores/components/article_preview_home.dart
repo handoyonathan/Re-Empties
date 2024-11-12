@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:re_empties/cores/components/article_card.dart';
 import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/features/article/view/article_view.dart';
-import 'package:re_empties/features/home/view/view%20model/article_carouselVM.dart';
+import 'package:re_empties/features/home/view%20model/article_carouselVM.dart';
 
 class ArticlePreviewHome extends StatefulWidget {
   const ArticlePreviewHome({super.key});
