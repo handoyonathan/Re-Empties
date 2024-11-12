@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:re_empties/features/home/view/model/carousel_model.dart';
+import 'package:re_empties/features/home/model/carousel_model.dart';
 
 class ArticleCarouselVM extends ChangeNotifier {
   final List<carouselArticle> carousel = [];
