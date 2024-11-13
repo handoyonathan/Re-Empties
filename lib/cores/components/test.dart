@@ -6,9 +6,11 @@ import 'package:re_empties/cores/components/alert_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:re_empties/cores/components/points_card_home.dart';
+import 'package:re_empties/cores/components/points_card_reedem.dart';
 import 'package:re_empties/cores/components/send_drop_card.dart';
 import 'package:re_empties/cores/components/status_preview_home.dart';
 import 'package:re_empties/cores/components/tap_detector.dart';
+import 'package:re_empties/cores/components/voucher_card_reedem.dart';
 import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
 
@@ -22,13 +24,13 @@ class TestWidget extends StatelessWidget {
         backgroundColor: colors.background,
         body: Stack(
           children: [
-            // Banner that covers the top part of the screen
+            // // Banner that covers the top part of the screen
             const Positioned.fill(
                 top: 0,
                 bottom: null,
                 left: 0,
                 right: 0,
-                child: BannerHome(level: 5)),
+                child: BannerHome(level: 1)),
 
             // Positioned content starting below the banner with a gap of 18.h
             Positioned(
@@ -47,43 +49,57 @@ class TestWidget extends StatelessWidget {
                     HomePointsCard(onTap: () {
                       print("points");
                     }),
+
                     const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment
-                          .spaceBetween, // Space out the two cards
-                      children: [
-                        HomeSendDropCard(
-                          state: SendDropState.drop,
-                          onTap: () {
-                            print("drop card");
-                          },
-                        ),
-                        HomeSendDropCard(
-                          state: SendDropState.send,
-                          onTap: () {
-                            print("send card");
-                          },
-                        ),
-                      ],
-                    ),
+
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment
+                    //       .spaceBetween, // Space out the two cards
+                    //   children: [
+                    //     HomeSendDropCard(
+                    //       state: SendDropState.drop,
+                    //       onTap: () {
+                    //         print("drop card");
+                    //       },
+                    //     ),
+                    //     HomeSendDropCard(
+                    //       state: SendDropState.send,
+                    //       onTap: () {
+                    //         print("send card");
+                    //       },
+                    //     ),
+                    //   ],
+                    // ),
                     const SizedBox(height: 10),
-                    StatusPreviewHome(
-                      status: 'Your item is being shipped',
-                      id: 'SE-001',
-                      delivery: 'DD-MM-YYYY',
-                      onTap: () {
-                        print("tracking status clicked");
-                      },
-                    ),
+
+                    const ReedemPointsCard(points: '12.000'),
+
                     const SizedBox(height: 10),
-                    Align(
-                      alignment: Alignment.centerLeft, // Align to the left
-                      child: Text(
-                        "Articles",
-                        style: textTheme.title,
-                      ),
-                    ),
-                    ArticlePreviewHome(),
+
+                    VoucherCardRedeem(
+                        category: 'food',
+                        title: 'Lorem Ipsum',
+                        description:
+                            'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
+                        points: '5.000'),
+
+                    // StatusPreviewHome(
+                    //   status: 'Your item is being shipped',
+                    //   id: 'SE-001',
+                    //   delivery: 'DD-MM-YYYY',
+                    //   onTap: () {
+                    //     print("tracking status clicked");
+                    //   },
+                    // ),
+                    // const SizedBox(height: 10),
+                    // Align(
+                    //   alignment: Alignment.centerLeft, // Align to the left
+                    //   child: Text(
+                    //     "Articles",
+                    //     style: textTheme.title,
+                    //   ),
+                    // ),
+                    // ArticlePreviewHome(),
                   ],
                 ),
               ),
