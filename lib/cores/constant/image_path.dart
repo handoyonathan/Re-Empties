@@ -16,6 +16,7 @@ class _ImagePath {
   final String dropWaste = '$_imagePath/dropWaste.png';
   final String logo = '$_logoPath/logo.png';
   final String location = '$_imagePath/location.png';
+  final String errorIllustration = '$_imagePath/error_illustration.png';
   final String articlePreview = '$_imagePath/articlePreview.png';
   final String level1 = '$_imagePath/level1.png';
   final String level2 = '$_imagePath/level2.png';
@@ -27,30 +28,27 @@ class _ImagePath {
   final String categoryShopping = '$_imagePath/categoryShopping.png';
   final String categoryGames = '$_imagePath/categoryGames.png';
   final String categoryDefault = '$_imagePath/categoryDefault.png';
+  final String adminProfile = '$_imagePath/admin_profile.png';
+  final String successCircle = '$_imagePath/success_circle.png';
+  final String successStar = '$_imagePath/success_star.png';
+  final String successBg = '$_imagePath/success_bg.png';
+
 
   // patterns ///////////////////////////////////////
   final String headerMenuUtama = '$_patternPath/Header_MenuUtama.png';
 
   // bottom nav bar /////////////////////////////////
   final Map<bool, String> homeTab = {
-    false: '$_iconPath/Menu_Home_Inactive.svg',
-    true: '$_iconPath/Menu_Home_Active.svg',
+    false: '$_imagePath/home_inactive.png',
+    true: '$_imagePath/home_active.png',
   };
-  final Map<bool, String> polisTab = {
-    false: '$_iconPath/Menu_Polis_Inactive.svg',
-    true: '$_iconPath/Menu_Polis_Active.svg',
+  final Map<bool, String> transactionTab = {
+    false: '$_imagePath/transaction_inactive.png',
+    true: '$_imagePath/transaction_active.png',
   };
-  final Map<bool, String> klaimTab = {
-    false: '$_iconPath/Menu_Klaim_Inactive.svg',
-    true: '$_iconPath/Menu_Klaim_Active.svg',
-  };
-  final Map<bool, String> poinTab = {
-    false: '$_iconPath/Menu_Point_Inactive.svg',
-    true: '$_iconPath/Menu_Point_Active.svg',
-  };
-  final Map<bool, String> akunTab = {
-    false: '$_iconPath/Menu_Akun_Inactive.svg',
-    true: '$_iconPath/Menu_Akun_Active.svg',
+  final Map<bool, String> profileTab = {
+    false: '$_imagePath/profile_inactive.png',
+    true: '$_imagePath/profile_active.png',
   };
 }
 

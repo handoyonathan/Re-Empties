@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:re_empties/cores/components/button_main_app.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
+
+import 'package:re_empties/cores/components/button_main_app.dart';
 import 'package:re_empties/cores/components/form_text_field.dart';
 import 'package:re_empties/cores/components/hidden_app_bar.dart';
 import 'package:re_empties/cores/components/image_asset.dart';
-import 'package:gap/gap.dart';
 import 'package:re_empties/cores/components/tap_detector.dart';
 import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
 import 'package:re_empties/cores/template/view.dart';
 import 'package:re_empties/features/authentication/viewmodel/login_viewmodel.dart';
+import 'package:re_empties/features/authentication/views/register_view.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -84,7 +86,7 @@ class LoginPage extends StatelessWidget {
                   AppMainButton(
                     state: ButtonState.primary,
                     text: 'Login',
-                    onPressed: vm.onLogin,
+                    onPressed: () => vm.onLogin(context),
                   ),
                   Gap(25.h),
                   Row(
@@ -99,7 +101,10 @@ class LoginPage extends StatelessWidget {
                       Gap(5.w),
                       TapDetector(
                         onTap: () {
-                          print('hai');
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const RegisterPage()));
                         },
                         child: Text(
                           "Register Here",
