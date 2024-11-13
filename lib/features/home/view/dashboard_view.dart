@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:re_empties/cores/components/alert_dialog.dart';
 import 'package:re_empties/cores/components/article_preview_home.dart';
 import 'package:re_empties/cores/components/banner_home.dart';
 import 'package:re_empties/cores/components/hidden_app_bar.dart';
@@ -11,7 +9,6 @@ import 'package:re_empties/cores/components/status_preview_home.dart';
 import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
 import 'package:re_empties/cores/template/view.dart';
-import 'package:re_empties/features/authentication/viewmodel/login_viewmodel.dart';
 import 'package:re_empties/features/home/view%20model/dashboard_viewmodel.dart'; // Pastikan import sesuai dengan kebutuhan
 
 class DashboardView extends ConsumerStatefulWidget {
@@ -29,6 +26,10 @@ class _DashboardViewState extends ConsumerState<DashboardView>
   void initState() {
     viewModel = ChangeNotifierProvider.autoDispose(DashboardVM.new);
     super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final dashboardVM = ref.read(viewModel);
+      dashboardVM.checkLoginStatus(context); // Check login status on load
+    });
   }
 
   @override
@@ -44,13 +45,13 @@ class _DashboardViewState extends ConsumerState<DashboardView>
 
   Widget _buildScreen(BuildContext context, DashboardVM vm) => Scaffold(
         backgroundColor: colors.bgColor,
-        body: SingleChildScrollView( 
+        body: SingleChildScrollView(
           physics: const ClampingScrollPhysics(),
           child: Column(
             children: [
               // Banner that covers the top part of the screen
               BannerHome(level: 1),
-          
+
               // Positioned content starting below the banner with a gap of 18.h
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24),
@@ -105,7 +106,7 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                     ArticlePreviewHome(),
                     ElevatedButton(
                       onPressed: () {
-                        // Tambahkan fungsi logout di sini
+                        vm.logout(context);
                       },
                       child: Text('Logout'),
                     ),

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:re_empties/cores/template/text_input_model.dart';
 
 class LoginModel {
@@ -28,4 +29,14 @@ class RegisterModel {
       'userPhoneNumber': phoneNumber.text,
     };
   }
+}
+
+class AdminModel {
+  final String id;
+  final String email;
+
+  AdminModel({
+    required this.id,
+    required this.email,
+  });
 }
