@@ -11,7 +11,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   ); // Inisialisasi Firebase
-  setupRouter(initialRoute: '/login'); // Setup router
+  setupRouter(initialRoute: '/'); // Setup router
   runApp(
     const ProviderScope(
       child: MyApp(),
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
     // Inisialisasi ScreenUtil di sini
     ScreenUtil.init(
       context,
-      designSize: const Size(375, 812), // Ganti dengan ukuran desain Anda
+      designSize: const Size(375, 812),
       minTextAdapt: true,
       splitScreenMode: true,
     );

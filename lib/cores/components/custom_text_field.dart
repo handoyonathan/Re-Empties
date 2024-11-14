@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:re_empties/cores/components/tap_detector.dart';
 import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
 
@@ -129,7 +130,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               ),
               prefixIcon: widget.prefixIcon,
               suffixIcon: widget.isPassword
-                  ? GestureDetector(
+                  ? TapDetector(
                       onTap: eyeIconPressed,
                       child: Icon(
                           !isObscured

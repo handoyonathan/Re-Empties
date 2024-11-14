@@ -1225,6 +1225,8 @@ PODS:
     - GoogleUtilities/Environment (~> 8.0)
     - GTMSessionFetcher/Core (~> 3.4)
   - Flutter (1.0.0)
+  - flutter_splash_screen (0.0.1):
+    - Flutter
   - geolocator_apple (1.2.0):
     - Flutter
   - Google-Maps-iOS-Utils (5.0.0):
@@ -1373,6 +1375,7 @@ DEPENDENCIES:
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Flutter`)
+  - flutter_splash_screen (from `.symlinks/plugins/flutter_splash_screen/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - google_maps_flutter_ios (from `.symlinks/plugins/google_maps_flutter_ios/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
@@ -1415,6 +1418,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_storage/ios"
   Flutter:
     :path: Flutter
+  flutter_splash_screen:
+    :path: ".symlinks/plugins/flutter_splash_screen/ios"
   geolocator_apple:
     :path: ".symlinks/plugins/geolocator_apple/ios"
   google_maps_flutter_ios:
@@ -1445,6 +1450,7 @@ SPEC CHECKSUMS:
   FirebaseSharedSwift: d39c2ad64a11a8d936ce25a42b00df47078bb59c
   FirebaseStorage: f9e2bf027d549db18b6195a37b31c85f56e40200
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
+  flutter_splash_screen: 0323a1080aa7853a0f0af4491dc29d034be61746
   geolocator_apple: 6cbaf322953988e009e5ecb481f07efece75c450
   Google-Maps-iOS-Utils: 66d6de12be1ce6d3742a54661e7a79cb317a9321
   google_maps_flutter_ios: e31555a04d1986ab130f2b9f24b6cdc861acc6d3

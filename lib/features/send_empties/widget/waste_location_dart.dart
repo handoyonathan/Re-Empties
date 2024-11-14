@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:re_empties/cores/components/tap_detector.dart';
 import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
 
@@ -25,7 +26,7 @@ class WasteLocationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return TapDetector(
       onTap: onTap,
       child: Container(
         padding: EdgeInsets.all(16.w),
