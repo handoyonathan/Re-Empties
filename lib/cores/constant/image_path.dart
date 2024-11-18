@@ -22,6 +22,12 @@ class _ImagePath {
   final String level3 = '$_imagePath/level3.png';
   final String level4 = '$_imagePath/level4.png';
   final String level5 = '$_imagePath/level5.png';
+  final String adminProfile = '$_imagePath/admin_profile.png';
+  final String successCircle = '$_imagePath/success_circle.png';
+  final String successStar = '$_imagePath/success_star.png';
+  final String successBg = '$_imagePath/success_bg.png';
+  final String profileUser = '$_imagePath/user_profile_picture.png';
+  final String pointsProfile = '$_imagePath/background_level_profile.png';
 
   // patterns ///////////////////////////////////////
   final String headerMenuUtama = '$_patternPath/Header_MenuUtama.png';

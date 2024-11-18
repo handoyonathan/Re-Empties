@@ -50,7 +50,10 @@ class _DashboardViewState extends ConsumerState<DashboardView>
           child: Column(
             children: [
               // Banner that covers the top part of the screen
-              BannerHome(level: 1),
+              BannerHome(
+                level: 1,
+                isProfilePage: false,
+              ),
 
               // Positioned content starting below the banner with a gap of 18.h
               Padding(
