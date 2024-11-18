@@ -7,7 +7,10 @@ class _RouterPaths {
   final String login = 'login';
   final String register = 'register';
   final String test = 'test';
+  final String admin = 'admin';
   final String splash = 'splash';
+  final String editProfile = 'editProfile';
+  final String profile = 'profile';
 }
 
 final paths = _RouterPaths();
