@@ -41,8 +41,8 @@ class ProfileVM extends BaseNotifier {
     }
   }
 
-  void goToEdit(BuildContext context) {
-    context.pushNamed(paths.editProfile, extra: {
+  void goToEdit() {
+    ctx.pushNamed(paths.editProfile, extra: <String, String?> {
       'fullName': userFullName,
       'email': userEmail,
       'phoneNumber': userPhoneNum,

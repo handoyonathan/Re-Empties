@@ -68,7 +68,7 @@ class EditProfileVM extends BaseFormNotifier<ProfileModel>
         });
       }
       print("INI TOMBOL SAVEEEEEEEEEEE");
-      ctx.go('/profile');
+      ctx.pop();
       notifyListeners();
     } catch (e) {
       print('Error saving profile data: $e');

@@ -55,41 +55,29 @@ class ProfileViewState extends State<ProfileView> {
                 ),
                 Gap(16.h),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
                       vm.userFullName,
                       style: textTheme.title,
                     ),
-                    Gap(120.w),
                     GestureDetector(
                       onTap: () {
-                        vm.goToEdit(context);
+                        vm.goToEdit();
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          GestureDetector(
-                              onTap: () {
-                                context.goNamed(paths.editProfile,
-                                    pathParameters: {
-                                      'fullName': vm.userFullName,
-                                      'email': vm.userEmail,
-                                      'phoneNumber': vm.userPhoneNum
-                                    });
-                              },
-                              child: Row(children: [
-                                Text(
-                                  'Edit Profile',
-                                  style: textTheme.label,
-                                ),
-                                Gap(2.h),
-                                Icon(
-                                  Icons.edit,
-                                  color:
-                                      colors.green1, // Adjust color as needed
-                                  size: 18.sp, // Adjust size as needed
-                                ),
-                              ])),
+                          Text(
+                            'Edit Profile',
+                            style: textTheme.detailDropPointLabel,
+                          ),
+                          Gap(2.h),
+                          Icon(
+                            Icons.edit,
+                            color: colors.green1,
+                            size: 18.sp,
+                          ),
                         ],
                       ),
                     )
@@ -125,7 +113,7 @@ class ProfileViewState extends State<ProfileView> {
                   style: textTheme.title,
                 ),
                 HomePointsCard(
-                  onTap: () => context.go('/admin'),
+                  onTap: () => context.push('/admin'), // change later
                 ),
                 Gap(16.h),
               ],

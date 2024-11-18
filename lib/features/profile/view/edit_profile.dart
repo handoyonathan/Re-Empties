@@ -96,7 +96,6 @@ class EditProfileViewState extends ConsumerState<EditProfileView> {
                     text: 'Save Profile',
                     onPressed: () async {
                       await vm.saveProfileData();
-                      context.go('/profile');
                     })
               ],
             ),

@@ -46,17 +46,15 @@ setupRouter({required String initialRoute}) {
           name: paths.profile,
           builder: (context, state) => ProfileView()),
       GoRoute(
-        path: '/edit-profile/:fullName/:email/:phoneNumber',
+        path: '/editProfile',
         name: paths.editProfile,
         builder: (context, state) {
-          final fullName = state.pathParameters['fullName']!;
-          final email = state.pathParameters['email']!;
-          final phoneNumber = state.pathParameters['phoneNumber']!;
+          final extra = state.extra as Map<String, String?>;
+
           return EditProfileView(
-            fullName: fullName,
-            email: email,
-            phoneNumber: phoneNumber,
-          );
+              fullName: extra['fullName']!,
+              email: extra['email']!,
+              phoneNumber: extra['phoneNumber']!);
         },
       ),
     ],
