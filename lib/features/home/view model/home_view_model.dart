@@ -23,7 +23,5 @@ class HomeVM extends BaseNotifier {
   }
 
   @override
-  FutureOr<void> init() {
-  }
-  
+  FutureOr<void> init() {}
 }

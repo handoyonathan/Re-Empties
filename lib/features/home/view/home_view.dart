@@ -5,10 +5,10 @@ import 'package:re_empties/cores/components/navbar/navbar_model.dart';
 import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:re_empties/cores/template/view.dart';
 import 'package:re_empties/features/admin/view/admin_profile.dart';
-import 'package:re_empties/features/admin/view/admin_view.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_empties/features/home/view%20model/home_view_model.dart';
 import 'package:re_empties/features/home/view/dashboard_view.dart';
+import 'package:re_empties/features/profile/view/profile_view.dart';
 
 class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
@@ -34,7 +34,7 @@ class _HomeViewState extends ConsumerState<HomeView>
         icon: images.transactionTab,
       ),
       NavBarModel(
-        widget: AdminView(), // Update with the correct widget later
+        widget: ProfileView(), // Update with the correct widget later
         icon: images.profileTab,
       ),
     ];
@@ -57,7 +57,7 @@ class _HomeViewState extends ConsumerState<HomeView>
         ),
       );
 
-    Widget _buildScreen(BuildContext context, HomeVM vm) => Scaffold(
+  Widget _buildScreen(BuildContext context, HomeVM vm) => Scaffold(
         bottomNavigationBar: BottomNavBar(
           tabList: _tabViewList,
           selectedIndex: vm.selectedIndex,

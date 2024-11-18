@@ -27,6 +27,8 @@ class _ImagePath {
   final String successCircle = '$_imagePath/success_circle.png';
   final String successStar = '$_imagePath/success_star.png';
   final String successBg = '$_imagePath/success_bg.png';
+  final String profileUser = '$_imagePath/user_profile_picture.png';
+  final String pointsProfile = '$_imagePath/background_level_profile.png';
 
   // patterns ///////////////////////////////////////
   final String headerMenuUtama = '$_patternPath/Header_MenuUtama.png';

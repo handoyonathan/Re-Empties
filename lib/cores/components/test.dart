@@ -28,7 +28,7 @@ class TestWidget extends StatelessWidget {
                 bottom: null,
                 left: 0,
                 right: 0,
-                child: BannerHome(level: 5)),
+                child: BannerHome(level: 5, isProfilePage: false,)),
 
             // Positioned content starting below the banner with a gap of 18.h
             Positioned(
