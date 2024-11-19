@@ -53,7 +53,9 @@ dependencies:
   firebase_storage: ^12.3.1
   provider: ^6.1.2
   shared_preferences: ^2.3.3
-  flutter_splash_screen: ^3.0.0
+  google_place: ^0.4.7
+  http: ^0.13.6
+  geocoding: ^3.0.0
 
 dev_dependencies:
   flutter_test:
