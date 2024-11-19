@@ -1,0 +1,136 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/src/size_extension.dart';
+import 'package:gap/gap.dart';
+
+import 'package:re_empties/cores/components/article_steps.dart';
+import 'package:re_empties/cores/components/button_main_app.dart';
+import 'package:re_empties/cores/components/custom_app_bar.dart';
+import 'package:re_empties/cores/components/image_asset.dart';
+import 'package:re_empties/cores/constant/colors.dart';
+import 'package:re_empties/cores/constant/image_path.dart';
+import 'package:re_empties/cores/constant/text_theme.dart';
+import 'package:re_empties/cores/template/view.dart';
+import 'package:re_empties/features/send_empties/viewModel/intro_page_view_model.dart';
+
+class IntroView extends ConsumerWidget {
+  final bool isSend;
+  final AutoDisposeChangeNotifierProvider<IntroVM> _viewModel;
+
+  IntroView({
+    super.key,
+    required this.isSend,
+  }) : _viewModel = ChangeNotifierProvider.autoDispose((ref) => IntroVM(ref));
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+
+
+    ref.read(_viewModel).fetchArticleData();
+    return BaseView(
+        provider: _viewModel,
+        appBar: (_) => CustomAppBar(
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Article Detail 2',
+                    style: textTheme.textButton.copyWith(color: colors.green1),
+                    textAlign: TextAlign.left,
+                  ),
+                ],
+              ),
+            ),
+        builder: _buildScreen);
+  }
+
+  Widget _buildScreen(BuildContext context, IntroVM vm) => Scaffold(
+        backgroundColor: colors.bgColor,
+        body: vm.isLoading
+            ? Center(
+                child: CircularProgressIndicator(
+                    color: colors.green1, backgroundColor: colors.background))
+            : vm.articles.isEmpty
+                ? Center(
+                    child: ImageAsset(
+                    imagePath: images.errorIllustration,
+                    height: 550.h,
+                    width: 250.w,
+                  ))
+                : SingleChildScrollView(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        for (var article in vm.articles)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // title
+                              Text(
+                                article['articleName'] ?? '',
+                                style: textTheme.articleTitle,
+                                textAlign: TextAlign.left,
+                              ),
+                              Text(
+                                "${article['author']} | ${article['publishedDate']} ",
+                                style: textTheme.badgesText,
+                                textAlign: TextAlign.left,
+                              ),
+                              Gap(15),
+                              Text(
+                                article['articleDescription'] ?? '',
+                                style: textTheme.articleIntro,
+                                textAlign: TextAlign.left,
+                              ),
+                              Gap(10),
+
+                              ListView.builder(
+                                  physics: const NeverScrollableScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount:
+                                      (article['articleIsi'] as List).length,
+                                  itemBuilder: (context, stepIndex) {
+                                    final titles =
+                                        article['articleTitleIsi'] as List;
+                                    final descriptions =
+                                        article['articleIsi'] as List;
+                                    final photos =
+                                        article['articlePhotos'] as List;
+
+                                    // Check if the current index is within bounds of each list.
+                                    final title = stepIndex < titles.length
+                                        ? titles[stepIndex]
+                                        : '';
+                                    final description =
+                                        stepIndex < descriptions.length
+                                            ? descriptions[stepIndex]
+                                            : '';
+                                    final photoUrl = stepIndex < photos.length
+                                        ? photos[stepIndex]
+                                        : '';
+
+                                    return ArticleSteps(
+                                        titleIsi: "${stepIndex + 1}. $title",
+                                        isi: description,
+                                        photoUrl: photoUrl);
+                                  }),
+                              const Gap(5),
+                            ],
+                          ),
+                      ],
+                    )),
+        bottomNavigationBar: Container(
+                color: colors.bgColor,
+                alignment: Alignment.center,
+                height: 70.h,
+                child: AppMainButton(
+                  state: ButtonState.primary,
+                  text: 'Continue',
+                  onPressed: () {
+                    vm.goToLocationPage(isSend: isSend);
+                  },
+                ),
+              ),
+      );
+}

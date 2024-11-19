@@ -23,6 +23,7 @@ class DeliveryDetailContainer extends StatelessWidget {
     return Column(
       children: [
         Container(
+          width: double.infinity,
           padding: EdgeInsets.all(8.w),
           decoration: BoxDecoration(
             color: !isUser ? colors.green6 : colors.yellow3,

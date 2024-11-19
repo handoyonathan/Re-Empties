@@ -71,13 +71,13 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                         HomeSendDropCard(
                           state: SendDropState.drop,
                           onTap: () {
-                            print("drop card");
+                            vm.goToIntroPage();
                           },
                         ),
                         HomeSendDropCard(
                           state: SendDropState.send,
                           onTap: () {
-                            print("send card");
+                            vm.goToIntroPage(isSend: true);
                           },
                         ),
                       ],

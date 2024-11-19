@@ -4,38 +4,23 @@ import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class WasteCategoryStepper extends StatefulWidget {
+class WasteCategoryStepper extends StatelessWidget {
   final String title;
   final String description;
   final String imagePath;
+  final int quantity;
+  final VoidCallback onIncrease;
+  final VoidCallback onDecrease;
 
   const WasteCategoryStepper({
     super.key,
     required this.title,
     required this.description,
     required this.imagePath,
+    required this.quantity,
+    required this.onIncrease,
+    required this.onDecrease,
   });
-
-  @override
-  WasteCategoryStepperState createState() => WasteCategoryStepperState();
-}
-
-class WasteCategoryStepperState extends State<WasteCategoryStepper> {
-  int quantity = 1;
-
-  void _increaseQuantity() {
-    setState(() {
-      quantity += 1;
-    });
-  }
-
-  void _decreaseQuantity() {
-    setState(() {
-      if (quantity > 1) {
-        quantity -= 1;
-      }
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +38,7 @@ class WasteCategoryStepperState extends State<WasteCategoryStepper> {
               color: colors.background,
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Image.network(widget.imagePath, fit: BoxFit.contain),
+            child: Image.network(imagePath, fit: BoxFit.contain),
           ),
           Gap(16.w),
           Expanded(
@@ -61,7 +46,7 @@ class WasteCategoryStepperState extends State<WasteCategoryStepper> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  widget.title,
+                  title,
                   style: textTheme.appbarTitle,
                 ),
                 Gap(5.h),
@@ -70,16 +55,20 @@ class WasteCategoryStepperState extends State<WasteCategoryStepper> {
                     Flexible(
                       flex: 3,
                       child: Text(
-                        widget.description,
-                        style: textTheme.label.copyWith(fontWeight: FontWeight.w300),
+                        description,
+                        style: textTheme.label
+                            .copyWith(fontWeight: FontWeight.w300),
                       ),
                     ),
-                    const Flexible(flex: 1,child: SizedBox(),)
+                    const Flexible(
+                      flex: 1,
+                      child: SizedBox(),
+                    )
                   ],
                 ),
                 Gap(5.h),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end, // Menambahkan ini
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
                       width: 25.w,
@@ -88,16 +77,12 @@ class WasteCategoryStepperState extends State<WasteCategoryStepper> {
                           borderRadius: BorderRadius.circular(5.r),
                           color: colors.green4),
                       alignment: Alignment.center,
-                      child: FittedBox(
-                        child: IconButton(
-                          onPressed: _decreaseQuantity,
-                          icon: const Icon(
-                            Icons.remove,
-                          ),
-                          color: colors.bgColor,
-                          padding: EdgeInsets.zero,
-                          constraints: const BoxConstraints(),
-                        ),
+                      child: IconButton(
+                        onPressed: onDecrease,
+                        icon: const Icon(Icons.remove),
+                        color: colors.bgColor,
+                        padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
                       ),
                     ),
                     Gap(10.w),
@@ -120,15 +105,15 @@ class WasteCategoryStepperState extends State<WasteCategoryStepper> {
                           color: colors.green4),
                       alignment: Alignment.center,
                       child: IconButton(
-                        onPressed: _increaseQuantity,
+                        onPressed: onIncrease,
                         icon: const Icon(Icons.add),
                         color: colors.bgColor,
-                        constraints: const BoxConstraints(),
                         padding: EdgeInsets.zero,
+                        constraints: const BoxConstraints(),
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),
