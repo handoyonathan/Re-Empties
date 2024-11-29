@@ -194,7 +194,8 @@ class SendFormState extends State<SendFormView> {
             state: ButtonState.primary,
             text: 'Confirm',
             onPressed: () {
-              vm.goToSuccessPage(isSend: widget.isSend);
+              vm.goToSuccessPage(
+                  isSend: widget.isSend, wasteLocation: widget.wasteLocation);
             },
           ),
         ),

@@ -12,6 +12,7 @@ import 'package:re_empties/features/profile/view/profile_view.dart';
 // import 'package:re_empties/cores/components/test.dart';
 import 'package:re_empties/cores/components/test.dart';
 import 'package:re_empties/features/send_empties/model/location_model.dart';
+import 'package:re_empties/features/send_empties/views/drop_point_detail_view.dart';
 import 'package:re_empties/features/send_empties/views/user_form_view.dart';
 import 'package:re_empties/features/send_empties/views/intro_page_view.dart';
 import 'package:re_empties/features/send_empties/views/location_view.dart';
@@ -105,6 +106,17 @@ setupRouter({required String initialRoute}) {
           builder: (context, state) => ArticleView(
                 articleId: state.extra as String,
               )),
+      GoRoute(
+          path: '/dropPointDetail',
+          name: paths.dropPointDetail,
+          builder: (context, state) {
+            final extra = state.extra as Map<String, dynamic>;
+
+            return DropPointDetailView(
+              wasteLocation: extra['wasteLocation'] as Admin,
+              isSend: extra['isSend'] ?? false,
+            );
+          }),
     ],
     initialLocation: initialRoute,
   );

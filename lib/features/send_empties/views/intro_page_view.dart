@@ -24,17 +24,16 @@ class IntroView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
-
     ref.read(_viewModel).fetchArticleData();
     return BaseView(
+        disableSafeArea: true,
         provider: _viewModel,
         appBar: (_) => CustomAppBar(
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Article Detail 2',
+                    "Let's make sure to pack the rigth way!",
                     style: textTheme.textButton.copyWith(color: colors.green1),
                     textAlign: TextAlign.left,
                   ),
@@ -45,92 +44,63 @@ class IntroView extends ConsumerWidget {
   }
 
   Widget _buildScreen(BuildContext context, IntroVM vm) => Scaffold(
-        backgroundColor: colors.bgColor,
-        body: vm.isLoading
-            ? Center(
-                child: CircularProgressIndicator(
-                    color: colors.green1, backgroundColor: colors.background))
-            : vm.articles.isEmpty
-                ? Center(
-                    child: ImageAsset(
-                    imagePath: images.errorIllustration,
-                    height: 550.h,
-                    width: 250.w,
-                  ))
-                : SingleChildScrollView(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        for (var article in vm.articles)
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              // title
-                              Text(
-                                article['articleName'] ?? '',
-                                style: textTheme.articleTitle,
-                                textAlign: TextAlign.left,
-                              ),
-                              Text(
-                                "${article['author']} | ${article['publishedDate']} ",
-                                style: textTheme.badgesText,
-                                textAlign: TextAlign.left,
-                              ),
-                              Gap(15),
-                              Text(
-                                article['articleDescription'] ?? '',
-                                style: textTheme.articleIntro,
-                                textAlign: TextAlign.left,
-                              ),
-                              Gap(10),
+      backgroundColor: colors.bgColor,
+      body: vm.isLoading
+          ? Center(
+              child: CircularProgressIndicator(
+                  color: colors.green1, backgroundColor: colors.background))
+          : vm.articles.isEmpty
+              ? Center(
+                  child: ImageAsset(
+                  imagePath: images.errorIllustration,
+                  height: 550.h,
+                  width: 250.w,
+                ))
+              : SingleChildScrollView(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      for (var article in vm.articles) ...[
+                        ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          shrinkWrap: true,
+                          itemCount: (article['articleIsi'] as List).length,
+                          itemBuilder: (context, stepIndex) {
+                            final titles = article['articleTitleIsi'] as List;
+                            final descriptions = article['articleIsi'] as List;
+                            final photos = article['articlePhotos'] as List;
 
-                              ListView.builder(
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  shrinkWrap: true,
-                                  itemCount:
-                                      (article['articleIsi'] as List).length,
-                                  itemBuilder: (context, stepIndex) {
-                                    final titles =
-                                        article['articleTitleIsi'] as List;
-                                    final descriptions =
-                                        article['articleIsi'] as List;
-                                    final photos =
-                                        article['articlePhotos'] as List;
+                            final title = stepIndex < titles.length
+                                ? titles[stepIndex]
+                                : '';
+                            final description = stepIndex < descriptions.length
+                                ? descriptions[stepIndex]
+                                : '';
+                            final photoUrl = stepIndex < photos.length
+                                ? photos[stepIndex]
+                                : '';
 
-                                    // Check if the current index is within bounds of each list.
-                                    final title = stepIndex < titles.length
-                                        ? titles[stepIndex]
-                                        : '';
-                                    final description =
-                                        stepIndex < descriptions.length
-                                            ? descriptions[stepIndex]
-                                            : '';
-                                    final photoUrl = stepIndex < photos.length
-                                        ? photos[stepIndex]
-                                        : '';
-
-                                    return ArticleSteps(
-                                        titleIsi: "${stepIndex + 1}. $title",
-                                        isi: description,
-                                        photoUrl: photoUrl);
-                                  }),
-                              const Gap(5),
-                            ],
-                          ),
+                            return ArticleSteps(
+                              titleIsi: "${stepIndex + 1}. $title",
+                              isi: description,
+                              photoUrl: photoUrl,
+                            );
+                          },
+                        ),
                       ],
-                    )),
-        bottomNavigationBar: Container(
-                color: colors.bgColor,
-                alignment: Alignment.center,
-                height: 70.h,
-                child: AppMainButton(
-                  state: ButtonState.primary,
-                  text: 'Continue',
-                  onPressed: () {
-                    vm.goToLocationPage(isSend: isSend);
-                  },
-                ),
-              ),
-      );
+                      Align(
+                        alignment: Alignment.center,
+                        child: AppMainButton(
+                          state: ButtonState.primary,
+                          text: 'Continue',
+                          onPressed: () {
+                            vm.goToLocationPage(isSend: isSend);
+                          },
+                        ),
+                      ),
+                      Gap(30.h)
+                    ],
+                  ),
+                ));
 }

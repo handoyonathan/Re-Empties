@@ -15,6 +15,7 @@ class _RouterPaths {
   final String location = 'location';
   final String intro = 'intro';
   final String sendForm = 'sendForm';
+  final String dropPointDetail = 'dropPointDetail';
 }
 
 final paths = _RouterPaths();

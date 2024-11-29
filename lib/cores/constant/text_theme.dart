@@ -9,6 +9,12 @@ class _TextTheme {
     fontWeight: FontWeight.w600,
     color: colors.green2,
   );
+  final dropID = TextStyle(
+    fontSize: 34.sp,
+    height: 1.5,
+    fontWeight: FontWeight.w900,
+    color: colors.green1,
+  );
   //point value (redeem point)
   final point = TextStyle(
     fontSize: 32.sp,

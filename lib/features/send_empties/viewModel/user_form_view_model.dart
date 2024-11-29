@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:re_empties/cores/template/notifer.dart';
 import 'package:re_empties/features/send_empties/model/delivery_model.dart';
+import 'package:re_empties/features/send_empties/model/location_model.dart';
 import 'package:re_empties/features/send_empties/model/payment_model.dart';
 import 'package:re_empties/features/send_empties/model/waste_category.dart';
 import 'package:re_empties/features/send_empties/widget/bottom_sheet.dart';
@@ -175,10 +176,18 @@ class UserFormVM extends BaseNotifier {
 
   late bool send;
 
-  void goToSuccessPage({required bool? isSend}) {
+  void goToSuccessPage({required bool? isSend, required Admin wasteLocation}) {
     send = isSend ?? false;
     if (validateForm()) {
-      ctx.pushNamed(paths.success, extra: <String, dynamic>{
+      if (send) {
+        ctx.pushNamed(paths.success, extra: <String, dynamic>{
+          'isSend': isSend,
+        });
+        return;
+      }
+      //TODO: ke halaman drop point detail
+      ctx.pushNamed(paths.dropPointDetail, extra: <String, dynamic>{
+        'wasteLocation': wasteLocation,
         'isSend': isSend,
       });
     } else {
