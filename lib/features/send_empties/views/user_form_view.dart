@@ -15,7 +15,7 @@ import 'package:re_empties/features/send_empties/viewModel/user_form_view_model.
 import 'package:re_empties/features/send_empties/widget/delivery_detail_container.dart';
 import 'package:re_empties/features/send_empties/widget/stepper.dart';
 
-class SendFormView extends StatefulWidget {
+class SendFormView extends ConsumerStatefulWidget {
   final Admin wasteLocation;
   final bool isSend;
   SendFormView({super.key, required this.wasteLocation, required this.isSend})
@@ -25,10 +25,10 @@ class SendFormView extends StatefulWidget {
   final AutoDisposeChangeNotifierProvider<UserFormVM> _viewModel;
 
   @override
-  SendFormState createState() => SendFormState();
+  ConsumerState createState() => SendFormState();
 }
 
-class SendFormState extends State<SendFormView> {
+class SendFormState extends ConsumerState<SendFormView> {
   @override
   Widget build(BuildContext context) => BaseView(
         provider: widget._viewModel,

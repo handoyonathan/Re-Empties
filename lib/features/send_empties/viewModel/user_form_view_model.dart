@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
+import 'package:oktoast/oktoast.dart';
+import 'package:re_empties/cores/components/custom_toast_mixin.dart';
 import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:re_empties/cores/template/notifer.dart';
 import 'package:re_empties/features/send_empties/model/delivery_model.dart';
@@ -10,7 +12,7 @@ import 'package:re_empties/features/send_empties/model/waste_category.dart';
 import 'package:re_empties/features/send_empties/widget/bottom_sheet.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 
-class UserFormVM extends BaseNotifier {
+class UserFormVM extends BaseNotifier with CustomToastMixin {
   UserFormVM(super.ref);
 
   int? selectedPaymentMethod;
@@ -44,7 +46,7 @@ class UserFormVM extends BaseNotifier {
         }
       }
     } catch (e) {
-      print('Error fetching user data: $e');
+      showCustomToast('Error fetching user data: $e', isError: true);
     }
   }
 
@@ -97,7 +99,7 @@ class UserFormVM extends BaseNotifier {
         },
       );
     } catch (e) {
-      print("Error fetching payment options: $e");
+      showCustomToast("Error fetching payment options: $e", isError: true);
     }
   }
 
@@ -113,7 +115,7 @@ class UserFormVM extends BaseNotifier {
         },
       );
     } catch (e) {
-      print("Error fetching delivery options: $e");
+      showCustomToast("Error fetching delivery options: $e", isError: true);
     }
   }
 
@@ -162,12 +164,21 @@ class UserFormVM extends BaseNotifier {
     }
 
     if (totalQty < 1) {
+      showCustomToast('Waste categories must at least 1 quantity',
+          isError: true);
       return false;
     }
 
     if (send) {
-      if (selectedDeliveryMethod == null || selectedPaymentMethod == null) {
+      if (selectedDeliveryMethod == null) {
+         showCustomToast('Choose at least one delivery method',
+          isError: true);
         return false;
+      }
+      if (selectedPaymentMethod == null) {
+         showCustomToast('Choose at least one payment method',
+          isError: true);
+          return false;
       }
     }
 
@@ -190,26 +201,7 @@ class UserFormVM extends BaseNotifier {
         'wasteLocation': wasteLocation,
         'isSend': isSend,
       });
-    } else {
-      print(
-          'Ensure all waste categories have at least 1 quantity, and both delivery and payment options are selected.');
-      // showDialog(
-      //   context: ctx,
-      //   builder: (_) {
-      // return AlertDialog(
-      //   title: Text('Validation Error'),
-      //   content: Text(
-      //       'Ensure all waste categories have at least 1 quantity, and both delivery and payment options are selected.'),
-      //   actions: [
-      //     TextButton(
-      //       onPressed: () => ctx.pop(),
-      //       child: Text('OK'),
-      //     ),
-      //   ],
-      // );
-      //   },
-      // );
-    }
+    } 
   }
 
   @override
