@@ -25,6 +25,10 @@ class DashboardVM extends BaseNotifier {
     ctx.pushReplacement('/login');
   }
 
+  void goToIntroPage({bool? isSend}) {
+    ctx.pushNamed(paths.intro, extra: isSend);
+  }
+
   @override
   FutureOr<void> init() {
     checkLoginStatus(ctx);

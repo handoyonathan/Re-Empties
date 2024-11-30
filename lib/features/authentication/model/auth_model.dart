@@ -29,13 +29,3 @@ class RegisterModel {
     };
   }
 }
-
-class AdminModel {
-  final String id;
-  final String email;
-
-  AdminModel({
-    required this.id,
-    required this.email,
-  });
-}

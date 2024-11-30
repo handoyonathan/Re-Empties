@@ -11,6 +11,7 @@ class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
   final bool isPassword;
   final FocusNode? focusNode;
+  final bool enabled;
   final String? Function(String?)? validator;
   final void Function(String?)? onValidate;
   final Function(String)? onSubmit;
@@ -19,6 +20,7 @@ class CustomTextField extends StatefulWidget {
   final bool hasError;
   final EdgeInsets? customPadding;
   final Color? filledColor;
+  final Color? borderColor;
   final double? borderRadius;
   final double? height;
   final TextInputAction? inputAction;
@@ -36,6 +38,7 @@ class CustomTextField extends StatefulWidget {
     required this.controller,
     this.isPassword = false,
     this.focusNode,
+    this.enabled = true,
     this.validator,
     this.onValidate,
     required this.onSubmit,
@@ -44,6 +47,7 @@ class CustomTextField extends StatefulWidget {
     this.hasError = false,
     this.customPadding,
     this.filledColor,
+    this.borderColor,
     this.borderRadius,
     this.height,
     this.inputAction,
@@ -73,9 +77,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
 
   InputBorder getBorder(Color color) => OutlineInputBorder(
         borderSide: BorderSide(
-            color: filledColor
-                ? Colors.transparent
-                : widget.hasError
+            color: widget.hasError
                     ? colors.red1
                     : color,
             width: 2.0),
@@ -100,6 +102,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
             focusNode: widget.focusNode,
             autofocus: widget.autofocus,
             textInputAction: widget.inputAction,
+            enabled: widget.enabled,
             keyboardType: widget.keyboardType,
             controller: widget.controller,
             onChanged: widget.onChanged,
@@ -120,7 +123,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 colors.green1,
               ),
               enabledBorder: getBorder(widget.filledColor ?? colors.gray2),
-              border: getBorder(Colors.transparent),
+              border: getBorder(widget.borderColor ?? Colors.transparent),
               errorBorder: getBorder(colors.red1),
               focusedErrorBorder: getBorder(colors.red2),
               errorStyle: const TextStyle(

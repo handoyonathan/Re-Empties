@@ -16,6 +16,11 @@ class _ImagePath {
   final String dropWaste = '$_imagePath/dropWaste.png';
   final String logo = '$_logoPath/logo.png';
   final String location = '$_imagePath/location.png';
+  final String gosend = '$_imagePath/gosend.jpg';
+  final String grabExpress = '$_imagePath/grabexpress.png';
+  final String paxel = '$_imagePath/paxel.png';
+  final String gopay = '$_imagePath/gopay.png';
+  final String shopeePay = '$_imagePath/shopeepay.jpg';
   final String errorIllustration = '$_imagePath/error_illustration.png';
   final String articlePreview = '$_imagePath/articlePreview.png';
   final String level1 = '$_imagePath/level1.png';
@@ -23,6 +28,7 @@ class _ImagePath {
   final String level3 = '$_imagePath/level3.png';
   final String level4 = '$_imagePath/level4.png';
   final String level5 = '$_imagePath/level5.png';
+  final String address = '$_imagePath/address.png';
   final String adminProfile = '$_imagePath/admin_profile.png';
   final String successCircle = '$_imagePath/success_circle.png';
   final String successStar = '$_imagePath/success_star.png';
