@@ -258,7 +258,7 @@ class LocationVM extends BaseNotifier with CustomToastMixin {
     if (_selectedWasteStation != null) {
       if (_selectedWasteStation!.openHours.contains('Closed')) {
         print('Cannot select this station because it is currently closed.');
-        showCustomToast('Cannot select a closed station.');
+        showCustomToast('Cannot select a closed station.', isError: true);
         notifyListeners();
         return;
       }
@@ -305,7 +305,7 @@ class LocationVM extends BaseNotifier with CustomToastMixin {
         'isSend': isSend,
       });
     } else {
-      showCustomToast('Waste station cannot be empty.');
+      showCustomToast('Waste station cannot be empty.', isError: true);
       print('Station Error: Waste station cannot be empty.');
       notifyListeners();
     }
