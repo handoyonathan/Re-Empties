@@ -15,7 +15,7 @@ import 'package:re_empties/cores/template/view.dart';
 import 'package:re_empties/features/send_empties/viewModel/location_view_model.dart';
 import 'package:re_empties/features/send_empties/widget/waste_location_dart.dart';
 
-class LocationView extends StatefulWidget {
+class LocationView extends ConsumerStatefulWidget {
   final bool isSend;
   LocationView({super.key, required this.isSend})
       : _viewModel =
@@ -24,15 +24,16 @@ class LocationView extends StatefulWidget {
   final AutoDisposeChangeNotifierProvider<LocationVM> _viewModel;
 
   @override
-  LocationViewState createState() => LocationViewState();
+  ConsumerState createState() => LocationViewState();
 }
 
-class LocationViewState extends State<LocationView> {
+class LocationViewState extends ConsumerState<LocationView> {
   @override
   Widget build(BuildContext context) => BaseView(
         provider: widget._viewModel,
         appBar: (_) => CustomAppBar(
-          title: Text('Choose your nearest waste location', style: textTheme.appbarTitle),
+          title: Text('Choose your nearest waste location',
+              style: textTheme.appbarTitle),
         ),
         builder: _buildScreen,
       );
@@ -113,17 +114,8 @@ class LocationViewState extends State<LocationView> {
                           hint: 'Search waste station...',
                           controller: vm.stationController,
                           isMultiline: false,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return vm
-                                  .stationControllerError; // Show error message if field is empty
-                            }
-                            return null;
-                          },
                           filledColor: colors.green6,
-                          borderColor: vm.stationControllerError != null
-                              ? colors.red2
-                              : colors.green1,
+                          borderColor: colors.green1,
                           onTap: () => vm.fetchWasteStations(),
                           onChanged: (value) =>
                               vm.onStationSearchChanged(value),
@@ -164,7 +156,7 @@ class LocationViewState extends State<LocationView> {
                     return WasteLocationCard(
                       title: station.stationName,
                       address: station.addressStation,
-                      openHour: '24:00',
+                      openHour: station.openHours,
                       isSelected: vm.selectedStationId == station.id,
                       //  vm.stationController.text ==
                       //         station.stationName ||
@@ -172,7 +164,7 @@ class LocationViewState extends State<LocationView> {
                       onTap: () {
                         vm.selectWasteStation(station.id);
                       },
-                      distance: '10 km',
+                      distance: '${station.distance} km',
                     );
                   },
                 ),

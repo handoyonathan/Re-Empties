@@ -26,6 +26,8 @@ class Admin {
   final String adminEmail;
   final String stationName;
   final GeoPoint wasteLocation;
+  final String openHours;
+  double? distance;
 
   Admin({
     required this.id,
@@ -35,6 +37,8 @@ class Admin {
     required this.adminEmail,
     required this.stationName,
     required this.wasteLocation,
+    required this.openHours,
+    this.distance,
   });
 }
 

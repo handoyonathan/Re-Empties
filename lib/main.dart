@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:oktoast/oktoast.dart';
 import 'package:re_empties/cores/router/router.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -32,10 +33,12 @@ class MyApp extends StatelessWidget {
       splitScreenMode: true,
     );
 
-    return MaterialApp.router(
-      title: 'Re-Empties',
-      routerConfig: router,
-      debugShowCheckedModeBanner: false,
+    return OKToast(
+      child: MaterialApp.router(
+        title: 'Re-Empties',
+        routerConfig: router,
+        debugShowCheckedModeBanner: false,
+      ),
     );
 
     // return const MaterialApp(

@@ -11,16 +11,15 @@ class WasteLocationCard extends StatelessWidget {
   final String openHour;
   final bool isSelected;
   final VoidCallback onTap;
-  final bool isOpen;
   final String distance;
 
-  const WasteLocationCard({super.key, 
+  const WasteLocationCard({
+    super.key,
     required this.title,
     required this.address,
     required this.openHour,
     required this.isSelected,
     required this.onTap,
-    this.isOpen = false,
     required this.distance,
   });
 
@@ -29,36 +28,51 @@ class WasteLocationCard extends StatelessWidget {
     return TapDetector(
       onTap: onTap,
       child: Container(
-        padding: EdgeInsets.all(16.w),
-        decoration: BoxDecoration(
-          color: isSelected ? colors.green6 : colors.gray2,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(
-            color: isSelected ? colors.green3 : Colors.transparent,
-            width: 2,
-          ),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(title, style: textTheme.locationName.copyWith(fontWeight: FontWeight.w700),),
-                  Gap(5.h),
-                  Text(openHour, style: textTheme.locationDescription,),
-                  Gap(5.h),
-                  Text(address, style: textTheme.label,),
-                ],
-              ),
+          padding: EdgeInsets.all(16.w),
+          decoration: BoxDecoration(
+            color: isSelected ? colors.green6 : colors.gray2,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: isSelected ? colors.green3 : Colors.transparent,
+              width: 2,
             ),
-            Gap(50.h),
-            Text(distance, textAlign: TextAlign.start,),
-          ],
-        )
-      ),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: textTheme.locationName
+                          .copyWith(fontWeight: FontWeight.w700),
+                    ),
+                    Gap(5.h),
+                    Text(
+                      openHour,
+                      style: textTheme.locationDescription.copyWith(
+                          color: openHour.contains('Closed')
+                              ? colors.red1
+                              : colors.green1),
+                    ),
+                    Gap(5.h),
+                    Text(
+                      address,
+                      style: textTheme.label,
+                    ),
+                  ],
+                ),
+              ),
+              Gap(50.h),
+              Text(
+                distance,
+                textAlign: TextAlign.start,
+              ),
+            ],
+          )),
     );
   }
 }
