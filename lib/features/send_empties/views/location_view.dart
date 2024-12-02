@@ -13,26 +13,27 @@ import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
 import 'package:re_empties/cores/template/view.dart';
 import 'package:re_empties/features/send_empties/viewModel/location_view_model.dart';
-import 'package:re_empties/features/send_empties/widget/user_location_card.dart';
 import 'package:re_empties/features/send_empties/widget/waste_location_dart.dart';
 
-class LocationView extends StatefulWidget {
-  LocationView({super.key})
+class LocationView extends ConsumerStatefulWidget {
+  final bool isSend;
+  LocationView({super.key, required this.isSend})
       : _viewModel =
             ChangeNotifierProvider.autoDispose<LocationVM>(LocationVM.new);
 
   final AutoDisposeChangeNotifierProvider<LocationVM> _viewModel;
 
   @override
-  LocationViewState createState() => LocationViewState();
+  ConsumerState createState() => LocationViewState();
 }
 
-class LocationViewState extends State<LocationView> {
+class LocationViewState extends ConsumerState<LocationView> {
   @override
   Widget build(BuildContext context) => BaseView(
         provider: widget._viewModel,
         appBar: (_) => CustomAppBar(
-          title: Text('Set Your Location', style: textTheme.appbarTitle),
+          title: Text('Choose your nearest waste location',
+              style: textTheme.appbarTitle),
         ),
         builder: _buildScreen,
       );
@@ -70,23 +71,43 @@ class LocationViewState extends State<LocationView> {
                 children: [
                   ImageAsset(
                     imagePath: images.location,
-                    height: 90.h,
+                    height: 95.h,
                     width: 26.w,
+                    fit: BoxFit.fill,
                   ),
                   Gap(5.w),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        CustomTextField(
-                          hint: 'Search your location...',
-                          controller: vm.userController,
-                          isMultiline: false,
-                          filledColor: colors.yellow3,
-                          onTap: () {
-                            vm.toggleShowLocations();
-                          },
-                          onSubmit: (value) {},
+                        // CustomTextField(
+                        //   hint: 'Search your location...',
+                        //   controller: vm.userController,
+                        //   enabled: false,
+                        //   isMultiline: true,
+                        //   filledColor: colors.yellow3,
+                        //   onTap: () {
+                        //     print('kepencet');
+                        //   },
+                        //   onSubmit: (value) {},
+                        // ),
+                        Container(
+                          decoration: BoxDecoration(
+                            color: colors.yellow3,
+                            border: Border.all(
+                              color: colors.yellow1,
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(15.r),
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 8.w, vertical: 8.h),
+                            child: Center(
+                              child: Text(vm.userController.text,
+                                  style: textTheme.introLabel),
+                            ),
+                          ),
                         ),
                         Gap(16.h),
                         CustomTextField(
@@ -94,7 +115,10 @@ class LocationViewState extends State<LocationView> {
                           controller: vm.stationController,
                           isMultiline: false,
                           filledColor: colors.green6,
-                          onTap: () => vm.toggleShowWasteStations(),
+                          borderColor: colors.green1,
+                          onTap: () => vm.fetchWasteStations(),
+                          onChanged: (value) =>
+                              vm.onStationSearchChanged(value),
                           onSubmit: (value) {},
                         ),
                       ],
@@ -102,44 +126,46 @@ class LocationViewState extends State<LocationView> {
                   ),
                 ],
               ),
-              Gap(25.h),
+              Gap(16.h),
               Divider(height: 1.h, color: colors.gray4),
               Gap(16.h),
               Expanded(
                 child: ListView.separated(
-                  itemCount: vm.showLocations
-                      ? vm.locations.length
+                  itemCount: vm.isWasteLocationChanged
+                      ? vm.queriedWasteStations.length
                       : vm.wasteStations.length,
                   separatorBuilder: (_, __) => Gap(8.h),
                   itemBuilder: (context, index) {
-                    if (vm.showLocations) {
-                      final location = vm.locations[index];
-                      return UserLocationCard(
-                          title: location.name,
-                          address:
-                              location.address ?? '  ADDRESS NOT AVAILABLE',
-                          isSelected: vm.userController.text == location.name ||
-                              vm.userController.text == location.address,
-                          onTap: () {
-                            vm.selectLocation(location.name);
-                            vm.toggleShowLocations();
-                          });
-                    } else {
-                      final station = vm.wasteStations[index];
-                      return WasteLocationCard(
-                        title: station.stationName,
-                        address: station.address,
-                        openHour: '24:00',
-                        isSelected:
-                            vm.stationController.text == station.stationName ||
-                                vm.stationController.text == station.address,
-                        onTap: () {
-                          vm.selectWasteStation(station.stationName);
-                          vm.toggleShowWasteStations();
-                        },
-                        distance: '10 km',
-                      );
-                    }
+                    // TODO: KALAU MISAL BISA BUAT EDIT LOKASI USER
+                    // if (vm.showLocations) {
+                    //   final location = vm.locations[index];
+                    //   return UserLocationCard(
+                    //       title: location.name,
+                    //       address:
+                    //           location.address,
+                    //       isSelected: vm.userController.text == location.name ||
+                    //           vm.userController.text == location.address,
+                    //       onTap: () {
+                    //         vm.selectLocation(location.name);
+                    //         vm.toggleShowLocations();
+                    //       });
+                    // } else {
+                    final station = vm.isWasteLocationChanged
+                        ? vm.queriedWasteStations[index]
+                        : vm.wasteStations[index];
+                    return WasteLocationCard(
+                      title: station.stationName,
+                      address: station.addressStation,
+                      openHour: station.openHours,
+                      isSelected: vm.selectedStationId == station.id,
+                      //  vm.stationController.text ==
+                      //         station.stationName ||
+                      //     vm.stationController.text == station.addressStation,
+                      onTap: () {
+                        vm.selectWasteStation(station.id);
+                      },
+                      distance: '${station.distance} km',
+                    );
                   },
                 ),
               ),
@@ -152,8 +178,10 @@ class LocationViewState extends State<LocationView> {
           height: 70.h,
           child: AppMainButton(
             state: ButtonState.primary,
-            text: 'Choose this location',
-            onPressed: () {},
+            text: 'Choose this waste station',
+            onPressed: () {
+              vm.goToFormPage(isSend: widget.isSend);
+            },
           ),
         ),
       );

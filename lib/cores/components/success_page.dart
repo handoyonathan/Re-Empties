@@ -1,22 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:re_empties/cores/components/image_asset.dart';
 import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
+import 'package:re_empties/cores/router/router_constant.dart';
 
-class SuccessPage extends StatelessWidget {
-  final bool isPayment;
+class SuccessPage extends StatefulWidget {
+  final bool isSend;
   final int? point;
   final bool isAdmin;
 
   const SuccessPage({
     super.key,
-    this.isPayment = false,
+    required this.isSend,
     this.point,
-    this.isAdmin = false,
+    required this.isAdmin,
   });
+
+  @override
+  SuccessPageState createState() => SuccessPageState();
+}
+
+class SuccessPageState extends State<SuccessPage> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 5), () {
+      ctx.goNamed(paths.home);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +47,7 @@ class SuccessPage extends StatelessWidget {
             children: [
               Gap(100.h),
               ImageAsset(
-                imagePath: isAdmin || isPayment
+                imagePath: widget.isAdmin || widget.isSend
                     ? images.successCircle
                     : images.successStar,
                 width: 305.w,
@@ -40,9 +55,9 @@ class SuccessPage extends StatelessWidget {
               ),
               Gap(50.h),
               Text(
-                isPayment
+                widget.isSend
                     ? 'Payment Successful !'
-                    : isAdmin
+                    : widget.isAdmin
                         ? 'Order has been verified'
                         : 'Drop Off Successful !',
                 style: textTheme.successTitle.copyWith(
@@ -53,9 +68,9 @@ class SuccessPage extends StatelessWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 14.w),
                 child: Text(
-                  isPayment
+                  widget.isSend
                       ? "We appreciate your contribution to recycling skincare packaging. Together, we're making a cleaner, greener future possible."
-                      : isAdmin
+                      : widget.isAdmin
                           ? 'Thank you for confirming the recycling request and supporting our mission to reduce skincare packaging waste.'
                           : "We're excited to help you recycle your skincare packaging waste. Let's make a positive impact together!",
                   style: textTheme.label.copyWith(
@@ -64,7 +79,7 @@ class SuccessPage extends StatelessWidget {
                   textAlign: TextAlign.center,
                 ),
               ),
-              if (!isAdmin && point != null) ...[
+              if (!widget.isAdmin && widget.point != null) ...[
                 Gap(50.h),
                 Text(
                   'You will get',
@@ -81,7 +96,7 @@ class SuccessPage extends StatelessWidget {
                     borderRadius: BorderRadius.circular(50.r),
                   ),
                     child: Text(
-                      '+$point points',
+                      '+${widget.point} points',
                       style: textTheme.formName.copyWith(
                         decoration: TextDecoration.none,
                       ),

@@ -5,31 +5,57 @@ class User {
   final String name;
   final String? address;
   final int? rewardsPoint;
-  final String phone;
-  final String email;
+  final String? phone;
+  final String? email;
 
   User({
     this.id,
     required this.name,
     this.address,
     this.rewardsPoint,
-    required this.phone,
-    required this.email,
+    this.phone,
+    this.email,
   });
 }
 
 class Admin {
   final String id;
   final String adminName;
-  final String address;
+  final String addressStation;
+  final String adminPhone;
+  final String adminEmail;
   final String stationName;
-  final GeoPoint location;
+  final GeoPoint wasteLocation;
+  final String openHours;
+  double? distance;
 
   Admin({
     required this.id,
     required this.adminName,
-    required this.address,
+    required this.addressStation,
+    required this.adminPhone,
+    required this.adminEmail,
     required this.stationName,
-    required this.location,
+    required this.wasteLocation,
+    required this.openHours,
+    this.distance,
   });
+}
+
+
+class LocationData {
+  final String id;
+  final String name;
+  final String address;
+  final double lat;
+  final double lon;
+
+  LocationData({
+    required this.id,
+    required this.name,
+    required this.address,
+    required this.lat,
+    required this.lon,
+  });
+
 }

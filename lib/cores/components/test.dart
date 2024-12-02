@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:re_empties/cores/components/article_preview_home.dart';
 import 'package:re_empties/cores/components/banner_home.dart';
-import 'package:re_empties/cores/components/button_main_app.dart';
 import 'package:re_empties/cores/components/alert_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:gap/gap.dart';
 import 'package:re_empties/cores/components/points_card_home.dart';
 import 'package:re_empties/cores/components/points_card_reedem.dart';
 import 'package:re_empties/cores/components/send_drop_card.dart';
@@ -31,6 +29,7 @@ class TestWidget extends StatelessWidget {
                 left: 0,
                 right: 0,
                 child: BannerHome(level: 1)),
+
 
             // Positioned content starting below the banner with a gap of 18.h
             Positioned(

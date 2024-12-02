@@ -16,6 +16,11 @@ class _ImagePath {
   final String dropWaste = '$_imagePath/dropWaste.png';
   final String logo = '$_logoPath/logo.png';
   final String location = '$_imagePath/location.png';
+  final String gosend = '$_imagePath/gosend.jpg';
+  final String grabExpress = '$_imagePath/grabexpress.png';
+  final String paxel = '$_imagePath/paxel.png';
+  final String gopay = '$_imagePath/gopay.png';
+  final String shopeePay = '$_imagePath/shopeepay.jpg';
   final String errorIllustration = '$_imagePath/error_illustration.png';
   final String articlePreview = '$_imagePath/articlePreview.png';
   final String level1 = '$_imagePath/level1.png';
@@ -28,10 +33,13 @@ class _ImagePath {
   final String categoryShopping = '$_imagePath/categoryShopping.png';
   final String categoryGames = '$_imagePath/categoryGames.png';
   final String categoryDefault = '$_imagePath/categoryDefault.png';
+  final String address = '$_imagePath/address.png';
   final String adminProfile = '$_imagePath/admin_profile.png';
   final String successCircle = '$_imagePath/success_circle.png';
   final String successStar = '$_imagePath/success_star.png';
   final String successBg = '$_imagePath/success_bg.png';
+  final String profileUser = '$_imagePath/user_profile_picture.png';
+  final String pointsProfile = '$_imagePath/background_level_profile.png';
 
 
   // patterns ///////////////////////////////////////
