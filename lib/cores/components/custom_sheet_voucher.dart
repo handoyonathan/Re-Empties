@@ -24,7 +24,7 @@ class CustomSheetVoucher extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.only(
+      borderRadius: const BorderRadius.only(
         topLeft: Radius.circular(40), // Top-left corner rounded
         topRight: Radius.circular(40), // Top-right corner rounded
       ),
@@ -51,8 +51,8 @@ class CustomSheetVoucher extends StatelessWidget {
               // Image
               Image.asset(
                 imagePath,
-                height: 105.0,
-                width: 105.0,
+                height: 84.0,
+                width: 84.0,
                 fit: BoxFit.cover,
               ),
               Gap(8.h),
@@ -80,7 +80,7 @@ class CustomSheetVoucher extends StatelessWidget {
                     double.infinity, // Make the button take all available space
                 child: ElevatedButton(
                   onPressed: () => Navigator.pop(context),
-                  child: Text('Use $points',
+                  child: Text('Use $points points',
                       style:
                           textTheme.formName.copyWith(color: colors.bgColor)),
                   style: ElevatedButton.styleFrom(

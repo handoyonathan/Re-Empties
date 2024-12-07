@@ -13,6 +13,8 @@ class VoucherCardRedeem extends StatelessWidget {
   final String title;
   final String description;
   final String points;
+  final bool isUsed; // State: Voucher has been used
+  final bool isOutOfStock; // State: Voucher is out of stock
 
   const VoucherCardRedeem({
     super.key,
@@ -20,6 +22,8 @@ class VoucherCardRedeem extends StatelessWidget {
     required this.title,
     required this.description,
     required this.points,
+    this.isUsed = false,
+    this.isOutOfStock = false,
   });
 
   // Helper function to select the image based on the category
@@ -38,24 +42,39 @@ class VoucherCardRedeem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Determine if the voucher is disabled
+    final bool isDisabled = isUsed || isOutOfStock;
+
+    // Determine the background color
+    final Color backgroundColor = isDisabled ? colors.gray2 : colors.yellow4;
+
+    // Determine the additional text
+    final String? additionalText = isUsed
+        ? "You have used this voucher"
+        : isOutOfStock
+            ? "The voucher is out of stock"
+            : null;
+
     return GestureDetector(
-      onTap: () {
-        showModalBottomSheet(
-          context: context,
-          builder: (BuildContext context) {
-            return CustomSheetVoucher(
-              imagePath: getImagePath(),
-              title: title,
-              description: description,
-              points: points,
-            ); // Display the custom sheet here
-          },
-        );
-      },
+      onTap: isDisabled
+          ? null // Disable interaction if the voucher is used or out of stock
+          : () {
+              showModalBottomSheet(
+                context: context,
+                builder: (BuildContext context) {
+                  return CustomSheetVoucher(
+                    imagePath: getImagePath(),
+                    title: title,
+                    description: description,
+                    points: points,
+                  );
+                },
+              );
+            },
       child: Card(
         elevation: 4,
-        color: colors.yellow4,
-        shape: RoundedRectangleBorder(
+        color: backgroundColor,
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         child: Padding(
@@ -64,45 +83,58 @@ class VoucherCardRedeem extends StatelessWidget {
             children: [
               Image.asset(
                 getImagePath(),
-                height: 72.0,
-                width: 72.0,
+                height: 68.0,
+                width: 68.0,
                 fit: BoxFit.cover,
               ),
-              SizedBox(width: 10.0),
+              Gap(10.w),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       title,
-                      style: textTheme.myPoint.copyWith(color: colors.green1),
-                      maxLines: 2,
+                      style: textTheme.myPoint.copyWith(
+                        color: colors.green1,
+                      ),
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(height: 4.0),
+                    Gap(4.h),
                     Text(
                       description,
                       style: textTheme.homeShipLabel2,
-                      maxLines: 3,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    SizedBox(height: 8.0),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8.0, vertical: 4.0),
-                        decoration: BoxDecoration(
-                          color: colors.red5,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Text(
-                          '-$points points',
-                          style: textTheme.pointLabel
-                              .copyWith(color: colors.green1),
+                    if (additionalText != null) ...[
+                      Gap(4.h),
+                      Text(
+                        additionalText,
+                        style: textTheme.pointLabel.copyWith(
+                          color: colors.red1,
                         ),
                       ),
-                    ),
+                    ],
+                    Gap(8.h),
+                    if (!isDisabled)
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8.0, vertical: 4.0),
+                          decoration: BoxDecoration(
+                            color: colors.green2,
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: Text(
+                            'Use $points points',
+                            style: textTheme.pointLabel.copyWith(
+                              color: colors.bgColor,
+                            ),
+                          ),
+                        ),
+                      ),
                   ],
                 ),
               ),
