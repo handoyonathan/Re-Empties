@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:re_empties/cores/components/button_main_app.dart';
 import 'package:re_empties/cores/components/custom_app_bar.dart';
 import 'package:re_empties/cores/components/image_asset.dart';
@@ -18,7 +19,12 @@ import 'package:re_empties/features/send_empties/widget/stepper.dart';
 class SendFormView extends ConsumerStatefulWidget {
   final Admin wasteLocation;
   final bool isSend;
-  SendFormView({super.key, required this.wasteLocation, required this.isSend})
+  final LatLng currentLocation;
+  SendFormView(
+      {super.key,
+      required this.wasteLocation,
+      required this.isSend,
+      required this.currentLocation})
       : _viewModel =
             ChangeNotifierProvider.autoDispose<UserFormVM>(UserFormVM.new);
 
@@ -195,7 +201,11 @@ class SendFormState extends ConsumerState<SendFormView> {
             text: 'Confirm',
             onPressed: () {
               vm.goToSuccessPage(
-                  isSend: widget.isSend, wasteLocation: widget.wasteLocation);
+                  isSend: widget.isSend,
+                  wasteLocation: widget.wasteLocation,
+                  adminID: widget.wasteLocation.id,
+                  currentLat: widget.currentLocation.latitude,
+                  currentLong: widget.currentLocation.longitude);
             },
           ),
         ),

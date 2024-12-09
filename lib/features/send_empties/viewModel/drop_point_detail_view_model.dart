@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:re_empties/cores/template/notifer.dart';
@@ -9,6 +10,7 @@ class DropPointDetailVM extends BaseNotifier {
   final TextEditingController userController = TextEditingController();
   final TextEditingController stationController = TextEditingController();
   final Admin wasteLocation;
+  final String transactionId;
 
   LatLng? position;
   GoogleMapController? mapController;
@@ -18,7 +20,7 @@ class DropPointDetailVM extends BaseNotifier {
   bool showError = false;
   String otp = ''; // The generated OTP code
 
-  DropPointDetailVM(super.ref, {required this.wasteLocation});
+  DropPointDetailVM(super.ref, {required this.wasteLocation, required this.transactionId});
 
   /// Called when the GoogleMap is created
   void onMapCreated(GoogleMapController controller) {
@@ -72,6 +74,28 @@ class DropPointDetailVM extends BaseNotifier {
     return 'DO$numbers';
   }
 
+  void saveOtpToTransaction(String otp) async {
+  try {
+    // Ambil reference dari koleksi "transaction"
+    final transactionRef = FirebaseFirestore.instance
+          .collection('admin')
+          .doc(wasteLocation.id)
+          .collection('transactions').doc(transactionId);
+
+    final transactionData = {
+      'dropID': otp,
+    };
+
+    // Menyimpan data ke koleksi "transaction"
+    await transactionRef.update(transactionData);
+
+    print('OTP saved to transaction with dropID: $otp');
+  } catch (e) {
+    print('Error saving OTP to transaction: $e');
+  }
+}
+
+
   /// Handle OTP submission
   onFilled(String otpInput) {
     showError = false;
@@ -79,6 +103,7 @@ class DropPointDetailVM extends BaseNotifier {
     // Simulate success
     otp = otpInput;
     print("OTP Verified: $otpInput");
+    saveOtpToTransaction(otpInput);
     showError = false;
     notifyListeners();
   }
