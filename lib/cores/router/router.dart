@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:re_empties/cores/components/splash_screen.dart';
 import 'package:re_empties/cores/components/success_page.dart';
 import 'package:re_empties/cores/router/router_constant.dart';
@@ -98,6 +99,7 @@ setupRouter({required String initialRoute}) {
             return SendFormView(
               wasteLocation: extra['wasteLocation'] as Admin,
               isSend: extra['isSend'] ?? false,
+              currentLocation: extra['currentLocation'] as LatLng,
             );
           }),
       GoRoute(
@@ -115,6 +117,7 @@ setupRouter({required String initialRoute}) {
             return DropPointDetailView(
               wasteLocation: extra['wasteLocation'] as Admin,
               isSend: extra['isSend'] ?? false,
+              transactionId: extra['transactionID'],
             );
           }),
     ],
