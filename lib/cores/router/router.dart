@@ -4,6 +4,7 @@ import 'package:re_empties/cores/components/splash_screen.dart';
 import 'package:re_empties/cores/components/success_page.dart';
 import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:re_empties/features/admin/view/admin_profile.dart';
+import 'package:re_empties/features/admin/view/fill_order_id.view.dart';
 import 'package:re_empties/features/article/view/article_view.dart';
 import 'package:re_empties/features/authentication/views/login_view.dart';
 import 'package:re_empties/features/authentication/views/register_view.dart';
@@ -90,6 +91,10 @@ setupRouter({required String initialRoute}) {
           builder: (context, state) => IntroView(
                 isSend: state.extra as bool? ?? false,
               )),
+      GoRoute(
+          path: '/fillDropID',
+          name: paths.fillDropID,
+          builder: (context, state) => FillOrderID()),
       GoRoute(
           path: '/sendForm',
           name: paths.sendForm,
