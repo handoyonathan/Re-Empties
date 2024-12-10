@@ -9,20 +9,21 @@ import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
 import 'package:re_empties/cores/template/view.dart';
+import 'package:re_empties/features/admin/viewModel/admin_profile_view_model.dart';
 import 'package:re_empties/features/admin/viewModel/admin_view_model.dart';
 
 class AdminProfile extends StatefulWidget {
   AdminProfile({super.key})
       : _viewModel =
-            ChangeNotifierProvider.autoDispose<AdminViewVM>(AdminViewVM.new);
+            ChangeNotifierProvider.autoDispose<AdminProfileVM>(AdminProfileVM.new);
 
-  final AutoDisposeChangeNotifierProvider<AdminViewVM> _viewModel;
+  final AutoDisposeChangeNotifierProvider<AdminProfileVM> _viewModel;
 
   @override
-  AdminViewState createState() => AdminViewState();
+  AdminProfileState createState() => AdminProfileState();
 }
 
-class AdminViewState extends State<AdminProfile> {
+class AdminProfileState extends State<AdminProfile> {
   @override
   Widget build(BuildContext context) {
     return BaseView(
@@ -40,7 +41,7 @@ class AdminViewState extends State<AdminProfile> {
     );
   }
 
-  Widget _buildScreen(BuildContext context, AdminViewVM vm) => Scaffold(
+  Widget _buildScreen(BuildContext context, AdminProfileVM vm) => Scaffold(
         backgroundColor: colors.bgColor,
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -71,7 +72,9 @@ class AdminViewState extends State<AdminProfile> {
           child: AppMainButton(
             state: ButtonState.primary,
             text: 'logout',
-            onPressed: () {},
+            onPressed: () {
+              vm.logout();
+            },
           ),
         ),
       );

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
-import 'package:oktoast/oktoast.dart';
 import 'package:re_empties/cores/components/custom_toast_mixin.dart';
 import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:re_empties/cores/template/notifer.dart';
@@ -220,8 +219,8 @@ class UserFormVM extends BaseNotifier with CustomToastMixin {
         'userID': currentUser?.uid ?? '',
         'adminID': adminID,
         'cardboardWeight': wasteQuantities['IwoJoghBYQQrmTRThjlk'],
-        'currenLocationLat': currentLat,
-        'currenLocationLong': currentLong,
+        'currentLocationLat': currentLat,
+        'currentLocationLong': currentLong,
         'dateTime': DateTime.now(),
         'deliveryFee': send ? 10000 : null,
         'deliveryOption': send ? selectedDeliveryTitle : null,

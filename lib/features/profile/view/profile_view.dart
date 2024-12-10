@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 import 'package:re_empties/cores/components/banner_home.dart';
 import 'package:re_empties/cores/components/button_main_app.dart';
 import 'package:re_empties/cores/components/hidden_app_bar.dart';
@@ -10,7 +9,6 @@ import 'package:re_empties/cores/components/points_card_home.dart';
 import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
-import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:re_empties/cores/template/view.dart';
 import 'package:re_empties/features/profile/view%20model/profile_view_model.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -113,7 +111,7 @@ class ProfileViewState extends State<ProfileView> {
                   style: textTheme.title,
                 ),
                 HomePointsCard(
-                  onTap: () => context.push('/admin'), // change later
+                  onTap: () {},
                 ),
                 Gap(16.h),
               ],
@@ -125,7 +123,9 @@ class ProfileViewState extends State<ProfileView> {
           child: AppMainButton(
             state: ButtonState.primary,
             text: 'logout',
-            onPressed: () {},
+            onPressed: () {
+              vm.logout();
+            },
           ),
         ),
       );

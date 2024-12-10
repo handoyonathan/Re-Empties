@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/src/size_extension.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:re_empties/cores/components/button_main_app.dart';
 import 'package:re_empties/cores/components/form_text_field.dart';
@@ -9,6 +10,7 @@ import 'package:re_empties/cores/components/tap_detector.dart';
 import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
+import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:re_empties/cores/template/view.dart';
 import 'package:re_empties/features/authentication/viewmodel/register_viewmodel.dart';
 import 'package:re_empties/features/authentication/views/login_view.dart';
@@ -122,22 +124,15 @@ class RegisterPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const Text(
+                      Text(
                         "Already have an account? ",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w400,
-                        ),
+                        style: textTheme.subtitle.copyWith(fontSize: 15.sp),
                         textAlign: TextAlign.center,
                       ),
                       Gap(5.w),
                       TapDetector(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const LoginPage()));
+                          ctx.goNamed(paths.login);
                         },
                         child: Text(
                           "Login Here",

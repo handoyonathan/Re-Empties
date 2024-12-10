@@ -107,12 +107,6 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                       ),
                     ),
                     ArticlePreviewHome(),
-                    ElevatedButton(
-                      onPressed: () {
-                        vm.logout(context);
-                      },
-                      child: Text('Logout'),
-                    ),
                   ],
                 ),
               ),

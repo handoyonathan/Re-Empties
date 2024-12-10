@@ -4,6 +4,7 @@ import 'package:re_empties/cores/components/splash_screen.dart';
 import 'package:re_empties/cores/components/success_page.dart';
 import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:re_empties/features/admin/view/admin_profile.dart';
+import 'package:re_empties/features/admin/view/admin_view.dart';
 import 'package:re_empties/features/admin/view/fill_order_id.view.dart';
 import 'package:re_empties/features/article/view/article_view.dart';
 import 'package:re_empties/features/authentication/views/login_view.dart';
@@ -48,8 +49,12 @@ setupRouter({required String initialRoute}) {
         builder: (context, state) => const RegisterPage(),
       ),
       GoRoute(
-          path: '/admin',
-          name: paths.admin,
+          path: '/adminView',
+          name: paths.adminView,
+          builder: (context, state) => AdminView()),
+      GoRoute(
+          path: '/adminProfile',
+          name: paths.adminProfile,
           builder: (context, state) => AdminProfile()),
       GoRoute(
           path: '/profile',

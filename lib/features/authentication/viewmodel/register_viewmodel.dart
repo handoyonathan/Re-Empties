@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/src/change_notifier_provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:re_empties/cores/router/router_constant.dart';
 
 import 'package:re_empties/cores/template/form_notifier.dart';
 import 'package:re_empties/cores/template/form_validator.dart';
@@ -45,13 +46,9 @@ class RegisterVM extends BaseFormNotifier<RegisterModel>
             .doc(userCredential.user?.uid)
             .set(user.toMap());
 
-        // shared preferences
-        SharedPreferences preferences = await SharedPreferences.getInstance();
-        await preferences.setBool('isRegisterIn', true);
-        await preferences.setString('userId', userCredential.user?.uid ?? '');
         print('User Registered: ${userCredential.user?.uid}');
 
-        context.go('/home');
+        ctx.goNamed(paths.login);
       } on FirebaseAuthException catch (e) {
         // Tangani kesalahan login
         print('Failed with error code: ${e.code}');

@@ -30,7 +30,6 @@ class LoginVM extends BaseFormNotifier<LoginModel> with FormValidatorMixin {
         );
 
         SharedPreferences preferences = await SharedPreferences.getInstance();
-        await preferences.setBool('isLoggedIn', true);
         await preferences.setString('userId', userCredential.user?.uid ?? '');
         print('User Logged in: ${userCredential.user?.uid}');
 
@@ -45,30 +44,22 @@ class LoginVM extends BaseFormNotifier<LoginModel> with FormValidatorMixin {
 
           if (adminDoc.exists) {
             print("Admin Logged in : ${userCredential.user?.uid}");
-            context.go('/admin');
+            await preferences.setBool('isAdminLoggedIn', true);
+            ctx.goNamed(paths.adminView);
             return;
           } else {
             print("Admin not found in the database.");
           }
         }
 
-        context.go('/home');
+        ctx.goNamed(paths.home);
+        await preferences.setBool('isUserLoggedIn', true);
       } on FirebaseAuthException catch (e) {
         // Tangani kesalahan login
         print('Failed with error code: ${e.code}');
         print(e.message);
       }
     }
-  }
-
-  Future<void> logout(BuildContext context) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
-
-    form.email.controller.clear();
-    form.password.controller.clear();
-
-    ctx.pushReplacement('/login');
   }
 
   @override

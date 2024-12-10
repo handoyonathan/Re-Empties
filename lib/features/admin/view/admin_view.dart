@@ -2,20 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 import 'package:re_empties/cores/components/custom_app_bar.dart';
 import 'package:re_empties/cores/components/image_asset.dart';
 import 'package:re_empties/cores/components/tap_detector.dart';
 import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
+import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:re_empties/cores/template/view.dart';
 import 'package:re_empties/features/admin/viewModel/admin_view_model.dart';
 import 'package:re_empties/features/admin/widget/filter_button.dart';
 import 'package:re_empties/features/admin/widget/transaction_card.dart';
 
-class AdminView extends StatefulWidget {
+class AdminView extends ConsumerStatefulWidget {
   AdminView({super.key})
-      : _viewModel = ChangeNotifierProvider.autoDispose<AdminViewVM>(AdminViewVM.new);
+      : _viewModel =
+            ChangeNotifierProvider.autoDispose<AdminViewVM>(AdminViewVM.new);
 
   final AutoDisposeChangeNotifierProvider<AdminViewVM> _viewModel;
 
@@ -23,7 +26,7 @@ class AdminView extends StatefulWidget {
   AdminViewState createState() => AdminViewState();
 }
 
-class AdminViewState extends State<AdminView> {
+class AdminViewState extends ConsumerState<AdminView> {
   @override
   Widget build(BuildContext context) {
     return BaseView(
@@ -39,7 +42,9 @@ class AdminViewState extends State<AdminView> {
         ),
         actions: [
           TapDetector(
-            onTap: (){},
+            onTap: () {
+              ctx.pushNamed(paths.adminProfile);
+            },
             child: ImageAsset(
               imagePath: images.adminProfile,
               fit: BoxFit.fill,
@@ -67,19 +72,38 @@ class AdminViewState extends State<AdminView> {
                 children: [
                   FilterButton(label: 'All', isSelected: true, onTap: () {}),
                   Gap(8.w),
-                  FilterButton(label: 'Send Empties', isSelected: false, onTap: () {}),
+                  FilterButton(
+                      label: 'Send Empties', isSelected: false, onTap: () {}),
                   Gap(8.w),
-                  FilterButton(label: 'Drop Empties', isSelected: false, onTap: () {}),
+                  FilterButton(
+                      label: 'Drop Empties', isSelected: false, onTap: () {}),
                 ],
               ),
               Gap(16.h),
               Expanded(
-                child: ListView.builder(
-                  itemCount: 5, // number of transactions
-                  itemBuilder: (context, index) {
-                    return const TransactionCard();
-                  },
-                ),
+                child: vm.isLoading
+                    ? Center(
+                        child: CircularProgressIndicator(
+                        color: colors.green2,
+                      ))
+                    : vm.transactions.isEmpty
+                        ? Center(
+                            child: Text(
+                              "No transactions available",
+                              style: textTheme.appbarTitle,
+                            ),
+                          )
+                        : ListView.builder(
+                            itemCount: vm.transactions.length,
+                            itemBuilder: (context, index) {
+                              final transaction = vm.transactions[index];
+                              return TransactionCard(
+                                name: transaction.name!,
+                                transactionType: transaction.transactionType,
+                                address: transaction.address!,
+                              );
+                            },
+                          ),
               ),
             ],
           ),
