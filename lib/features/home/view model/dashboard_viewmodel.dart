@@ -11,20 +11,13 @@ class DashboardVM extends BaseNotifier {
 
   Future<void> checkLoginStatus(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
-    bool isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+    bool isUserLoggedIn = prefs.getBool('isUserLoggedIn') ?? false;
 
-    if (!isLoggedIn) {
+    if (!isUserLoggedIn) {
       context.go('/login');
     }
   }
-
-  Future<void> logout(BuildContext context) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
-
-    ctx.pushReplacement('/login');
-  }
-
+  
   void goToIntroPage({bool? isSend}) {
     ctx.pushNamed(paths.intro, extra: isSend);
   }

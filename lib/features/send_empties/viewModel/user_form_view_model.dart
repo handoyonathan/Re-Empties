@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
-import 'package:oktoast/oktoast.dart';
 import 'package:re_empties/cores/components/custom_toast_mixin.dart';
 import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:re_empties/cores/template/notifer.dart';
@@ -214,24 +213,25 @@ class UserFormVM extends BaseNotifier with CustomToastMixin {
     send = isSend ?? false;
 
     if (validateForm()) {
-      final weight = wasteQuantities.values.fold(0, (sum, qty) => sum + qty);
-      final point = weight * 100;
+      final pcs = wasteQuantities.values.fold(0, (sum, qty) => sum + qty);
+      // final point = weight * 100;
       final transactionData = {
         'userID': currentUser?.uid ?? '',
         'adminID': adminID,
-        'cardboardWeight': wasteQuantities['IwoJoghBYQQrmTRThjlk'],
-        'currenLocationLat': currentLat,
-        'currenLocationLong': currentLong,
+        // 'cardboardWeight': wasteQuantities['IwoJoghBYQQrmTRThjlk'],
+        'currentLocationLat': currentLat,
+        'currentLocationLong': currentLong,
         'dateTime': DateTime.now(),
         'deliveryFee': send ? 10000 : null,
         'deliveryOption': send ? selectedDeliveryTitle : null,
-        'earnPoints': point,
-        'glassWeight': wasteQuantities['uuk14PI0XvaD5jZfouvy'],
-        'orderStatus': 'Done',
+        // 'earnPoints': point,
+        // 'glassWeight': wasteQuantities['uuk14PI0XvaD5jZfouvy'],
+        'orderStatus': send ? 'Order Received' : 'Delivery',
         'paymentType': selectedPaymentTitle,
-        'plasticWeight': wasteQuantities['JEO10T6Zlo3tmYcIYIMR'],
-        'totalWeight': weight,
+        // 'plasticWeight': wasteQuantities['JEO10T6Zlo3tmYcIYIMR'],
+        // 'totalWeight': weight,
         'transactionType': send ? 'Send' : 'Drop',
+        'totalWastePcs' : pcs,
       };
 
       await saveTransaction(adminID: adminID, transactionData: transactionData);

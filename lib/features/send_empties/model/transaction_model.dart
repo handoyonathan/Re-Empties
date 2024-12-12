@@ -1,60 +1,121 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TransactionModel {
+  final String transactionId; // Tambahkan transactionId
   final String userID;
   final String adminID;
-  final String cardboardWeight;
-  final double currenLocationLat;
-  final double currenLocationLong;
+  final int? cardboardWeight;
+  final double currentLocationLat;
+  final double currentLocationLong;
   final DateTime dateTime;
-  final String deliveryFee;
-  final String deliveryOption;
+  final int deliveryFee;
+  final String? deliveryOption;
   final int earnPoints;
-  final int glassWeight;
+  final int? glassWeight;
   final String orderStatus;
-  final String paymentType;
-  final int plasticWeight;
-  final int totalWeight;
+  final String? paymentType;
+  final int? plasticWeight;
+  final int? totalWeight;
   final String transactionType;
-  final String dropID;
+  final String? dropID;
+  final String? name;
+  final String? address;
+  final int totalWastePcs;
 
   TransactionModel({
+    this.transactionId = '', // Default kosong jika tidak di-set
     required this.userID,
     required this.adminID,
-    required this.cardboardWeight,
-    required this.currenLocationLat,
-    required this.currenLocationLong,
+    this.cardboardWeight,
+    required this.currentLocationLat,
+    required this.currentLocationLong,
     required this.dateTime,
     required this.deliveryFee,
-    required this.deliveryOption,
+    this.deliveryOption,
     required this.earnPoints,
-    required this.glassWeight,
+    this.glassWeight,
     required this.orderStatus,
-    required this.paymentType,
-    required this.plasticWeight,
-    required this.totalWeight,
+    this.paymentType,
+    this.plasticWeight,
+    this.totalWeight,
     required this.transactionType,
-    required this.dropID,
+    this.dropID,
+    this.name,
+    this.address,
+    required this.totalWastePcs,
   });
 
-  factory TransactionModel.fromFirestore(Map<String, dynamic> data) {
+  // Menambahkan transactionId dari Firestore doc.id
+  factory TransactionModel.fromFirestore(
+      Map<String, dynamic> data, String id) {
     return TransactionModel(
+      transactionId: id, // Set transactionId dari doc.id
       userID: data['userID'] ?? '',
       adminID: data['adminID'] ?? '',
-      cardboardWeight: data['cardboardWeight'] ?? '',
-      currenLocationLat: (data['currenLocationLat'] as num?)?.toDouble() ?? 0.0,
-      currenLocationLong: (data['currenLocationLong'] as num?)?.toDouble() ?? 0.0,
+      cardboardWeight: data['cardboardWeight'],
+      currentLocationLat: (data['currentLocationLat'] as num?)?.toDouble() ?? 0.0,
+      currentLocationLong: (data['currentLocationLong'] as num?)?.toDouble() ?? 0.0,
       dateTime: (data['dateTime'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      deliveryFee: data['deliveryFee'] ?? '',
-      deliveryOption: data['deliveryOption'] ?? '',
+      deliveryFee: data['deliveryFee'] ?? 0,
+      deliveryOption: data['deliveryOption'],
       earnPoints: data['earnPoints'] ?? 0,
       glassWeight: data['glassWeight'] ?? 0,
       orderStatus: data['orderStatus'] ?? '',
-      paymentType: data['paymentType'] ?? '',
+      paymentType: data['paymentType'],
       plasticWeight: data['plasticWeight'] ?? 0,
       totalWeight: data['totalWeight'] ?? 0,
       transactionType: data['transactionType'] ?? '',
       dropID: data['dropID'],
+      name: data['name'],
+      address: data['address'],
+      totalWastePcs: data['totalWastePcs'] ?? 0,
+    );
+  }
+
+  // Salinan model dengan properti yang diubah
+  TransactionModel copyWith({
+    String? transactionId,
+    String? userID,
+    String? adminID,
+    int? cardboardWeight,
+    double? currentLocationLat,
+    double? currentLocationLong,
+    DateTime? dateTime,
+    int? deliveryFee,
+    String? deliveryOption,
+    int? earnPoints,
+    int? glassWeight,
+    String? orderStatus,
+    String? paymentType,
+    int? plasticWeight,
+    int? totalWeight,
+    String? transactionType,
+    String? dropID,
+    String? name,
+    String? address,
+    int? totalWastePcs,
+  }) {
+    return TransactionModel(
+      transactionId: transactionId ?? this.transactionId,
+      userID: userID ?? this.userID,
+      adminID: adminID ?? this.adminID,
+      cardboardWeight: cardboardWeight ?? this.cardboardWeight,
+      currentLocationLat: currentLocationLat ?? this.currentLocationLat,
+      currentLocationLong: currentLocationLong ?? this.currentLocationLong,
+      dateTime: dateTime ?? this.dateTime,
+      deliveryFee: deliveryFee ?? this.deliveryFee,
+      deliveryOption: deliveryOption ?? this.deliveryOption,
+      earnPoints: earnPoints ?? this.earnPoints,
+      glassWeight: glassWeight ?? this.glassWeight,
+      orderStatus: orderStatus ?? this.orderStatus,
+      paymentType: paymentType ?? this.paymentType,
+      plasticWeight: plasticWeight ?? this.plasticWeight,
+      totalWeight: totalWeight ?? this.totalWeight,
+      transactionType: transactionType ?? this.transactionType,
+      dropID: dropID ?? this.dropID,
+      name: name ?? this.name,
+      address: address ?? this.address,
+      totalWastePcs: totalWastePcs ?? this.totalWastePcs,
     );
   }
 }

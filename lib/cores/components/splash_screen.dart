@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -20,15 +21,20 @@ class SplashScreenState extends State<SplashScreen> {
 
   Future<void> checkLoginStatus() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
-    bool isLoggedIn = pref.getBool('isLoggedIn') ?? false;
+    bool isUserLoggedIn = pref.getBool('isUserLoggedIn') ?? false;
+    bool isAdminLoggedIn = pref.getBool('isAdminLoggedIn') ?? false;
 
     // Splash screen loading time
     await Future.delayed(Duration(seconds: 2));
 
-    if (isLoggedIn) {
-      context.go('/home');
-    } else {
-      context.go('/login');
+    if (isUserLoggedIn) {
+      if (ctx.mounted) ctx.goNamed(paths.home);
+    }
+    else if (isAdminLoggedIn){
+      if (ctx.mounted) ctx.goNamed(paths.adminView);
+    }
+    else {
+      if (ctx.mounted) ctx.goNamed(paths.login);
     }
   }
 

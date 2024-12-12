@@ -4,7 +4,9 @@ import 'package:re_empties/cores/components/splash_screen.dart';
 import 'package:re_empties/cores/components/success_page.dart';
 import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:re_empties/features/admin/view/admin_profile.dart';
+import 'package:re_empties/features/admin/view/admin_view.dart';
 import 'package:re_empties/features/admin/view/fill_order_id.view.dart';
+import 'package:re_empties/features/admin/view/transaction_detail_view.dart';
 import 'package:re_empties/features/article/view/article_view.dart';
 import 'package:re_empties/features/authentication/views/login_view.dart';
 import 'package:re_empties/features/authentication/views/register_view.dart';
@@ -48,8 +50,12 @@ setupRouter({required String initialRoute}) {
         builder: (context, state) => const RegisterPage(),
       ),
       GoRoute(
-          path: '/admin',
-          name: paths.admin,
+          path: '/adminView',
+          name: paths.adminView,
+          builder: (context, state) => AdminView()),
+      GoRoute(
+          path: '/adminProfile',
+          name: paths.adminProfile,
           builder: (context, state) => AdminProfile()),
       GoRoute(
           path: '/profile',
@@ -94,7 +100,15 @@ setupRouter({required String initialRoute}) {
       GoRoute(
           path: '/fillDropID',
           name: paths.fillDropID,
-          builder: (context, state) => FillOrderID()),
+          builder: (context, state) {
+            final extra = state.extra as Map<String, dynamic>;
+
+            return FillOrderID(
+                adminID: extra['adminID'],
+                transactionData: extra['transactionData'],
+                point: extra['point'],
+                weight: extra['weight'],);
+          }),
       GoRoute(
           path: '/sendForm',
           name: paths.sendForm,
@@ -123,6 +137,18 @@ setupRouter({required String initialRoute}) {
               wasteLocation: extra['wasteLocation'] as Admin,
               isSend: extra['isSend'] ?? false,
               transactionId: extra['transactionID'],
+            );
+          }),
+      GoRoute(
+          path: '/transactionDetail',
+          name: paths.transactionDetail,
+          builder: (context, state) {
+            final extra = state.extra as Map<String, dynamic>;
+
+            return TransactionDetailView(
+              isSend: extra['isSend'] ?? false,
+              transactionID: extra['transactionID'],
+              transaction: extra['transaction'],
             );
           }),
     ],

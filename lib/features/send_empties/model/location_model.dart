@@ -40,6 +40,19 @@ class Admin {
     required this.openHours,
     this.distance,
   });
+
+  factory Admin.fromFirestore(Map<String, dynamic> json) {
+    return Admin(
+      id: '',
+      addressStation: json['addressStation'],
+      adminPhone: json['adminPhone'],
+      stationName: json['stationName'],
+      wasteLocation: json['wasteLocation'],
+      openHours: json['openHours'],
+      adminName: json['adminName'],
+      adminEmail: json['adminEmail'],
+    );
+  }
 }
 
 

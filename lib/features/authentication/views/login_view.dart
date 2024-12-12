@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:re_empties/cores/components/button_main_app.dart';
 import 'package:re_empties/cores/components/form_text_field.dart';
@@ -10,6 +11,7 @@ import 'package:re_empties/cores/components/tap_detector.dart';
 import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
+import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:re_empties/cores/template/view.dart';
 import 'package:re_empties/features/authentication/viewmodel/login_viewmodel.dart';
 import 'package:re_empties/features/authentication/views/register_view.dart';
@@ -29,6 +31,7 @@ class LoginPage extends StatelessWidget {
       );
 
   Widget _buildScreen(BuildContext context, LoginVM vm) => Scaffold(
+    resizeToAvoidBottomInset: false,
         body: Stack(
           children: [
             ImageAsset(
@@ -37,8 +40,9 @@ class LoginPage extends StatelessWidget {
               width: double.infinity,
               fit: BoxFit.cover,
             ),
-            Padding(
+            SingleChildScrollView(
               padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 100.h),
+              physics: const ClampingScrollPhysics(),
               child: Column(
                 children: [
                   Column(
@@ -95,22 +99,19 @@ class LoginPage extends StatelessWidget {
                     children: [
                       Text(
                         "Don't have an account?",
-                        style: textTheme.subtitle.copyWith(fontSize: 16),
+                        style: textTheme.subtitle.copyWith(fontSize: 15.sp),
                         textAlign: TextAlign.center,
                       ),
                       Gap(5.w),
                       TapDetector(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const RegisterPage()));
+                          ctx.goNamed(paths.register);
                         },
                         child: Text(
                           "Register Here",
                           style: textTheme.subtitle.copyWith(
                               color: colors.textButton,
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w700),
                           textAlign: TextAlign.center,
                         ),
