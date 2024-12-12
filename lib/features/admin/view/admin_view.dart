@@ -52,7 +52,7 @@ class AdminViewState extends ConsumerState<AdminView> {
               height: 32.h,
             ),
           ),
-          Gap(8.w)
+          Gap(8.w),
         ],
       ),
       builder: _buildScreen,
@@ -70,13 +70,23 @@ class AdminViewState extends ConsumerState<AdminView> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  FilterButton(label: 'All', isSelected: true, onTap: () {}),
+                  FilterButton(
+                    label: 'All',
+                    isSelected: vm.selectedFilter == 'All',
+                    onTap: () => vm.setFilter('All'),
+                  ),
                   Gap(8.w),
                   FilterButton(
-                      label: 'Send Empties', isSelected: false, onTap: () {}),
+                    label: 'Send Empties',
+                    isSelected: vm.selectedFilter == 'Send',
+                    onTap: () => vm.setFilter('Send'),
+                  ),
                   Gap(8.w),
                   FilterButton(
-                      label: 'Drop Empties', isSelected: false, onTap: () {}),
+                    label: 'Drop Empties',
+                    isSelected: vm.selectedFilter == 'Drop',
+                    onTap: () => vm.setFilter('Drop'),
+                  ),
                 ],
               ),
               Gap(16.h),
@@ -86,7 +96,9 @@ class AdminViewState extends ConsumerState<AdminView> {
                         child: CircularProgressIndicator(
                         color: colors.green2,
                       ))
-                    : vm.transactions.isEmpty
+                    : vm.filteredTransactions.isEmpty ||
+                            vm.filteredTransactions.every((transaction) =>
+                                transaction.orderStatus == 'Verify')
                         ? Center(
                             child: Text(
                               "No transactions available",
@@ -94,13 +106,22 @@ class AdminViewState extends ConsumerState<AdminView> {
                             ),
                           )
                         : ListView.builder(
-                            itemCount: vm.transactions.length,
+                            itemCount: vm.filteredTransactions.length,
                             itemBuilder: (context, index) {
-                              final transaction = vm.transactions[index];
-                              return TransactionCard(
-                                name: transaction.name!,
-                                transactionType: transaction.transactionType,
-                                address: transaction.address!,
+                              final transaction =
+                                  vm.filteredTransactions[index];
+                              return Visibility(
+                                visible: transaction.orderStatus != 'Verify',
+                                child: TransactionCard(
+                                  name: transaction.name!,
+                                  transactionType: transaction.transactionType,
+                                  address: transaction.address!,
+                                  onTap: () => vm.goToTransactionDetailPage(
+                                    isSend:
+                                        transaction.transactionType == 'Send',
+                                    transaction: transaction,
+                                  ),
+                                ),
                               );
                             },
                           ),

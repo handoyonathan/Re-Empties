@@ -8,12 +8,27 @@ import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
 import 'package:re_empties/cores/template/view.dart';
 import 'package:re_empties/features/admin/viewModel/fill_order_id_view_model.dart';
+import 'package:re_empties/features/send_empties/model/transaction_model.dart';
 import 'package:re_empties/features/send_empties/widget/custom_pinput.dart';
 
 class FillOrderID extends ConsumerStatefulWidget {
-  FillOrderID({super.key})
-      : _viewModel =
-            ChangeNotifierProvider.autoDispose<FillOrderIdVM>(FillOrderIdVM.new);
+  final String adminID;
+  final TransactionModel transactionData;
+  final int weight;
+  final int point;
+  FillOrderID({
+    super.key,
+    required this.adminID,
+    required this.transactionData,
+    required this.weight,
+    required this.point,
+  }) : _viewModel = ChangeNotifierProvider.autoDispose<FillOrderIdVM>((ref) =>
+            FillOrderIdVM(ref,
+                adminID: adminID,
+                transactionData: transactionData,
+                point: point,
+                weight: weight
+                ));
 
   final AutoDisposeChangeNotifierProvider<FillOrderIdVM> _viewModel;
 
@@ -62,7 +77,11 @@ class FillOrderIdState extends ConsumerState<FillOrderID> {
           child: AppMainButton(
             state: ButtonState.primary,
             text: 'Verify Transaction',
-            onPressed: () {},
+            onPressed: () {
+              if (vm.formKey.currentState?.validate() ?? false) {
+                vm.saveTransaction();
+              } 
+            },
           ),
         ),
       );

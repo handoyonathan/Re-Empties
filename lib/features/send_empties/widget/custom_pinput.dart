@@ -111,7 +111,7 @@ class _CustomPinputState extends State<CustomPinput> {
             padding: EdgeInsets.only(top: 12.h),
             child: Text(
               errorText!,
-              style: textTheme.errorText.copyWith(color: colors.red1),
+              style: textTheme.errorText.copyWith(fontSize: 12.sp),
             ),
           ),
         ),

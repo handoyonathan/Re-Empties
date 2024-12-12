@@ -10,7 +10,6 @@ import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
 import 'package:re_empties/cores/template/view.dart';
 import 'package:re_empties/features/admin/viewModel/admin_profile_view_model.dart';
-import 'package:re_empties/features/admin/viewModel/admin_view_model.dart';
 
 class AdminProfile extends StatefulWidget {
   AdminProfile({super.key})
@@ -55,12 +54,13 @@ class AdminProfileState extends State<AdminProfile> {
               ),
               Gap(10.h),
               Text(
-                'Waste Station Kemanggisan',
+                vm.adminName,
                 style: textTheme.title,
+                textAlign: TextAlign.center,
               ),
               Gap(10.h),
               Text(
-                'Jl. Ks. Tubun III Dalam No.32, RT.2/RW.3, Slipi, Kec. Palmerah, Kota Jakarta Barat, Daerah Khusus Ibukota Jakarta 11410',
+                vm.addressStation,
                 style: textTheme.label,
                 textAlign: TextAlign.center,
               ),
