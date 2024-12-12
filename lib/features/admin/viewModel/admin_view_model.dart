@@ -18,6 +18,7 @@ class AdminViewVM extends BaseNotifier with CustomToastMixin {
   String userPhoneNum = '';
   String userAddress = '';
   late Admin adminData;
+  bool loading = false;
 
   @override
   FutureOr<void> init() {
@@ -73,7 +74,6 @@ class AdminViewVM extends BaseNotifier with CustomToastMixin {
   String get selectedFilter => _selectedFilter;
   List<TransactionModel> get filteredTransactions {
     if (_selectedFilter == 'All') {
-      // print(transactions.toList());
       return transactions;
     }
     return transactions.where((transaction) {
@@ -81,10 +81,20 @@ class AdminViewVM extends BaseNotifier with CustomToastMixin {
     }).toList();
   }
 
-  void setFilter(String filter) {
+  void setFilter(String filter) async {
     _selectedFilter = filter;
-    _filteredTransactions = filteredTransactions;
+    loading = true;
     notifyListeners();
+
+    try {
+      await fetchAdminTransactionData(); // Fetch ulang data dari Firestore
+      _filteredTransactions = filteredTransactions; // Terapkan filter
+    } catch (e) {
+      print('Error fetching data during filter: $e');
+    } finally {
+      loading = false;
+      notifyListeners(); // Perbarui UI
+    }
   }
 
   Future<void> fetchAdminTransactionData() async {

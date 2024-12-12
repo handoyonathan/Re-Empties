@@ -91,7 +91,7 @@ class AdminViewState extends ConsumerState<AdminView> {
               ),
               Gap(16.h),
               Expanded(
-                child: vm.isLoading
+                child: vm.loading
                     ? Center(
                         child: CircularProgressIndicator(
                         color: colors.green2,
