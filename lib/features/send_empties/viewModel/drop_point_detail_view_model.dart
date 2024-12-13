@@ -2,11 +2,15 @@ import 'dart:async';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:re_empties/cores/components/alert_dialog.dart';
+import 'package:re_empties/cores/components/custom_toast_mixin.dart';
+import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:re_empties/cores/template/notifer.dart';
 import 'package:re_empties/features/send_empties/model/location_model.dart';
 
-class DropPointDetailVM extends BaseNotifier {
+class DropPointDetailVM extends BaseNotifier with CustomToastMixin {
   final TextEditingController userController = TextEditingController();
   final TextEditingController stationController = TextEditingController();
   final Admin wasteLocation;
@@ -111,6 +115,48 @@ class DropPointDetailVM extends BaseNotifier {
   String? getErrorText() {
     if (showError) return ' Kode yang Anda masukkan salah';
     return null;
+  }
+
+  void showCancelDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return CustomAlertDialog(
+          onConfirm: () {
+            Navigator.of(context).pop(); // Tutup dialog
+            deleteTransaction(context);
+            print('masuk confirm');
+          },
+          onCancel: () {
+            Navigator.of(context).pop(); // Tutup dialog
+            print('masuk cancel');
+          },
+        );
+      },
+    );
+  }
+
+  void deleteTransaction(BuildContext context) async {
+    try {
+      // Referensi transaksi pada Firebase
+      final transactionRef = FirebaseFirestore.instance
+          .collection('admin')
+          .doc(wasteLocation.id)
+          .collection('transactions')
+          .doc(transactionId);
+
+      // Hapus data transaksi
+      await transactionRef.delete();
+
+      showCustomToast('Transaction deleted successfully');
+
+      // Kembali ke layar sebelumnya
+      ctx.goNamed(paths.home);
+    } catch (e) {
+      print('Error deleting transaction: $e');
+      showCustomToast('Failed to cancel the transaction. Please try again.', isError: true);
+    }
   }
 
 

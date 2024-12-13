@@ -164,7 +164,9 @@ class LocationViewState extends ConsumerState<LocationView> {
                       onTap: () {
                         vm.selectWasteStation(station.id);
                       },
-                      distance: '${station.distance} km',
+                      distance: station.distance != null
+                          ? '${station.distance!.toStringAsFixed(2)} km'
+                          : 'Calculating...',
                     );
                   },
                 ),

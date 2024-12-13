@@ -145,9 +145,7 @@ class DropPointDetailView extends ConsumerWidget {
         child: AppMainButton(
           state: ButtonState.cancel,
           text: 'Cancel',
-          onPressed: () {
-            // Tambahkan aksi
-          },
+           onPressed: () => vm.showCancelDialog(context),
         ),
       ),
     );
