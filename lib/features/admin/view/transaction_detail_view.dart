@@ -132,6 +132,7 @@ class SendFormState extends ConsumerState<TransactionDetailView> {
                         quantity: vm.wasteWeight[category.id] ?? 0,
                         onIncrease: () => vm.increaseQuantity(category.id),
                         onDecrease: () => vm.decreaseQuantity(category.id),
+                        isAdmin: true,
                       ),
                       Gap(10.h),
                       Divider(color: colors.gray4, height: 1.h),
