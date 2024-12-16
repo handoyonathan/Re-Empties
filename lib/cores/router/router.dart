@@ -35,6 +35,12 @@ setupRouter({required String initialRoute}) {
             const SplashScreen(), // Tambahkan builder untuk halaman utama
       ),
       GoRoute(
+        path: '/test',
+        name: paths.test,
+        builder: (context, state) =>
+            const TestWidget(), // Tambahkan builder untuk halaman utama
+      ),
+      GoRoute(
         path: '/home',
         name: paths.home,
         builder: (context, state) =>
