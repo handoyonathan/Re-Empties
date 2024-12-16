@@ -88,11 +88,11 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                         children: [
                           const SizedBox(height: 10),
                           StatusPreviewHome(
-                            status: 'Your item is being shipped',
-                            id: 'SE-001',
-                            delivery: 'DD-MM-YYYY',
+                            state: "send", // or "drop"
+                            dateTime: "Monday, 21/12/24 21:30",
+                            wasteStation: "Green Valley Recycling Center",
                             onTap: () {
-                              print("tracking status clicked");
+                              print("Card tapped!");
                             },
                           ),
                         ],

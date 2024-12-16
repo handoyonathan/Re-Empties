@@ -3,6 +3,7 @@ import 'package:re_empties/cores/components/article_preview_home.dart';
 import 'package:re_empties/cores/components/banner_home.dart';
 import 'package:re_empties/cores/components/alert_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:re_empties/cores/components/custom_details_card.dart';
 import 'package:re_empties/cores/components/points_card_home.dart';
 import 'package:re_empties/cores/components/points_card_reedem.dart';
 import 'package:re_empties/cores/components/send_drop_card.dart';
@@ -20,16 +21,52 @@ class TestWidget extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         backgroundColor: colors.background,
-        body: const SafeArea(
+        body: SafeArea(
           // Ensures content starts after the safe area
-          child: Padding(
-            padding: EdgeInsets.all(16.0), // Add padding to the whole page
-            child: SingleChildScrollView(
+          child: SingleChildScrollView(
+            // Enables scrolling for the entire content
+            child: Padding(
+              padding:
+                  const EdgeInsets.all(16.0), // Add padding to the whole page
               child: Column(
                 children: [
-                  ReedemPointsCard(points: '12.000'),
-                  SizedBox(height: 10),
-                  VoucherCardRedeem(
+                  const CustomDetailsCard(
+                    type: 'transaction',
+                    data: {
+                      'state': 'ongoing',
+                      'plastic': 5,
+                      'glass': 2,
+                      'cardboard': 3,
+                      'can': 4,
+                      'total': 14,
+                      'points': 1000,
+                    },
+                  ),
+                  const CustomDetailsCard(
+                    type: 'transaction',
+                    data: {
+                      'state': 'done',
+                      'plastic': 5,
+                      'glass': 2,
+                      'cardboard': 3,
+                      'can': 4,
+                      'total': 14,
+                      'points': 1000,
+                    },
+                  ),
+                  const CustomDetailsCard(
+                    type: 'payment',
+                    data: {
+                      'fee': "5.000",
+                      'subtotal': "20.000",
+                      'total': "25.000",
+                    },
+                  ),
+
+                  // Uncomment below as needed
+                  const ReedemPointsCard(points: '12.000'),
+                  const SizedBox(height: 10),
+                  const VoucherCardRedeem(
                     category: 'games',
                     title: '100 Diamonds in Game Legends',
                     description:
@@ -38,7 +75,7 @@ class TestWidget extends StatelessWidget {
                     isUsed: false, // Not used
                     isOutOfStock: false, // Available to redeem
                   ),
-                  VoucherCardRedeem(
+                  const VoucherCardRedeem(
                     category: 'shopping',
                     title: 'Free Shipping on Orders Over Rp 30.000',
                     description:
@@ -48,7 +85,7 @@ class TestWidget extends StatelessWidget {
                     isOutOfStock:
                         true, // Indicating this voucher is out of stock
                   ),
-                  VoucherCardRedeem(
+                  const VoucherCardRedeem(
                     category: 'food',
                     title: 'Discount 20% at Burger Town',
                     description:
@@ -56,6 +93,24 @@ class TestWidget extends StatelessWidget {
                     points: '200',
                     isUsed: true, // Indicating this voucher has been used
                     isOutOfStock: true, // Not out of stock
+                  ),
+                  const SizedBox(height: 10),
+                  StatusPreviewHome(
+                    state: "send", // or "drop"
+                    dateTime: "Monday, 21/12/24 21:30",
+                    wasteStation: "Green Valley Recycling Center",
+                    onTap: () {
+                      print("Card tapped!");
+                    },
+                  ),
+                  const SizedBox(height: 10),
+                  StatusPreviewHome(
+                    state: "drop", // or "drop"
+                    dateTime: "Monday, 21/12/24 21:30",
+                    wasteStation: "waste station kemanggisan",
+                    onTap: () {
+                      print("Card tapped!");
+                    },
                   ),
                 ],
               ),

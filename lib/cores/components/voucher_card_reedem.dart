@@ -13,8 +13,8 @@ class VoucherCardRedeem extends StatelessWidget {
   final String title;
   final String description;
   final String points;
-  final bool isUsed; // State: Voucher has been used
-  final bool isOutOfStock; // State: Voucher is out of stock
+  final bool isUsed;
+  final bool isOutOfStock;
 
   const VoucherCardRedeem({
     super.key,
