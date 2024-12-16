@@ -3,113 +3,93 @@ import 'package:re_empties/cores/constant/colors.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:re_empties/cores/components/tap_detector.dart';
+import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
 
 class StatusPreviewHome extends StatelessWidget {
-  final String status;
-  final String id;
-  final String delivery;
-  final VoidCallback onTap; // Accept onTap function as a parameter
+  final String state; // "send" or "drop"
+  final String dateTime; // Formatted as "Monday, 21/12/24 21:30"
+  final String wasteStation; // Selected waste station
+  final VoidCallback onTap; // Tap gesture handler
 
-  const StatusPreviewHome(
-      {super.key,
-      required this.status,
-      required this.id,
-      required this.delivery,
-      required this.onTap});
+  const StatusPreviewHome({
+    super.key,
+    required this.state,
+    required this.dateTime,
+    required this.wasteStation,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return TapDetector(
-      onTap: onTap,
-      child: Card(
-        color: colors.yellow3,
-        elevation: 0,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(Radius.circular(15.r))),
-        child: Column(
+    // Determine state-related properties
+    bool isSend = state == "send";
+    String actionText = isSend ? "Send Your Waste" : "Drop Your Waste";
+    String imageAsset = isSend ? images.sendWaste : images.dropWaste;
+
+    return GestureDetector(
+      onTap: onTap, // Handle tap gesture
+      child: Container(
+        padding: const EdgeInsets.all(12.0),
+        decoration: BoxDecoration(
+          color: colors.yellow3, // Background color
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Top Section: Circle with truck icon and text
-            Padding(
-              padding: EdgeInsets.all(12.h),
-              child: Row(
-                children: [
-                  // Circle with truck icon
-                  CircleAvatar(
-                    backgroundColor: colors.textButton,
-                    radius: 15.r,
-                    child: Icon(
-                      Icons.local_shipping,
-                      color: colors.bgColor,
-                      size: 20.r,
-                    ),
-                  ),
-                  Gap(5.w),
-                  Text(
-                    status,
-                    style: textTheme.homeShipLabel1,
-                  ),
-                ],
-              ),
-            ),
-            // Horizontal Divider without padding
-            Divider(
-              thickness: 1,
-              height: 0,
-              color: colors.yellow5,
-            ),
-
-            // Row with Tracking ID, vertical divider, and Estimated Delivery
-            Row(
-              mainAxisSize: MainAxisSize.max,
+            // Left Section: Date & Time and Image
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Tracking ID text
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: 12.h), // Padding for text
-                    child: Column(
+                // Date & Time
+                Text(dateTime, style: textTheme.importantNotes),
+                Gap(12.h),
+
+                Row(
+                  children: [
+                    // Circle background with image
+                    CircleAvatar(
+                      backgroundColor: colors.green4,
+                      radius: 24.0, // Size of the circle
+                      child: Padding(
+                        padding: const EdgeInsets.all(
+                            6.0), // Adjust the gap size here
+                        child: ClipOval(
+                          child: Image.asset(
+                            imageAsset,
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Gap(8.0.w), // Spacing between image and text
+
+                    // Action Text and Waste Station
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Tracking ID",
-                          style: textTheme.label,
-                        ),
-                        Text(
-                          id,
-                          style: textTheme.appbarTitle,
-                        ),
+                        Text(actionText, style: textTheme.orderStationName),
+                        Text(wasteStation, style: textTheme.badgesText),
                       ],
                     ),
-                  ),
-                ),
-
-                // Vertical Divider
-                Container(
-                  width: 1,
-                  height: 40, // Set height for visibility
-                  color: colors.yellow5, // Color for the divider
-                ),
-
-                // Estimated Delivery text
-                Expanded(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: 12.h), // Padding for text
-                    child: Column(
-                      children: [
-                        Text(
-                          "Estimated Delivery",
-                          style: textTheme.label,
-                        ),
-                        Text(
-                          delivery,
-                          style: textTheme.appbarTitle,
-                        ),
-                      ],
-                    ),
-                  ),
+                  ],
                 ),
               ],
+            ),
+
+            // Spacer to push the chevron icon to the right
+            const Spacer(),
+
+            // Right Section: Chevron Icon
+            CircleAvatar(
+              backgroundColor: colors.textButton,
+              radius: 16.0,
+              child: Icon(
+                Icons.chevron_right,
+                color: colors.background,
+                size: 24.0,
+              ),
             ),
           ],
         ),
