@@ -17,14 +17,16 @@ import 'package:re_empties/features/send_empties/widget/custom_pinput.dart';
 class DropPointDetailView extends ConsumerWidget {
   final bool isSend;
   final Admin wasteLocation;
+  final String transactionId;
   final AutoDisposeChangeNotifierProvider<DropPointDetailVM> _viewModel;
 
   DropPointDetailView({
     super.key,
     required this.wasteLocation,
     required this.isSend,
+    required this.transactionId,
   }) : _viewModel = ChangeNotifierProvider.autoDispose(
-          (ref) => DropPointDetailVM(ref, wasteLocation: wasteLocation),
+          (ref) => DropPointDetailVM(ref, wasteLocation: wasteLocation, transactionId: transactionId),
         );
 
   @override

@@ -35,23 +35,20 @@ class _ArticlePreviewHomeState extends State<ArticlePreviewHome> {
                 itemCount: viewModel.imageUrls.length,
                 itemBuilder: (context, index) {
                   final carousel = viewModel.carousel[index];
-                  return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w),
-                    child: ArticleCard(
-                      title: carousel.carouselName,
-                      articleId: carousel.articleId,
-                      imageUrl: carousel.carouselPhoto,
-                      onTap: () {
-                        print('Tapped article ID: ${carousel.articleId}');
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                ArticleView(articleId: carousel.articleId),
-                          ),
-                        );
-                      },
-                    ),
+                  return ArticleCard(
+                    title: carousel.carouselName,
+                    articleId: carousel.articleId,
+                    imageUrl: carousel.carouselPhoto,
+                    onTap: () {
+                      print('Tapped article ID: ${carousel.articleId}');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ArticleView(articleId: carousel.articleId),
+                        ),
+                      );
+                    },
                   );
                 }),
           );

@@ -59,10 +59,27 @@ class _CustomPinputState extends State<CustomPinput> {
       border: Border.all(color: colors.red1),
     );
 
-    // Generate random PIN and set it to the controller
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-    _generateAndFillPin(); // Pastikan widget dibangun sebelum diisi
+    // Listener to convert text to uppercase
+  _pinController.addListener(() {
+    final text = _pinController.text.toUpperCase();
+    if (_pinController.text != text) {
+      _pinController.value = _pinController.value.copyWith(
+        text: text,
+        selection: TextSelection(
+          baseOffset: text.length,
+          extentOffset: text.length,
+        ),
+        composing: TextRange.empty,
+      );
+    }
   });
+
+    if (!widget.isAdmin) {
+      // Generate random PIN and set it to the controller
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _generateAndFillPin(); // Pastikan widget dibangun sebelum diisi
+      });
+    }
   }
 
   void _generateAndFillPin() {
@@ -94,7 +111,7 @@ class _CustomPinputState extends State<CustomPinput> {
             padding: EdgeInsets.only(top: 12.h),
             child: Text(
               errorText!,
-              style: textTheme.errorText.copyWith(color: colors.red1),
+              style: textTheme.errorText.copyWith(fontSize: 12.sp),
             ),
           ),
         ),

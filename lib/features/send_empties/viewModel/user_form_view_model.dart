@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
-import 'package:oktoast/oktoast.dart';
 import 'package:re_empties/cores/components/custom_toast_mixin.dart';
 import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:re_empties/cores/template/notifer.dart';
@@ -171,14 +170,12 @@ class UserFormVM extends BaseNotifier with CustomToastMixin {
 
     if (send) {
       if (selectedDeliveryMethod == null) {
-         showCustomToast('Choose at least one delivery method',
-          isError: true);
+        showCustomToast('Choose at least one delivery method', isError: true);
         return false;
       }
       if (selectedPaymentMethod == null) {
-         showCustomToast('Choose at least one payment method',
-          isError: true);
-          return false;
+        showCustomToast('Choose at least one payment method', isError: true);
+        return false;
       }
     }
 
@@ -186,22 +183,73 @@ class UserFormVM extends BaseNotifier with CustomToastMixin {
   }
 
   late bool send;
+  late var transactionId;
 
-  void goToSuccessPage({required bool? isSend, required Admin wasteLocation}) {
+  Future<void> saveTransaction({
+    required String adminID,
+    required Map<String, dynamic> transactionData,
+  }) async {
+    try {
+      // Simpan data transaksi di dalam subkoleksi `transaction` milik admin
+      transactionId = await FirebaseFirestore.instance
+          .collection('admin')
+          .doc(adminID)
+          .collection('transactions')
+          .add(transactionData);
+
+      showCustomToast('Transaction saved successfully');
+    } catch (e) {
+      showCustomToast('Error saving transaction: $e', isError: true);
+    }
+  }
+
+  void goToSuccessPage({
+    required bool? isSend,
+    required Admin wasteLocation,
+    required String adminID,
+    required double currentLat,
+    required double currentLong,
+  }) async {
     send = isSend ?? false;
+
     if (validateForm()) {
+      final pcs = wasteQuantities.values.fold(0, (sum, qty) => sum + qty);
+      // final point = weight * 100;
+      final transactionData = {
+        'userID': currentUser?.uid ?? '',
+        'adminID': adminID,
+        // 'cardboardWeight': wasteQuantities['IwoJoghBYQQrmTRThjlk'],
+        'currentLocationLat': currentLat,
+        'currentLocationLong': currentLong,
+        'dateTime': DateTime.now(),
+        'deliveryFee': send ? 10000 : null,
+        'deliveryOption': send ? selectedDeliveryTitle : null,
+        // 'earnPoints': point,
+        // 'glassWeight': wasteQuantities['uuk14PI0XvaD5jZfouvy'],
+        'orderStatus': send ? 'Order Received' : 'Delivery',
+        'paymentType': selectedPaymentTitle,
+        // 'plasticWeight': wasteQuantities['JEO10T6Zlo3tmYcIYIMR'],
+        // 'totalWeight': weight,
+        'transactionType': send ? 'Send' : 'Drop',
+        'totalWastePcs' : pcs,
+      };
+
+      await saveTransaction(adminID: adminID, transactionData: transactionData);
+
       if (send) {
         ctx.pushNamed(paths.success, extra: <String, dynamic>{
           'isSend': isSend,
         });
         return;
       }
-      //TODO: ke halaman drop point detail
+
+      // Jika tidak send, pindah ke halaman drop point detail
       ctx.pushNamed(paths.dropPointDetail, extra: <String, dynamic>{
         'wasteLocation': wasteLocation,
         'isSend': isSend,
+        'transactionID': transactionId.id,
       });
-    } 
+    }
   }
 
   @override

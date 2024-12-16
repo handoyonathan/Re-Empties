@@ -8,7 +8,8 @@ class _RouterPaths {
   final String register = 'register';
   final String test = 'test';
   final String success = 'success';
-  final String admin = 'admin';
+  final String adminView = 'adminView';
+  final String adminProfile = 'adminProfile';
   final String splash = 'splash';
   final String editProfile = 'editProfile';
   final String profile = 'profile';
@@ -16,6 +17,8 @@ class _RouterPaths {
   final String intro = 'intro';
   final String sendForm = 'sendForm';
   final String dropPointDetail = 'dropPointDetail';
+  final String fillDropID = 'fillDropID';
+  final String transactionDetail = 'transactionDetail';
 }
 
 final paths = _RouterPaths();

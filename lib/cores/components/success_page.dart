@@ -29,7 +29,7 @@ class SuccessPageState extends State<SuccessPage> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 5), () {
-      ctx.goNamed(paths.home);
+      !widget.isAdmin ? ctx.goNamed(paths.home) : ctx.goNamed(paths.adminView);
     });
   }
 
@@ -55,10 +55,10 @@ class SuccessPageState extends State<SuccessPage> {
               ),
               Gap(50.h),
               Text(
-                widget.isSend
-                    ? 'Payment Successful !'
-                    : widget.isAdmin
-                        ? 'Order has been verified'
+                widget.isAdmin
+                    ? 'Order has been verified'
+                    : widget.isSend
+                        ? 'Payment Successful !'
                         : 'Drop Off Successful !',
                 style: textTheme.successTitle.copyWith(
                   decoration: TextDecoration.none,
@@ -68,10 +68,10 @@ class SuccessPageState extends State<SuccessPage> {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 14.w),
                 child: Text(
-                  widget.isSend
-                      ? "We appreciate your contribution to recycling skincare packaging. Together, we're making a cleaner, greener future possible."
-                      : widget.isAdmin
-                          ? 'Thank you for confirming the recycling request and supporting our mission to reduce skincare packaging waste.'
+                  widget.isAdmin
+                      ? 'Thank you for confirming the recycling request and supporting our mission to reduce skincare packaging waste.'
+                      : widget.isSend
+                          ? "We appreciate your contribution to recycling skincare packaging. Together, we're making a cleaner, greener future possible."
                           : "We're excited to help you recycle your skincare packaging waste. Let's make a positive impact together!",
                   style: textTheme.label.copyWith(
                     decoration: TextDecoration.none,
@@ -95,12 +95,12 @@ class SuccessPageState extends State<SuccessPage> {
                     color: colors.red5,
                     borderRadius: BorderRadius.circular(50.r),
                   ),
-                    child: Text(
-                      '+${widget.point} points',
-                      style: textTheme.formName.copyWith(
-                        decoration: TextDecoration.none,
-                      ),
-                      textAlign: TextAlign.center,
+                  child: Text(
+                    '+${widget.point} points',
+                    style: textTheme.formName.copyWith(
+                      decoration: TextDecoration.none,
+                    ),
+                    textAlign: TextAlign.center,
                   ),
                 ),
               ]

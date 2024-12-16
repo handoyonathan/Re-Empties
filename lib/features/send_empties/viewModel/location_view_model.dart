@@ -302,6 +302,7 @@ class LocationVM extends BaseNotifier with CustomToastMixin {
     if (_selectedWasteStation != null) {
       ctx.pushNamed(paths.sendForm, extra: <String, dynamic>{
         'wasteLocation': _selectedWasteStation,
+        'currentLocation': userPosition,
         'isSend': isSend,
       });
     } else {
