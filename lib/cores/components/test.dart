@@ -22,9 +22,7 @@ class TestWidget extends StatelessWidget {
       home: Scaffold(
         backgroundColor: colors.background,
         body: SafeArea(
-          // Ensures content starts after the safe area
           child: SingleChildScrollView(
-            // Enables scrolling for the entire content
             child: Padding(
               padding:
                   const EdgeInsets.all(16.0), // Add padding to the whole page
@@ -85,33 +83,33 @@ class TestWidget extends StatelessWidget {
                     isOutOfStock:
                         true, // Indicating this voucher is out of stock
                   ),
-                  const VoucherCardRedeem(
-                    category: 'food',
-                    title: 'Discount 20% at Burger Town',
-                    description:
-                        'Enjoy a 20% discount on your total purchase at any participating Burger Town location.',
-                    points: '200',
-                    isUsed: true, // Indicating this voucher has been used
-                    isOutOfStock: true, // Not out of stock
-                  ),
-                  const SizedBox(height: 10),
-                  StatusPreviewHome(
-                    state: "send", // or "drop"
-                    dateTime: "Monday, 21/12/24 21:30",
-                    wasteStation: "Green Valley Recycling Center",
-                    onTap: () {
-                      print("Card tapped!");
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  StatusPreviewHome(
-                    state: "drop", // or "drop"
-                    dateTime: "Monday, 21/12/24 21:30",
-                    wasteStation: "waste station kemanggisan",
-                    onTap: () {
-                      print("Card tapped!");
-                    },
-                  ),
+                  // const VoucherCardRedeem(
+                  //   category: 'food',
+                  //   title: 'Discount 20% at Burger Town',
+                  //   description:
+                  //       'Enjoy a 20% discount on your total purchase at any participating Burger Town location.',
+                  //   points: '200',
+                  //   isUsed: true, // Indicating this voucher has been used
+                  //   isOutOfStock: true, // Not out of stock
+                  // ),
+                  // const SizedBox(height: 10),
+                  // StatusPreviewHome(
+                  //   state: "send", // or "drop"
+                  //   dateTime: "Monday, 21/12/24 21:30",
+                  //   wasteStation: "Green Valley Recycling Center",
+                  //   onTap: () {
+                  //     print("Card tapped!");
+                  //   },
+                  // ),
+                  // const SizedBox(height: 10),
+                  // StatusPreviewHome(
+                  //   state: "drop", // or "drop"
+                  //   dateTime: "Monday, 21/12/24 21:30",
+                  //   wasteStation: "waste station kemanggisan",
+                  //   onTap: () {
+                  //     print("Card tapped!");
+                  //   },
+                  // ),
                 ],
               ),
             ),
