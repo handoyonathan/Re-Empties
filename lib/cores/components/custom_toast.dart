@@ -30,7 +30,8 @@ class CustomToast extends StatelessWidget {
               Expanded(
                 child: Text(
                   text,
-                  style: textTheme.pointLabel.copyWith(color: colors.background),
+                  style:
+                      textTheme.pointLabel.copyWith(color: colors.background),
                   overflow: TextOverflow.ellipsis,
                   maxLines: 2,
                 ),

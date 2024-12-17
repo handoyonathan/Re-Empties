@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ArticleCard extends StatelessWidget {
   final String title;
-  final String articleId;
+  final int articleId;
   final String imageUrl;
   final VoidCallback onTap;
 

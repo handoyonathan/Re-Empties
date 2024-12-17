@@ -13,7 +13,7 @@ import 'package:re_empties/cores/template/view.dart';
 import 'package:re_empties/features/article/viewmodel/articel_view_model.dart';
 
 class ArticleView extends ConsumerWidget {
-  final String articleId;
+  final int articleId;
   final AutoDisposeChangeNotifierProvider<ArticleVM> _viewModel;
 
   ArticleView({super.key, required this.articleId})
@@ -45,10 +45,9 @@ class ArticleView extends ConsumerWidget {
       backgroundColor: colors.bgColor,
       body: vm.isLoading
           ? Center(
-            
               child: CircularProgressIndicator(
                   color: colors.green1, backgroundColor: colors.background))
-          : vm.articles.isEmpty
+          : vm.articleDetails.articleDetails.articleDetails.isEmpty
               ? Center(
                   child: ImageAsset(
                   imagePath: images.errorIllustration,
@@ -60,47 +59,39 @@ class ArticleView extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      for (var article in vm.articles)
+                      for (var article
+                          in vm.articleDetails.articleDetails.articleDetails)
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // title
                             Text(
-                              article['articleName'] ?? '',
+                              vm.articleDetails.articleDetails.articleName,
                               style: textTheme.articleTitle,
                               textAlign: TextAlign.left,
                             ),
                             Text(
-                              "${article['author']} | ${article['publishedDate']} ",
+                              "${vm.articleDetails.articleDetails.author} | ${vm.articleDetails.articleDetails.publishedDate} ",
                               style: textTheme.badgesText,
                               textAlign: TextAlign.left,
                             ),
                             Gap(15),
                             Text(
-                              article['articleDescription'] ?? '',
+                              vm.articleDetails.articleDetails
+                                  .articleDescription,
                               style: textTheme.articleIntro,
                               textAlign: TextAlign.left,
                             ),
                             Gap(10),
-                            // Text(
-                            //   article['articleDescription'] ?? '',
-                            //   style: textTheme.articleTitle,
-                            //   textAlign: TextAlign.left,
-                            // ),
 
                             ListView.builder(
                                 physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
-                                itemCount:
-                                    (article['articleIsi'] as List).length,
+                                itemCount: article.articleTitleIsi.length,
                                 itemBuilder: (context, stepIndex) {
-                                  final titles =
-                                      article['articleTitleIsi'] as List;
-                                  final descriptions =
-                                      article['articleIsi'] as List;
-                                  final photos =
-                                      article['articlePhotos'] as List;
-
+                                  final titles = article.articleTitleIsi;
+                                  final descriptions = article.articleIsi;
+                                  final photos = article.articlePhotos;
                                   // Check if the current index is within bounds of each list.
                                   final title = stepIndex < titles.length
                                       ? titles[stepIndex]

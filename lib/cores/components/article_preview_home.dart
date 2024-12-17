@@ -16,6 +16,11 @@ class ArticlePreviewHome extends StatefulWidget {
 
 class _ArticlePreviewHomeState extends State<ArticlePreviewHome> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => ArticleCarouselVM(),
@@ -27,21 +32,26 @@ class _ArticlePreviewHomeState extends State<ArticlePreviewHome> {
               color: colors.green2,
             ));
           }
+          if (viewModel.carouselList == null ||
+              viewModel.carouselList!.data == null) {
+            return Text("No article Available");
+          }
 
           return SizedBox(
             height: 142.h,
             width: 323.w,
             child: PageView.builder(
-                itemCount: viewModel.imageUrls.length,
+                itemCount: viewModel.carouselList!.data!.length,
                 itemBuilder: (context, index) {
-                  final carousel = viewModel.carousel[index];
+                  // final carousel = viewModel.articleCarousel.data![index];
+                  final carousel = viewModel.carouselList!.data![index];
                   return Padding(
                     padding: EdgeInsets.symmetric(horizontal: 8.w),
                     child: ArticleCard(
-                      title: carousel.carouselName,
+                      title: carousel.articleName,
                       articleId: carousel.articleId,
                       imageUrl: carousel.carouselPhoto,
-                      onTap: () {
+                      onTap: () async {
                         print('Tapped article ID: ${carousel.articleId}');
                         Navigator.push(
                           context,

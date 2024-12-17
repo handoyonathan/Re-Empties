@@ -50,7 +50,7 @@ class _DashboardViewState extends ConsumerState<DashboardView>
           child: Column(
             children: [
               // Banner that covers the top part of the screen
-              BannerHome(
+              const BannerHome(
                 level: 1,
                 isProfilePage: false,
               ),
@@ -106,13 +106,13 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                         style: textTheme.title,
                       ),
                     ),
-                    ArticlePreviewHome(),
-                    ElevatedButton(
-                      onPressed: () {
-                        vm.logout(context);
-                      },
-                      child: Text('Logout'),
-                    ),
+                    const ArticlePreviewHome(),
+                    // ElevatedButton(
+                    //   onPressed: () {
+                    //     vm.logout(context);
+                    //   },
+                    //   child: Text('Logout'),
+                    // ),
                   ],
                 ),
               ),
