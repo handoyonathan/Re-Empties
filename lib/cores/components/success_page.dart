@@ -29,7 +29,11 @@ class SuccessPageState extends State<SuccessPage> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 5), () {
-      !widget.isAdmin ? ctx.goNamed(paths.home) : ctx.goNamed(paths.adminView);
+      !widget.isAdmin
+          ? widget.isSend
+              ? ctx.goNamed(paths.home)
+              : ctx.pop('refresh')
+          : ctx.goNamed(paths.adminView);
     });
   }
 

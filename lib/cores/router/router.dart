@@ -11,6 +11,8 @@ import 'package:re_empties/features/article/view/article_view.dart';
 import 'package:re_empties/features/authentication/views/login_view.dart';
 import 'package:re_empties/features/authentication/views/register_view.dart';
 import 'package:re_empties/features/home/view/home_view.dart';
+import 'package:re_empties/features/order/view/order_history_view.dart';
+import 'package:re_empties/features/order/view/order_summary_view.dart';
 import 'package:re_empties/features/profile/view/edit_profile.dart';
 import 'package:re_empties/features/profile/view/profile_view.dart';
 // import 'package:re_empties/cores/components/test.dart';
@@ -110,10 +112,11 @@ setupRouter({required String initialRoute}) {
             final extra = state.extra as Map<String, dynamic>;
 
             return FillOrderID(
-                adminID: extra['adminID'],
-                transactionData: extra['transactionData'],
-                point: extra['point'],
-                weight: extra['weight'],);
+              adminID: extra['adminID'],
+              transactionData: extra['transactionData'],
+              point: extra['point'],
+              weight: extra['weight'],
+            );
           }),
       GoRoute(
           path: '/sendForm',
@@ -141,8 +144,11 @@ setupRouter({required String initialRoute}) {
 
             return DropPointDetailView(
               wasteLocation: extra['wasteLocation'] as Admin,
-              isSend: extra['isSend'] ?? false,
+              dropID: extra['dropID'],
               transactionId: extra['transactionID'],
+              // isSend: extra['isSend'] ?? false,
+              // transactionIdAdmin: extra['transactionIDAdmin'],
+              // transactionIdUser: extra['transactionIDUser'],
             );
           }),
       GoRoute(
@@ -157,6 +163,21 @@ setupRouter({required String initialRoute}) {
               transaction: extra['transaction'],
             );
           }),
+      GoRoute(
+        path: '/transactionHistory',
+        name: paths.transactionHistory,
+        builder: (context, state) => OrderHistoryView(),
+      ),
+      GoRoute(
+        path: '/transactionHistoryDetail',
+        name: paths.transactionHistoryDetail,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          return OrderSummaryView(
+            transactionID: extra['transactionID'],
+          );
+        },
+      ),
     ],
     initialLocation: initialRoute,
   );

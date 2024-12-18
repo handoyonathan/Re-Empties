@@ -102,7 +102,7 @@ class AdminViewState extends ConsumerState<AdminView> {
                         ? Center(
                             child: Text(
                               "No transactions available",
-                              style: textTheme.appbarTitle,
+                              style: textTheme.appbarTitle.copyWith(color: colors.gray3),
                             ),
                           )
                         : ListView.builder(
