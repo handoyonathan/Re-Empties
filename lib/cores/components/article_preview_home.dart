@@ -18,6 +18,7 @@ class _ArticlePreviewHomeState extends State<ArticlePreviewHome> {
   @override
   void initState() {
     super.initState();
+
   }
 
   @override
@@ -26,6 +27,7 @@ class _ArticlePreviewHomeState extends State<ArticlePreviewHome> {
       create: (_) => ArticleCarouselVM(),
       child: Consumer<ArticleCarouselVM>(
         builder: (context, viewModel, child) {
+          viewModel.loadArticle();
           if (viewModel.isLoading) {
             return Center(
                 child: CircularProgressIndicator(

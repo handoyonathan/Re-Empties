@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:re_empties/services/api_constant.dart';
 
 import '../services/base_service.dart';
