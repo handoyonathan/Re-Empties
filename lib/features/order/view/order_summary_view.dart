@@ -158,11 +158,16 @@ class OrderSummaryView extends StatelessWidget {
                   CustomDetailsCard(
                     type: 'transaction',
                     data: {
-                      'state': transaction.orderStatus == 'Delivery' ? 'ongoing' : 'done',
+                      'state': transaction.orderStatus == 'Delivery'
+                          ? 'ongoing'
+                          : 'done',
                       'plastic': transaction.plasticWeight,
                       'glass': transaction.glassWeight,
                       'cardboard': transaction.cardboardWeight,
                       'total': transaction.totalWastePcs,
+                      'points': transaction.earnPoints != 0
+                          ? transaction.earnPoints
+                          : null,
                     },
                   ),
                   Gap(15.h),
