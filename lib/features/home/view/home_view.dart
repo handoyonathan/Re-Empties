@@ -8,6 +8,7 @@ import 'package:re_empties/features/admin/view/admin_profile.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:re_empties/features/home/view%20model/home_view_model.dart';
 import 'package:re_empties/features/home/view/dashboard_view.dart';
+import 'package:re_empties/features/order/view/order_history_view.dart';
 import 'package:re_empties/features/profile/view/profile_view.dart';
 
 class HomeView extends ConsumerStatefulWidget {
@@ -30,11 +31,11 @@ class _HomeViewState extends ConsumerState<HomeView>
         icon: images.homeTab,
       ),
       NavBarModel(
-        widget: AdminProfile(), // Update with the correct widget later
+        widget: OrderHistoryView(),
         icon: images.transactionTab,
       ),
       NavBarModel(
-        widget: ProfileView(), // Update with the correct widget later
+        widget: ProfileView(),
         icon: images.profileTab,
       ),
     ];

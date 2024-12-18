@@ -19,6 +19,8 @@ class _RouterPaths {
   final String dropPointDetail = 'dropPointDetail';
   final String fillDropID = 'fillDropID';
   final String transactionDetail = 'transactionDetail';
+  final String transactionHistory = 'transactionHistory';
+  final String transactionHistoryDetail = 'transactionHistoryDetail';
 }
 
 final paths = _RouterPaths();

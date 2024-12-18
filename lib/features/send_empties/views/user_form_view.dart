@@ -25,8 +25,8 @@ class SendFormView extends ConsumerStatefulWidget {
       required this.wasteLocation,
       required this.isSend,
       required this.currentLocation})
-      : _viewModel =
-            ChangeNotifierProvider.autoDispose<UserFormVM>(UserFormVM.new);
+      : _viewModel = ChangeNotifierProvider.autoDispose(
+            (ref) => UserFormVM(ref, wasteLocation: wasteLocation));
 
   final AutoDisposeChangeNotifierProvider<UserFormVM> _viewModel;
 

@@ -8,9 +8,10 @@ import 'package:re_empties/features/send_empties/model/payment_model.dart';
 
 void showOptionsModal<T>({
   required BuildContext context,
-  required List<T> options, // Bisa PaymentOptionModel atau DeliveryOptionModel
-  required Function(int) onSelected, // Callback untuk passing nilai pilihan
-  required int selectedValue, // Nilai yang dipilih
+  required List<T> options,
+  required Function(int) onSelected,
+  required int selectedValue,
+  String? price, // Add this parameter
 }) {
   showModalBottomSheet(
     context: context,
@@ -41,9 +42,7 @@ void showOptionsModal<T>({
                   height: 55.h,
                 )),
                 title: Text(optionTitle, style: textTheme.trackingStepTitle),
-                subtitle: description.isNotNullOrEmpty
-                    ? Text(description, style: textTheme.textFieldLabel)
-                    : null,
+                subtitle: Text(price.isNotNullOrEmpty ? price! : description, style: textTheme.textFieldLabel),
                 trailing: Radio<int>(
                   value: idx,
                   groupValue: selectedValue,

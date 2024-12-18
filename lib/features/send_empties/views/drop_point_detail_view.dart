@@ -15,18 +15,29 @@ import 'package:re_empties/features/send_empties/viewModel/drop_point_detail_vie
 import 'package:re_empties/features/send_empties/widget/custom_pinput.dart';
 
 class DropPointDetailView extends ConsumerWidget {
-  final bool isSend;
+  // final bool isSend;
   final Admin wasteLocation;
+  // final String transactionIdAdmin;
+  // final String transactionIdUser;
   final String transactionId;
+  final String dropID;
   final AutoDisposeChangeNotifierProvider<DropPointDetailVM> _viewModel;
 
   DropPointDetailView({
     super.key,
     required this.wasteLocation,
-    required this.isSend,
     required this.transactionId,
+    // required this.isSend,
+    // required this.transactionIdAdmin,
+    // required this.transactionIdUser,
+    required this.dropID,
   }) : _viewModel = ChangeNotifierProvider.autoDispose(
-          (ref) => DropPointDetailVM(ref, wasteLocation: wasteLocation, transactionId: transactionId),
+          (ref) => DropPointDetailVM(ref,
+              wasteLocation: wasteLocation,
+              transactionID: transactionId,
+              // transactionIdAdmin: transactionIdAdmin,
+              // transactionIdUser: transactionIdUser, 
+              dropID: dropID),
         );
 
   @override
@@ -48,7 +59,8 @@ class DropPointDetailView extends ConsumerWidget {
               color: colors.green1,
             ),
             onTap: () {
-              Navigator.of(context).maybePop();
+              // Navigator.of(context).maybePop();
+              viewModel.gotoHome();
             },
           ),
         ],
@@ -117,10 +129,12 @@ class DropPointDetailView extends ConsumerWidget {
             Text('Your dropID', style: textTheme.subtitle),
             Gap(20.h),
             CustomPinput(
-                formKey: vm.formKey,
-                onFilled: vm.onFilled,
-                getErrorText: vm.getErrorText,
-                isAdmin: false,),
+              formKey: vm.formKey,
+              onFilled: vm.onFilled,
+              getErrorText: vm.getErrorText,
+              isAdmin: false,
+              value: dropID,
+            ),
             Gap(40.h),
             Text(
               'The admin is notified and will help you if you arrived',
@@ -131,8 +145,11 @@ class DropPointDetailView extends ConsumerWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text('You will get ', style: textTheme.successPointLabel.copyWith(fontSize: 14.sp)),
-                Text('100 points / pcs', style: textTheme.detailDropPoint.copyWith(fontSize: 14.sp)),
+                Text('You will get ',
+                    style:
+                        textTheme.successPointLabel.copyWith(fontSize: 14.sp)),
+                Text('100 points / pcs',
+                    style: textTheme.detailDropPoint.copyWith(fontSize: 14.sp)),
               ],
             ),
           ],
@@ -145,7 +162,7 @@ class DropPointDetailView extends ConsumerWidget {
         child: AppMainButton(
           state: ButtonState.cancel,
           text: 'Cancel',
-           onPressed: () => vm.showCancelDialog(context),
+          onPressed: () => vm.showCancelDialog(context),
         ),
       ),
     );

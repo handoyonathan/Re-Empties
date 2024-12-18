@@ -20,6 +20,8 @@ class TransactionModel {
   final String? dropID;
   final String? name;
   final String? address;
+  final String? date;
+  final String? time;
   final int totalWastePcs;
 
   TransactionModel({
@@ -42,6 +44,8 @@ class TransactionModel {
     this.dropID,
     this.name,
     this.address,
+    this.date,
+    this.time,
     required this.totalWastePcs,
   });
 
@@ -59,15 +63,15 @@ class TransactionModel {
       deliveryFee: data['deliveryFee'] ?? 0,
       deliveryOption: data['deliveryOption'],
       earnPoints: data['earnPoints'] ?? 0,
-      glassWeight: data['glassWeight'] ?? 0,
+      glassWeight: data['glassWeight'],
       orderStatus: data['orderStatus'] ?? '',
       paymentType: data['paymentType'],
-      plasticWeight: data['plasticWeight'] ?? 0,
+      plasticWeight: data['plasticWeight'],
       totalWeight: data['totalWeight'] ?? 0,
       transactionType: data['transactionType'] ?? '',
       dropID: data['dropID'],
-      name: data['name'],
-      address: data['address'],
+      // name: data['name'],
+      // address: data['address'],
       totalWastePcs: data['totalWastePcs'] ?? 0,
     );
   }
@@ -93,6 +97,8 @@ class TransactionModel {
     String? dropID,
     String? name,
     String? address,
+    String? date,
+    String? time,
     int? totalWastePcs,
   }) {
     return TransactionModel(
@@ -115,6 +121,8 @@ class TransactionModel {
       dropID: dropID ?? this.dropID,
       name: name ?? this.name,
       address: address ?? this.address,
+      date: date ?? this.date,
+      time: time ?? this.time,
       totalWastePcs: totalWastePcs ?? this.totalWastePcs,
     );
   }

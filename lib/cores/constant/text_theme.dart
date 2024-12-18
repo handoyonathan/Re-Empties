@@ -216,6 +216,12 @@ class _TextTheme {
     fontWeight: FontWeight.normal,
     color: colors.red1,
   );
+  final orderType = TextStyle(
+    fontSize: 13.sp,
+    height: 1.5,
+    fontWeight: FontWeight.w700,
+    color: colors.green1,
+  );
   // buat angka qty waste, tnc & how to redeem title (redeem point detail)
   final subtitle2 = TextStyle(
     fontSize: 12.sp,
