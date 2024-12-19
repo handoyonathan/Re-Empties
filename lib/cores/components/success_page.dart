@@ -31,9 +31,9 @@ class SuccessPageState extends State<SuccessPage> {
     Future.delayed(const Duration(seconds: 5), () {
       !widget.isAdmin
           ? widget.isSend
-              ? ctx.goNamed(paths.home)
+              ? ctx.pushReplacementNamed(paths.home)
               : ctx.pop('refresh')
-          : ctx.goNamed(paths.adminView);
+          : ctx.pushReplacementNamed(paths.adminView);
     });
   }
 

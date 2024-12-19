@@ -250,7 +250,7 @@ class UserFormVM extends BaseNotifier with CustomToastMixin {
       await saveTransaction(transactionData: transactionData);
 
       if (send) {
-        ctx.pushNamed(paths.success, extra: <String, dynamic>{
+        ctx.goNamed(paths.success, extra: <String, dynamic>{
           'isSend': isSend,
         });
         return;
@@ -264,7 +264,7 @@ class UserFormVM extends BaseNotifier with CustomToastMixin {
 
       if (temp == 'refresh') {
         // ctx.pop(); // Kembali ke form
-        ctx.pushNamed(paths.dropPointDetail, extra: <String, dynamic>{
+        ctx.goNamed(paths.dropPointDetail, extra: <String, dynamic>{
           'wasteLocation': wasteLocation,
           'dropID': dropID,
           'transactionID': transaction.id,

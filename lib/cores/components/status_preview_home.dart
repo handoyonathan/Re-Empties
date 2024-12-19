@@ -23,7 +23,7 @@ class StatusPreviewHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Determine state-related properties
-    bool isSend = state == "send";
+    bool isSend = state == "Send";
     String actionText = isSend ? "Send Your Waste" : "Drop Your Waste";
     String imageAsset = isSend ? images.sendWaste : images.dropWaste;
 

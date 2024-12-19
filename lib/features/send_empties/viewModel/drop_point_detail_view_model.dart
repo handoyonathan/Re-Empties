@@ -77,7 +77,8 @@ class DropPointDetailVM extends BaseNotifier with CustomToastMixin {
   }
 
   void gotoHome(){
-    ctx.goNamed(paths.home);
+    ctx.pushReplacementNamed(paths.home);
+    // ctx.replaceNamed(paths.home);
   }
 
   /// Handle OTP submission
