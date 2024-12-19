@@ -63,7 +63,7 @@ class _CustomPinputState extends State<CustomPinput> {
       border: Border.all(color: colors.red1),
     );
 
-    if (widget.value.isNotNullOrEmpty) {
+    if (widget.value.isNullOrEmpty) {
       // Jika nilai kosong, inisialisasi controller dengan string kosong
       _pinController = TextEditingController();
     } else {
