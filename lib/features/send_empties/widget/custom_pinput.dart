@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:pinput/pinput.dart';
+import 'package:re_empties/cores/components/string_extension.dart';
 import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
+import 'package:re_empties/features/send_empties/widget/bottom_sheet.dart';
 
 class CustomPinput extends StatefulWidget {
   final Key formKey;
@@ -61,7 +63,12 @@ class _CustomPinputState extends State<CustomPinput> {
       border: Border.all(color: colors.red1),
     );
 
-    if(!widget.isAdmin) _pinController = TextEditingController(text: widget.value);
+    if (widget.value.isNullOrEmpty) {
+      // Jika nilai kosong, inisialisasi controller dengan string kosong
+      _pinController = TextEditingController();
+    } else {
+      _pinController = TextEditingController(text: widget.value);
+    }
 
     // Listener to convert text to uppercase
   _pinController.addListener(() {

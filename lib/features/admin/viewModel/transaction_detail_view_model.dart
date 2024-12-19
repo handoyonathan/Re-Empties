@@ -37,16 +37,18 @@ class TransactionDetailVM extends BaseNotifier with CustomToastMixin {
       currentAdmin = auth.FirebaseAuth.instance.currentUser;
       if (currentAdmin != null) {
         DocumentSnapshot adminDoc = await FirebaseFirestore.instance
-            .collection('admin')
-            .doc(currentAdmin!.uid)
-            .collection('transactions')
+            // .collection('admin')
+            // .doc(currentAdmin!.uid)
+            .collection('transaction')
             .doc(transactionID)
             .get();
 
         if (adminDoc.exists) {
           userID = adminDoc['userID'] ?? '';
+          adminID = adminDoc['adminID'] ?? '';
           // print(userID);
           await fetchUserData2(userID);
+          await fetchAdminData(adminID);
           notifyListeners();
         }
       }
@@ -55,25 +57,23 @@ class TransactionDetailVM extends BaseNotifier with CustomToastMixin {
     }
   }
 
-  Future<void> fetchAdminData() async {
+  Future<void> fetchAdminData(String id) async {
     try {
       currentAdmin = auth.FirebaseAuth.instance.currentUser;
       if (currentAdmin != null) {
-        DocumentSnapshot userDoc = await FirebaseFirestore.instance
-            .collection('admin')
-            .doc(currentAdmin!.uid)
-            .get();
+        DocumentSnapshot adminDoc =
+            await FirebaseFirestore.instance.collection('admin').doc(id).get();
 
-        if (userDoc.exists) {
-          adminID = userDoc.id;
-          adminName = userDoc['adminName'];
-          adminPhoneNum = userDoc['adminPhone'];
-          adminAddress = userDoc['addressStation'];
+        if (adminDoc.exists) {
+          adminID = currentAdmin!.uid;
+          adminName = adminDoc['stationName'];
+          adminPhoneNum = adminDoc['adminPhone'];
+          adminAddress = adminDoc['addressStation'];
           notifyListeners();
         }
       }
     } catch (e) {
-      showCustomToast('Error fetching user data: $e', isError: true);
+      showCustomToast('Error fetching admin data: $e', isError: true);
     }
   }
 
@@ -153,8 +153,11 @@ class TransactionDetailVM extends BaseNotifier with CustomToastMixin {
       // Validasi form
       if (!validateForm()) return;
 
-       // Hitung total berat dan poin
+      // Hitung total berat dan poin
       final weight = wasteWeight.values.fold(0, (sum, qty) => sum + qty);
+      final cardboardWeight = wasteWeight['IwoJoghBYQQrmTRThjlk'];
+      final glassWeight = wasteWeight['uuk14PI0XvaD5jZfouvy'];
+      final plasticWeight = wasteWeight['JEO10T6Zlo3tmYcIYIMR'];
       final point = transactionData.totalWastePcs * 100;
 
       if (!isSend) {
@@ -162,7 +165,10 @@ class TransactionDetailVM extends BaseNotifier with CustomToastMixin {
           'adminID': adminID,
           'weight': weight,
           'point': point,
-          'transactionData': transactionData,          
+          'transactionData': transactionData,
+          'cardboardWeight': cardboardWeight,
+          'glassWeight': glassWeight,
+          'plasticWeight': plasticWeight,
         });
         return;
       }
@@ -172,13 +178,14 @@ class TransactionDetailVM extends BaseNotifier with CustomToastMixin {
         'earnPoints': point,
         'orderStatus': 'Verify',
         'totalWeight': weight,
+        'cardboardWeight': cardboardWeight,
+        'glassWeight': glassWeight,
+        'plasticWeight': plasticWeight,
       };
 
       // Dapatkan referensi dokumen transaksi
       final transactionDocRef = FirebaseFirestore.instance
-          .collection('admin')
-          .doc(adminID)
-          .collection('transactions')
+          .collection('transaction')
           .doc(transactionID);
 
       // Update dokumen transaksi
@@ -188,12 +195,12 @@ class TransactionDetailVM extends BaseNotifier with CustomToastMixin {
       // if (!isSend) {
       //   ctx.pushNamed(paths.fillDropID);
       // } else {
-        showCustomToast('Transaction verified successfully');
-        ctx.pushNamed(paths.success, extra: <String, dynamic>{
-          'isSend': isSend,
-          'isAdmin': true,
-          'point': point
-        });
+      showCustomToast('Transaction verified successfully');
+      ctx.pushNamed(paths.success, extra: <String, dynamic>{
+        'isSend': isSend,
+        'isAdmin': true,
+        'point': point
+      });
       // }
     } catch (e) {
       // Tangani error dan tampilkan notifikasi error
@@ -205,7 +212,7 @@ class TransactionDetailVM extends BaseNotifier with CustomToastMixin {
   FutureOr<void> init() async {
     await fetchWasteCategories();
     await fetchUserData();
-    await fetchAdminData();
+    // await fetchAdminData();
     initializeWasteQuantities(wasteCategories);
   }
 }
