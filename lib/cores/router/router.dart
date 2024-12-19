@@ -116,6 +116,9 @@ setupRouter({required String initialRoute}) {
               transactionData: extra['transactionData'],
               point: extra['point'],
               weight: extra['weight'],
+              plasticWeight: extra['plasticWeight'],
+              cardboardWeight: extra['cardboardWeight'],
+              glassWeight: extra['glassWeight'],
             );
           }),
       GoRoute(

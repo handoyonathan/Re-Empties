@@ -16,18 +16,27 @@ class FillOrderID extends ConsumerStatefulWidget {
   final TransactionModel transactionData;
   final int weight;
   final int point;
+  final int cardboardWeight;
+  final int glassWeight;
+  final int plasticWeight;
   FillOrderID({
     super.key,
     required this.adminID,
     required this.transactionData,
     required this.weight,
     required this.point,
+    required this.glassWeight,
+    required this.cardboardWeight,
+    required this.plasticWeight,
   }) : _viewModel = ChangeNotifierProvider.autoDispose<FillOrderIdVM>((ref) =>
             FillOrderIdVM(ref,
                 adminID: adminID,
                 transactionData: transactionData,
                 point: point,
-                weight: weight
+                weight: weight,
+                cardboardWeight: cardboardWeight,
+                glassWeight: glassWeight,
+                plasticWeight: plasticWeight,
                 ));
 
   final AutoDisposeChangeNotifierProvider<FillOrderIdVM> _viewModel;

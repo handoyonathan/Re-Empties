@@ -12,6 +12,9 @@ class FillOrderIdVM extends BaseNotifier with CustomToastMixin{
   final TransactionModel transactionData;
   final int weight;
   final int point;
+  final int cardboardWeight;
+  final int glassWeight;
+  final int plasticWeight;
 
   final formKey = GlobalKey<FormState>();
   bool showError = false;
@@ -23,6 +26,9 @@ class FillOrderIdVM extends BaseNotifier with CustomToastMixin{
     required this.transactionData,
     required this.weight,
     required this.point,
+    required this.cardboardWeight,
+    required this.glassWeight,
+    required this.plasticWeight,
   });
 
   @override
@@ -59,13 +65,16 @@ class FillOrderIdVM extends BaseNotifier with CustomToastMixin{
         'earnPoints': point,
         'orderStatus': 'Verify',
         'totalWeight': weight,
+        'cardboardWeight': cardboardWeight,
+        'glassWeight': glassWeight,
+        'plasticWeight': plasticWeight,
       };
 
       // Dapatkan referensi dokumen transaksi
       final transactionDocRef = FirebaseFirestore.instance
-          .collection('admin')
-          .doc(adminID)
-          .collection('transactions')
+          // .collection('admin')
+          // .doc(adminID)
+          .collection('transaction')
           .doc(transactionData.transactionId);
 
       // Update dokumen transaksi
