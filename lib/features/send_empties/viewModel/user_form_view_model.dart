@@ -226,7 +226,7 @@ class UserFormVM extends BaseNotifier with CustomToastMixin {
       final dropID = _generateRandomPin();
       final fee = wasteLocation.distance! * 1000;
       print(fee);
-      // final point = weight * 100;
+      final point = pcs * 100;
       final transactionData = {
         'userID': currentUser?.uid ?? '',
         'adminID': adminID,
@@ -250,14 +250,20 @@ class UserFormVM extends BaseNotifier with CustomToastMixin {
       await saveTransaction(transactionData: transactionData);
 
       if (send) {
-        ctx.goNamed(paths.success, extra: <String, dynamic>{
-          'isSend': isSend,
+        // ctx.goNamed(paths.success, extra: <String, dynamic>{
+        //   'isSend': isSend,
+        // });
+        print(transaction.id);
+        ctx.goNamed(paths.countDown, extra: <String, dynamic>{
+          'transactionId': transaction.id,
+          'point': point
         });
         return;
       }
 
       final temp = await ctx.pushNamed(paths.success, extra: <String, dynamic>{
         'isSend': isSend,
+        'point': point,
       });
 
       print(temp);

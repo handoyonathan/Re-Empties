@@ -62,7 +62,7 @@ class SuccessPageState extends State<SuccessPage> {
                 widget.isAdmin
                     ? 'Order has been verified'
                     : widget.isSend
-                        ? 'Payment Successful !'
+                        ? 'Send Waste Successful !'
                         : 'Drop Off Successful !',
                 style: textTheme.successTitle.copyWith(
                   decoration: TextDecoration.none,
