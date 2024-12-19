@@ -29,6 +29,7 @@ class _DashboardViewState extends ConsumerState<DashboardView>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final dashboardVM = ref.read(viewModel);
       dashboardVM.checkLoginStatus(context); // Check login status on load
+      dashboardVM.fetchUserTransactionData();
     });
   }
 
@@ -43,75 +44,89 @@ class _DashboardViewState extends ConsumerState<DashboardView>
     );
   }
 
-  Widget _buildScreen(BuildContext context, DashboardVM vm) => Scaffold(
-        backgroundColor: colors.bgColor,
-        body: SingleChildScrollView(
-          physics: const ClampingScrollPhysics(),
-          child: Column(
-            children: [
-              // Banner that covers the top part of the screen
-              BannerHome(
-                level: 1,
-                isProfilePage: false,
-              ),
+  Widget _buildScreen(BuildContext context, DashboardVM vm) {
+    // Jika data belum dimuat, tampilkan loading indicator atau widget lain
+    if (!vm.isDataLoaded) {
+      return const Center(
+        child: CircularProgressIndicator(),
+      );
+    }
 
-              // Positioned content starting below the banner with a gap of 18.h
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 10),
-                    HomePointsCard(onTap: () {
-                      print("points");
-                    }),
-                    const SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    final transaction = vm.transactions;
+    final admin = vm.adminData;
+
+    return Scaffold(
+      backgroundColor: colors.bgColor,
+      body: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
+        child: Column(
+          children: [
+            BannerHome(
+              level: 5,
+              isProfilePage: false,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                children: [
+                  const SizedBox(height: 10),
+                  HomePointsCard(onTap: () {
+                    print("points");
+                  }),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      HomeSendDropCard(
+                        state: SendDropState.drop,
+                        onTap: () {
+                          vm.goToIntroPage();
+                        },
+                      ),
+                      HomeSendDropCard(
+                        state: SendDropState.send,
+                        onTap: () {
+                          vm.goToIntroPage(isSend: true);
+                        },
+                      ),
+                    ],
+                  ),
+                  Visibility(
+                    visible: transaction != null &&
+                        admin != null, // Menampilkan hanya jika data tersedia
+                    child: Column(
                       children: [
-                        HomeSendDropCard(
-                          state: SendDropState.drop,
+                        const SizedBox(height: 10),
+                        StatusPreviewHome(
+                          state: transaction?.transactionType ??
+                              'Unknown', // Amankan null
+                          dateTime:
+                              '${transaction?.date} ${transaction?.time ?? 'N/A'}', // Amankan null
+                          wasteStation:
+                              admin?.stationName ?? 'Unknown', // Amankan null
                           onTap: () {
-                            vm.goToIntroPage();
-                          },
-                        ),
-                        HomeSendDropCard(
-                          state: SendDropState.send,
-                          onTap: () {
-                            vm.goToIntroPage(isSend: true);
+                            print("Card tapped!");
+                            vm.gotoDetail();
                           },
                         ),
                       ],
                     ),
-                    Visibility(
-                      visible: true, // nanti diganti, diatur dari vm
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 10),
-                          StatusPreviewHome(
-                            state: "send", // or "drop"
-                            dateTime: "Monday, 21/12/24 21:30",
-                            wasteStation: "Green Valley Recycling Center",
-                            onTap: () {
-                              print("Card tapped!");
-                            },
-                          ),
-                        ],
-                      ),
+                  ),
+                  const SizedBox(height: 10),
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      "Articles",
+                      style: textTheme.title,
                     ),
-                    const SizedBox(height: 10),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Articles",
-                        style: textTheme.title,
-                      ),
-                    ),
-                    ArticlePreviewHome(),
-                  ],
-                ),
+                  ),
+                  ArticlePreviewHome(),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-      );
+      ),
+    );
+  }
 }
