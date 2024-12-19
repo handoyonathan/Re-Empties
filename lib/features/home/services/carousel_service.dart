@@ -7,27 +7,27 @@ class CarouselService extends BaseService {
   late ArticleCarouselList articleCarousel;
 
   Future<ArticleCarouselList?> fetchArticlesFromApi() async {
-    try {
-      Response response = await get(url: '/article');
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = response.data;
-        if (responseData['data'] != null && responseData['data'] is List) {
-          List<Data> articles = (responseData['data'] as List)
-              .map((item) => Data.fromJson(item))
-              .toList();
-          print("ARTICLE DATA : $articles");
-          return ArticleCarouselList(data: articles);
-        }
+  try {
+    final response = await get(url: '/article');
+    if (response != null && response.statusCode == 200) {
+      final responseData = response.data as Map<String, dynamic>;
+      if (responseData['data'] != null && responseData['data'] is List) {
+        List<Data> articles = List<Data>.from(
+            responseData['data'].map((item) => Data.fromJson(item as Map<String, dynamic>))
+          );
+        return ArticleCarouselList(data: articles);
+      } else {
         print("Invalid 'data' structure");
-        return null;
       }
-      return null;
-    } catch (e) {
-      print("AAAAAAAAA ERROR REPOOOOOOOOO");
-      print("Error Fetching Article: $e");
-      return null;
+    } else {
+      print("Request failed with status: ${response?.statusCode}");
     }
+  } catch (e) {
+    print("Error Fetching Article: $e");
   }
+  return null;
+}
+
 }
   
 

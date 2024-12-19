@@ -3,6 +3,7 @@ import 'package:re_empties/cores/components/splash_screen.dart';
 import 'package:re_empties/cores/components/success_page.dart';
 import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:re_empties/features/admin/view/admin_profile.dart';
+import 'package:re_empties/features/article/view/article_view.dart';
 import 'package:re_empties/features/authentication/views/login_view.dart';
 import 'package:re_empties/features/authentication/views/register_view.dart';
 import 'package:re_empties/features/home/view/home_view.dart';
@@ -98,12 +99,16 @@ setupRouter({required String initialRoute}) {
               isSend: extra['isSend'] ?? false,
             );
           }),
-      // GoRoute(
-      //     path: '/article',
-      //     name: paths.article,
-      //     builder: (context, state) => const ArticleView(
-      //           articleId: articleId,
-      //         )),
+      GoRoute(
+          path: '/article',
+          name: paths.article,
+          builder: (context, state) {
+            final extra = state.extra as Map<String, dynamic>;
+
+            return ArticleView(
+                articleId: extra['articleId'],
+              );
+          } ),
       GoRoute(
           path: '/dropPointDetail',
           name: paths.dropPointDetail,

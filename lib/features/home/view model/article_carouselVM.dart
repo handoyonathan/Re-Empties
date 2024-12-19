@@ -18,12 +18,15 @@ class ArticleCarouselVM extends ChangeNotifier with CustomToastMixin {
     loadArticle();
   }
 
-  Future<void> loadArticle() async {
-    isLoading = true;
+ Future<void> loadArticle() async {
+  isLoading = true;
+  notifyListeners();  // Notify listeners that loading has started
 
-    showCustomToast("Ini Masuk Load Article");
+  try {
     print("LOAD ARTICLE");
     final articles = await _carouselService.fetchArticlesFromApi();
+    print(articles);
+
     if (articles != null) {
       carouselList = articles;
       showCustomToast("Data successfully loaded!");
@@ -32,18 +35,13 @@ class ArticleCarouselVM extends ChangeNotifier with CustomToastMixin {
       showCustomToast("FAILED");
       print("FAIL");
     }
-    // } catch (e) {
-    //   showCustomToast("An error occurred: $e");
-    // }
-
-    //   ArticleCarouselList? carouselList; = await _carouselService.fetchArticlesFromApi();
-    //   isLoading = false;
-    //   if (response?.statusCode == 200) {
-    //     showCustomToast("Asik masuk brok datanya");
-    //     carouselList =
-    //         ArticleCarouselList.fromJson(response as Map<String, dynamic>);
-    //   } else {
-    //     showCustomToast("Seperti mati lampu ya sayang");
-    //   }
+  } catch (e) {
+    showCustomToast("An error occurred: $e");
+    print("ERROR: $e");
+  } finally {
+    isLoading = false;  // Set to false once the loading is complete (success or failure)
+    notifyListeners();  // Notify listeners that loading has finished
   }
+}
+
 }

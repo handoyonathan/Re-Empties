@@ -27,16 +27,18 @@ class BaseService with CustomToastMixin {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          // Add common headers here
-          // options.headers['Authorization'] = 'd979-103-120-175-11';
-          // return handler.next(options);
+          // print("Request [${options.method}] => PATH: ${options.path}");
+          // print("Request Headers: ${options.headers}");
+          // print("Request Data: ${options.data}");
+          return handler.next(options);
         },
         onResponse: (response, handler) async {
-          // Process successful responses here
+          // print("Response [${response.statusCode}] => DATA: ${response.data}");
           return handler.next(response);
         },
         onError: (DioException error, handler) async {
-          // Process errors here
+          // print("Error [${error.response?.statusCode}] => ${error.message}");
+          // print("Error Data: ${error.response?.data}");
           return handler.next(error);
         },
       ),
@@ -49,9 +51,27 @@ class BaseService with CustomToastMixin {
       showCustomToast("Network is not available");
       return;
     }
-    final Response<dynamic> response =
-        await _dio.get('${ApiConstants.baseURL}$url', queryParameters: params);
-    return response.data;
+
+    try {
+      final response = await _dio.get('${_dio.options.baseUrl}$url',
+          queryParameters: params);
+
+      // Periksa status code
+      if (response.statusCode == 200) {
+        print("Response: ${response.data}");
+        return response;
+      } else {
+        print("Error: Status Code ${response.statusCode}");
+        showCustomToast("Error: Status Code ${response.statusCode}");
+      }
+    } catch (e) {
+      if (e is DioException) {
+        print("DioException: ${e.response?.statusCode}");
+        print("Error Data: ${e.response?.data}");
+      } else {
+        print("Unexpected Error: $e");
+      }
+    }
   }
 
   Future<dynamic> post(String url, {Map<String, dynamic>? data}) async {
