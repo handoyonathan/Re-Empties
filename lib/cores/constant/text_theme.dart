@@ -3,6 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:re_empties/cores/constant/colors.dart';
 
 class _TextTheme {
+  final countdown = TextStyle(
+    fontSize: 64.sp,
+    height: 1.5,
+    fontWeight: FontWeight.w600,
+    color: colors.bgColor,
+  );
   final headline1 = TextStyle(
     fontSize: 35.sp,
     height: 1.5,

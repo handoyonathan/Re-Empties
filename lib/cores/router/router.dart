@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:re_empties/features/send_empties/views/countdown_view.dart';
 import 'package:re_empties/cores/components/splash_screen.dart';
 import 'package:re_empties/cores/components/success_page.dart';
 import 'package:re_empties/cores/router/router_constant.dart';
@@ -91,6 +92,17 @@ setupRouter({required String initialRoute}) {
               isAdmin: extra['isAdmin'] ?? false,
               point: extra['point'],
               isSend: extra['isSend'] ?? false,
+            );
+          }),
+      GoRoute(
+          path: '/countDown',
+          name: paths.countDown,
+          builder: (context, state) {
+            final extra = state.extra as Map<String, dynamic>;
+
+            return CountdownView(
+              transactionId: extra['transactionId'],
+              point: extra['point'],
             );
           }),
       GoRoute(
