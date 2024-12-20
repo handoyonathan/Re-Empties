@@ -12,7 +12,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   ); // Inisialisasi Firebase
-  setupRouter(initialRoute: '/test'); // Setup router
+  setupRouter(initialRoute: '/'); // Setup router
   runApp(
     const ProviderScope(
       child: MyApp(),

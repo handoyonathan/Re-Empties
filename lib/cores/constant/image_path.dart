@@ -40,7 +40,7 @@ class _ImagePath {
   final String successBg = '$_imagePath/success_bg.png';
   final String profileUser = '$_imagePath/user_profile_picture.png';
   final String pointsProfile = '$_imagePath/background_level_profile.png';
-
+  final String voucherCoffee = '$_imagePath/voucherCoffee.png';
 
   // patterns ///////////////////////////////////////
   final String headerMenuUtama = '$_patternPath/Header_MenuUtama.png';

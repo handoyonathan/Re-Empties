@@ -20,6 +20,7 @@ import 'package:re_empties/features/send_empties/views/drop_point_detail_view.da
 import 'package:re_empties/features/send_empties/views/user_form_view.dart';
 import 'package:re_empties/features/send_empties/views/intro_page_view.dart';
 import 'package:re_empties/features/send_empties/views/location_view.dart';
+import 'package:re_empties/features/voucher/views/voucher_detail_page_view.dart';
 
 late GoRouter _router;
 GoRouter get router => _router;
@@ -38,7 +39,7 @@ setupRouter({required String initialRoute}) {
         path: '/test',
         name: paths.test,
         builder: (context, state) =>
-            const TestWidget(), // Tambahkan builder untuk halaman utama
+            const VoucherDetailPageView(), // Tambahkan builder untuk halaman utama
       ),
       GoRoute(
         path: '/home',
@@ -110,10 +111,11 @@ setupRouter({required String initialRoute}) {
             final extra = state.extra as Map<String, dynamic>;
 
             return FillOrderID(
-                adminID: extra['adminID'],
-                transactionData: extra['transactionData'],
-                point: extra['point'],
-                weight: extra['weight'],);
+              adminID: extra['adminID'],
+              transactionData: extra['transactionData'],
+              point: extra['point'],
+              weight: extra['weight'],
+            );
           }),
       GoRoute(
           path: '/sendForm',
