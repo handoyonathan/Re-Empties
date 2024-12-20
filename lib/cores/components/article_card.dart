@@ -25,7 +25,7 @@ class ArticleCard extends StatelessWidget {
               height: 142.h,
               width: double.infinity,
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(10.r),
                 child: Image.network(
                   imageUrl,
                   fit: BoxFit.contain,

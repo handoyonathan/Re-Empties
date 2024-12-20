@@ -68,7 +68,7 @@ class AdminProfileState extends State<AdminProfile> {
           ),
         ),
         bottomNavigationBar: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 32.w),
+          padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 20.h),
           child: AppMainButton(
             state: ButtonState.primary,
             text: 'logout',

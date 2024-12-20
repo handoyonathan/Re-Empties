@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:re_empties/cores/components/article_preview_home.dart';
 import 'package:re_empties/cores/components/banner_home.dart';
 import 'package:re_empties/cores/components/hidden_app_bar.dart';
@@ -28,7 +30,7 @@ class _DashboardViewState extends ConsumerState<DashboardView>
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final dashboardVM = ref.read(viewModel);
-      dashboardVM.checkLoginStatus(context); // Check login status on load
+      dashboardVM.checkLoginStatus(context);
       dashboardVM.fetchUserTransactionData();
     });
   }
@@ -66,14 +68,14 @@ class _DashboardViewState extends ConsumerState<DashboardView>
               isProfilePage: false,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+              padding: EdgeInsets.symmetric(horizontal: 24.h),
               child: Column(
                 children: [
-                  const SizedBox(height: 10),
+                  Gap(10.h),
                   HomePointsCard(onTap: () {
                     print("points");
                   }),
-                  const SizedBox(height: 10),
+                  Gap(10.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -112,7 +114,7 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                       ],
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  Gap(10.h),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -121,6 +123,7 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                     ),
                   ),
                   ArticlePreviewHome(),
+                  Gap(30.h),
                 ],
               ),
             ),

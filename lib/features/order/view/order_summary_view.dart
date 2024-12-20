@@ -35,7 +35,7 @@ class OrderSummaryView extends StatelessWidget {
           backgroundColor: colors.bgColor,
         ),
         builder: _buildScreen,
-        disableSafeArea: false,
+        disableSafeArea: true,
       );
 
   Widget _buildScreen(BuildContext context, OrderSummaryVM vm) {
@@ -65,154 +65,158 @@ class OrderSummaryView extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: colors.bgColor,
-      body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  padding: EdgeInsets.all(7.w),
-                  width: 42.w,
-                  height: 42.h,
-                  decoration: BoxDecoration(
-                    color: colors.green4,
-                    shape: BoxShape.circle,
-                  ),
-                  child: ImageAsset(
-                    imagePath: transaction.transactionType == 'Send'
-                        ? images.sendWaste
-                        : images.dropWaste,
-                  ),
-                ),
-                Gap(10.w),
-                Text(
-                  '${transaction.transactionType} Your Waste',
-                  style: textTheme.orderType,
-                ),
-                Expanded(
-                  child: Text(
-                    '${transaction.date} ${transaction.time}',
-                    style: textTheme.homeShipLabel2,
-                    textAlign: TextAlign.right,
-                    overflow: TextOverflow.fade,
-                  ),
-                ),
-              ],
-            ),
-            Gap(10.h),
-            Divider(
-              color: colors.gray4,
-              height: 1.h,
-            ),
-            Gap(10.h),
-            Text(
-              transaction.orderStatus == 'Delivery'
-                  ? '${transaction.transactionType} Ongoing'
-                  : transaction.orderStatus == 'Verify'
-                      ? '${transaction.transactionType} Finished'
-                      : '${transaction.transactionType} Canceled',
-              style: textTheme.appbarTitle.copyWith(
-                color: transaction.orderStatus == 'Canceled'
-                    ? colors.red1
-                    : colors.green1,
-              ),
-            ),
-            Gap(20.h),
-            Row(
-              children: [
-                ImageAsset(
-                  imagePath: images.address,
-                  width: 38.w,
-                  height: 180.h,
-                ),
-                Gap(5.w),
-                Expanded(
-                  child: Column(
-                    children: [
-                      DeliveryDetailContainer(
-                        isUser: true,
-                        name: vm.userFullName,
-                        phoneNumber: vm.userPhoneNum,
-                        address: vm.userAddress,
-                      ),
-                      Gap(15.h),
-                      DeliveryDetailContainer(
-                        isUser: false,
-                        name: vm.adminFullName,
-                        phoneNumber: vm.adminPhoneNum,
-                        address: vm.adminAddress,
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-            Gap(20.h),
-            Visibility(
-              visible: transaction.orderStatus == "Verify",
-              child: Column(
+      body: SingleChildScrollView(
+        physics: const ClampingScrollPhysics(),
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 20.w),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  CustomDetailsCard(
-                    type: 'transaction',
-                    data: {
-                      'state': transaction.orderStatus == 'Delivery'
-                          ? 'ongoing'
-                          : 'done',
-                      'plastic': transaction.plasticWeight,
-                      'glass': transaction.glassWeight,
-                      'cardboard': transaction.cardboardWeight,
-                      'total': transaction.totalWastePcs,
-                      'points': transaction.earnPoints != 0
-                          ? transaction.earnPoints
-                          : null,
-                    },
+                  Container(
+                    padding: EdgeInsets.all(7.w),
+                    width: 42.w,
+                    height: 42.h,
+                    decoration: BoxDecoration(
+                      color: colors.green4,
+                      shape: BoxShape.circle,
+                    ),
+                    child: ImageAsset(
+                      imagePath: transaction.transactionType == 'Send'
+                          ? images.sendWaste
+                          : images.dropWaste,
+                    ),
                   ),
-                  Gap(15.h),
+                  Gap(10.w),
+                  Text(
+                    '${transaction.transactionType} Your Waste',
+                    style: textTheme.orderType,
+                  ),
+                  Expanded(
+                    child: Text(
+                      '${transaction.date} ${transaction.time}',
+                      style: textTheme.homeShipLabel2,
+                      textAlign: TextAlign.right,
+                      overflow: TextOverflow.fade,
+                    ),
+                  ),
                 ],
               ),
-            ),
-            Visibility(
-              visible: transaction.transactionType == 'Send' &&
-                  transaction.orderStatus != 'Canceled',
-              child: CustomDetailsCard(
-                type: 'payment',
-                data: {
-                  'fee': transaction.deliveryFee,
-                  'subtotal': transaction.deliveryFee,
-                  'total': transaction.deliveryFee,
-                },
+              Gap(10.h),
+              Divider(
+                color: colors.gray4,
+                height: 1.h,
               ),
-            ),
-            Visibility(
-              visible: transaction.transactionType == 'Drop' &&
-                  transaction.orderStatus == 'Delivery',
-              child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 10.w),
-                width: double.infinity,
-                height: 40.h,
-                decoration: BoxDecoration(
-                  color: colors.yellow4,
-                  borderRadius: BorderRadius.circular(15.0),
+              Gap(10.h),
+              Text(
+                transaction.orderStatus == 'Delivery'
+                    ? '${transaction.transactionType} Ongoing'
+                    : transaction.orderStatus == 'Verify'
+                        ? '${transaction.transactionType} Finished'
+                        : '${transaction.transactionType} Canceled',
+                style: textTheme.appbarTitle.copyWith(
+                  color: transaction.orderStatus == 'Canceled'
+                      ? colors.red1
+                      : colors.green1,
                 ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              ),
+              Gap(20.h),
+              Row(
+                children: [
+                  ImageAsset(
+                    imagePath: images.address,
+                    width: 38.w,
+                    height: 180.h,
+                  ),
+                  Gap(5.w),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        DeliveryDetailContainer(
+                          isUser: true,
+                          name: vm.userFullName,
+                          phoneNumber: vm.userPhoneNum,
+                          address: vm.userAddress,
+                        ),
+                        Gap(15.h),
+                        DeliveryDetailContainer(
+                          isUser: false,
+                          name: vm.adminFullName,
+                          phoneNumber: vm.adminPhoneNum,
+                          address: vm.adminAddress,
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              Gap(20.h),
+              Visibility(
+                visible: transaction.orderStatus == "Verify",
+                child: Column(
                   children: [
-                    Text(
-                      'Drop ID',
-                      style: textTheme.orderStationName,
+                    CustomDetailsCard(
+                      type: 'transaction',
+                      data: {
+                        'state': transaction.orderStatus == 'Delivery'
+                            ? 'ongoing'
+                            : 'done',
+                        'plastic': transaction.plasticWeight,
+                        'glass': transaction.glassWeight,
+                        'cardboard': transaction.cardboardWeight,
+                        'total': transaction.totalWastePcs,
+                        'points': transaction.earnPoints != 0
+                            ? transaction.earnPoints
+                            : null,
+                      },
                     ),
-                    Text(
-                      '${transaction.dropID}',
-                      style: textTheme.orderStationName,
-                    ),
+                    Gap(15.h),
                   ],
                 ),
               ),
-            ),
-          ],
+              Visibility(
+                visible: transaction.transactionType == 'Send' &&
+                    transaction.orderStatus != 'Canceled',
+                child: CustomDetailsCard(
+                  type: 'payment',
+                  data: {
+                    'fee': transaction.deliveryFee,
+                    'subtotal': transaction.deliveryFee,
+                    'total': transaction.deliveryFee,
+                  },
+                ),
+              ),
+              Visibility(
+                visible: transaction.transactionType == 'Drop' &&
+                    transaction.orderStatus == 'Delivery',
+                child: Container(
+                  padding: EdgeInsets.symmetric(horizontal: 10.w),
+                  width: double.infinity,
+                  height: 40.h,
+                  decoration: BoxDecoration(
+                    color: colors.yellow4,
+                    borderRadius: BorderRadius.circular(15.0),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Drop ID',
+                        style: textTheme.orderStationName,
+                      ),
+                      Text(
+                        '${transaction.dropID}',
+                        style: textTheme.orderStationName,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Gap(50.h),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: transaction.orderStatus == 'Delivery' &&
@@ -220,7 +224,7 @@ class OrderSummaryView extends StatelessWidget {
           ? Container(
               color: colors.bgColor,
               alignment: Alignment.center,
-              height: 70.h,
+              height: 120.h,
               child: AppMainButton(
                 state: ButtonState.cancel,
                 text: 'Cancel',
