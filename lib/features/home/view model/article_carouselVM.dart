@@ -18,30 +18,27 @@ class ArticleCarouselVM extends ChangeNotifier with CustomToastMixin {
     loadArticle();
   }
 
- Future<void> loadArticle() async {
-  isLoading = true;
-  notifyListeners();  // Notify listeners that loading has started
+  Future<void> loadArticle() async {
+    isLoading = true;
+    notifyListeners(); // Notify listeners that loading has started
 
-  try {
-    print("LOAD ARTICLE");
-    final articles = await _carouselService.fetchArticlesFromApi();
-    print(articles);
+    try {
+      print("LOAD ARTICLE");
+      final articles = await _carouselService.fetchArticlesFromApi();
+      print(articles);
 
-    if (articles != null) {
-      carouselList = articles;
-      showCustomToast("Data successfully loaded!");
-      print("SUCCESS LOAD ARTICLE");
-    } else {
-      showCustomToast("FAILED");
-      print("FAIL");
+      if (articles != null) {
+        carouselList = articles;
+        showCustomToast("Data successfully loaded!");
+      } else {
+        showCustomToast("FAILED");
+      }
+    } catch (e) {
+      showCustomToast("An error occurred: $e");
+    } finally {
+      isLoading =
+          false; // Set to false once the loading is complete (success or failure)
+      notifyListeners(); // Notify listeners that loading has finished
     }
-  } catch (e) {
-    showCustomToast("An error occurred: $e");
-    print("ERROR: $e");
-  } finally {
-    isLoading = false;  // Set to false once the loading is complete (success or failure)
-    notifyListeners();  // Notify listeners that loading has finished
   }
-}
-
 }

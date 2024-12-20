@@ -63,13 +63,13 @@ class _ArticlePreviewHomeState extends State<ArticlePreviewHome> {
                       imageUrl: carousel.carouselPhoto,
                       onTap: () async {
                         print('Tapped article ID: ${carousel.articleId}');
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) =>
-                        //         ArticleView(articleId: carousel.articleId),
-                        //   ),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ArticleView(articleId: carousel.articleId),
+                          ),
+                        );
                         ctx.pushNamed(paths.article, extra: <String, dynamic>{
                           'articleId': carousel.articleId,
                         });

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:re_empties/features/home/model/article_carousel_model.dart';
 
@@ -7,27 +9,29 @@ class CarouselService extends BaseService {
   late ArticleCarouselList articleCarousel;
 
   Future<ArticleCarouselList?> fetchArticlesFromApi() async {
-  try {
-    final response = await get(url: '/article');
-    if (response != null && response.statusCode == 200) {
-      final responseData = response.data as Map<String, dynamic>;
-      if (responseData['data'] != null && responseData['data'] is List) {
-        List<Data> articles = List<Data>.from(
-            responseData['data'].map((item) => Data.fromJson(item as Map<String, dynamic>))
-          );
-        return ArticleCarouselList(data: articles);
+    try {
+      final response = await get(url: '/article');
+      if (response != null && response.statusCode == 200) {
+        // final responseData = response.data as Map<String, dynamic>;
+        var responseData = response.data;
+        if (response.data is String) {
+          responseData = json.decode(response.data); // Decode JSON string
+        }
+        if (responseData['data'] != null && responseData['data'] is List) {
+          List<Data> articles = List<Data>.from(responseData['data']
+              .map((item) => Data.fromJson(item as Map<String, dynamic>)));
+          return ArticleCarouselList(data: articles);
+        } else {
+          print("Invalid 'data' structure");
+        }
       } else {
-        print("Invalid 'data' structure");
+        print("Request failed with status: ${response?.statusCode}");
       }
-    } else {
-      print("Request failed with status: ${response?.statusCode}");
+    } catch (e) {
+      print("Error Fetching Article: $e");
     }
-  } catch (e) {
-    print("Error Fetching Article: $e");
+    return null;
   }
-  return null;
-}
-
 }
   
 

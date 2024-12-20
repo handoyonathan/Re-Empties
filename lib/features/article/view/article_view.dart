@@ -23,7 +23,7 @@ class ArticleView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Fetch article data using the articleId passed to the view
-    ref.read(_viewModel).fetchArticleData(articleId);
+    ref.read(_viewModel).articleDetails;
     return BaseView(
         provider: _viewModel,
         appBar: (_) => CustomAppBar(
@@ -47,7 +47,7 @@ class ArticleView extends ConsumerWidget {
           ? Center(
               child: CircularProgressIndicator(
                   color: colors.green1, backgroundColor: colors.background))
-          : vm.articleDetails.articleDetails.articleDetails.isEmpty
+          : vm.articleDetails!.articleDetails.isEmpty
               ? Center(
                   child: ImageAsset(
                   imagePath: images.errorIllustration,
@@ -59,26 +59,24 @@ class ArticleView extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      for (var article
-                          in vm.articleDetails.articleDetails.articleDetails)
+                      for (var article in vm.articleDetails!.articleDetails)
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // title
                             Text(
-                              vm.articleDetails.articleDetails.articleName,
+                              vm.articleDetails!.articleName,
                               style: textTheme.articleTitle,
                               textAlign: TextAlign.left,
                             ),
                             Text(
-                              "${vm.articleDetails.articleDetails.author} | ${vm.articleDetails.articleDetails.publishedDate} ",
+                              "${vm.articleDetails!.author} | ${vm.articleDetails!.publishedDate} ",
                               style: textTheme.badgesText,
                               textAlign: TextAlign.left,
                             ),
                             Gap(15),
                             Text(
-                              vm.articleDetails.articleDetails
-                                  .articleDescription,
+                              vm.articleDetails!.articleDescription,
                               style: textTheme.articleIntro,
                               textAlign: TextAlign.left,
                             ),

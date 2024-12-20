@@ -44,18 +44,16 @@ class Data {
       this.deletedAt});
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    articleId : json['articleId'],
-    createdAt : json['created_at'],
-    updatedAt : json['updated_at'],
-    articleName : json['articleName'],
-    author : json['author'],
-    publishedDate : json['publishedDate'],
-    articleDescription : json['articleDescription'],
-    carouselPhoto : json['carouselPhoto'],
-    deletedAt : json['deleted_at'],
-  ); 
-    
-  
+        articleId: json['articleId'],
+        createdAt: json['created_at'],
+        updatedAt: json['updated_at'],
+        articleName: json['articleName'],
+        author: json['author'],
+        publishedDate: json['publishedDate'],
+        articleDescription: json['articleDescription'],
+        carouselPhoto: (json['carouselPhoto'] as String).replaceAll(r'\/', '/'),
+        deletedAt: json['deleted_at'],
+      );
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
