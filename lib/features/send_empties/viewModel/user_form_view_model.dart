@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import 'package:re_empties/cores/components/custom_toast_mixin.dart';
 import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:re_empties/cores/template/notifer.dart';
@@ -12,7 +14,9 @@ import 'package:re_empties/features/send_empties/widget/bottom_sheet.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 
 class UserFormVM extends BaseNotifier with CustomToastMixin {
-  UserFormVM(super.ref);
+  UserFormVM(super.ref, {required this.wasteLocation});
+
+  final Admin wasteLocation;
 
   int? selectedPaymentMethod;
   int? selectedDeliveryMethod;
@@ -27,6 +31,7 @@ class UserFormVM extends BaseNotifier with CustomToastMixin {
 
   // Properti terkait quantity
   Map<String, int> wasteQuantities = {};
+  late final fee;
 
   Future<void> fetchUserData() async {
     try {
@@ -91,6 +96,7 @@ class UserFormVM extends BaseNotifier with CustomToastMixin {
       List<PaymentOptionModel> paymentOptions = await fetchPaymentOptions();
       showOptionsModal(
         context: ctx,
+        price: 'Rp ${fee}',
         options: paymentOptions,
         selectedValue: selectedPaymentMethod ?? 0,
         onSelected: (int value) {
@@ -183,24 +189,27 @@ class UserFormVM extends BaseNotifier with CustomToastMixin {
   }
 
   late bool send;
-  late var transactionId;
+  late var transaction;
 
   Future<void> saveTransaction({
-    required String adminID,
     required Map<String, dynamic> transactionData,
   }) async {
     try {
       // Simpan data transaksi di dalam subkoleksi `transaction` milik admin
-      transactionId = await FirebaseFirestore.instance
-          .collection('admin')
-          .doc(adminID)
-          .collection('transactions')
+      transaction = await FirebaseFirestore.instance
+          .collection('transaction')
           .add(transactionData);
 
       showCustomToast('Transaction saved successfully');
     } catch (e) {
       showCustomToast('Error saving transaction: $e', isError: true);
     }
+  }
+
+  String _generateRandomPin() {
+    final random = Random();
+    final numbers = List.generate(5, (_) => random.nextInt(10)).join();
+    return 'DO$numbers';
   }
 
   void goToSuccessPage({
@@ -214,7 +223,10 @@ class UserFormVM extends BaseNotifier with CustomToastMixin {
 
     if (validateForm()) {
       final pcs = wasteQuantities.values.fold(0, (sum, qty) => sum + qty);
-      // final point = weight * 100;
+      final dropID = _generateRandomPin();
+      final fee = wasteLocation.distance! * 1000;
+      print(fee);
+      final point = pcs * 100;
       final transactionData = {
         'userID': currentUser?.uid ?? '',
         'adminID': adminID,
@@ -222,34 +234,60 @@ class UserFormVM extends BaseNotifier with CustomToastMixin {
         'currentLocationLat': currentLat,
         'currentLocationLong': currentLong,
         'dateTime': DateTime.now(),
-        'deliveryFee': send ? 10000 : null,
+        'deliveryFee': send ? fee.toInt() : null,
         'deliveryOption': send ? selectedDeliveryTitle : null,
         // 'earnPoints': point,
         // 'glassWeight': wasteQuantities['uuk14PI0XvaD5jZfouvy'],
-        'orderStatus': send ? 'Order Received' : 'Delivery',
-        'paymentType': selectedPaymentTitle,
+        'orderStatus': 'Delivery',
+        'paymentType': send ? selectedPaymentTitle : null,
         // 'plasticWeight': wasteQuantities['JEO10T6Zlo3tmYcIYIMR'],
         // 'totalWeight': weight,
+        'dropID': !send ? dropID : null,
         'transactionType': send ? 'Send' : 'Drop',
-        'totalWastePcs' : pcs,
+        'totalWastePcs': pcs,
       };
 
-      await saveTransaction(adminID: adminID, transactionData: transactionData);
+      await saveTransaction(transactionData: transactionData);
 
       if (send) {
-        ctx.pushNamed(paths.success, extra: <String, dynamic>{
-          'isSend': isSend,
+        // ctx.goNamed(paths.success, extra: <String, dynamic>{
+        //   'isSend': isSend,
+        // });
+        print(transaction.id);
+        ctx.goNamed(paths.countDown, extra: <String, dynamic>{
+          'transactionId': transaction.id,
+          'point': point
         });
         return;
       }
 
-      // Jika tidak send, pindah ke halaman drop point detail
-      ctx.pushNamed(paths.dropPointDetail, extra: <String, dynamic>{
-        'wasteLocation': wasteLocation,
+      final temp = await ctx.pushNamed(paths.success, extra: <String, dynamic>{
         'isSend': isSend,
-        'transactionID': transactionId.id,
+        'point': point,
       });
+
+      print(temp);
+
+      if (temp == 'refresh') {
+        // ctx.pop(); // Kembali ke form
+        ctx.goNamed(paths.dropPointDetail, extra: <String, dynamic>{
+          'wasteLocation': wasteLocation,
+          'dropID': dropID,
+          'transactionID': transaction.id,
+        });
+      }
+
+      print('asdas');
     }
+  }
+
+  String _formatCurrency(double amount) {
+    final formatter = NumberFormat.currency(
+      locale: 'id',
+      symbol: '',
+      decimalDigits: 0,
+    );
+    return formatter.format(amount).trim();
   }
 
   @override
@@ -257,5 +295,6 @@ class UserFormVM extends BaseNotifier with CustomToastMixin {
     await fetchWasteCategories();
     await fetchUserData();
     initializeWasteQuantities(wasteCategories);
+    fee = _formatCurrency(wasteLocation.distance! * 1000);
   }
 }

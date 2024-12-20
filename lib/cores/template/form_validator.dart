@@ -20,39 +20,39 @@ mixin FormValidatorMixin on BaseNotifier {
       if (setPhoneBorderError != null) {
         setPhoneBorderError();
       }
-      return '$label tidak boleh kosong';
+      return '$label can not be empty';
     }
 
     // Length / 8 Characters validation
     if (validationList.contains(Validator.length) && value.length < 8) {
-      return '$label kurang dari 8 karakter';
+      return '$label must be at least 8 characters';
     }
 
     if (validationList.contains(Validator.phoneFormat) &&
         !phoneRegex.hasMatch(value)) {
-      return '$label hanya boleh berisi angka dan diawali dengan +62';
+      return '$label hmust be number and start with +62';
     }
 
     // Email validation
     if (validationList.contains(Validator.emailFormat) &&
-        !emailRegex.hasMatch(value)) return 'Format email salah';
+        !emailRegex.hasMatch(value)) return 'Email must be a valid email';
 
     // Password validation
     if (validationList.contains(Validator.passwordFormat) &&
         !passwordRegex.hasMatch(value)) {
-      return 'Format password salah';
+      return 'Password must be 8 alphanumeric characters';
     }
 
     // Confirm Password validation
     if (validationList.contains(Validator.confirmPassword) &&
         ((confirmValue ?? '').isEmpty || value != (confirmValue ?? ''))) {
-      return 'Password yang Anda masukkan tidak sesuai';
+      return 'Password not matches';
     }
 
     // full name validation
     if (validationList.contains(Validator.nameFormat) &&
         !nameRegex.hasMatch(value)) {
-      return 'Nama yang Anda masukkan tidak sesuai';
+      return 'name must be at least 4 character';
     }
 
     return null;

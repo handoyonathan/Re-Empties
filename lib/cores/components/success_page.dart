@@ -29,7 +29,11 @@ class SuccessPageState extends State<SuccessPage> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 5), () {
-      !widget.isAdmin ? ctx.goNamed(paths.home) : ctx.goNamed(paths.adminView);
+      !widget.isAdmin
+          ? widget.isSend
+              ? ctx.pushReplacementNamed(paths.home)
+              : ctx.pop('refresh')
+          : ctx.pushReplacementNamed(paths.adminView);
     });
   }
 
@@ -58,7 +62,7 @@ class SuccessPageState extends State<SuccessPage> {
                 widget.isAdmin
                     ? 'Order has been verified'
                     : widget.isSend
-                        ? 'Payment Successful !'
+                        ? 'Send Waste Successful !'
                         : 'Drop Off Successful !',
                 style: textTheme.successTitle.copyWith(
                   decoration: TextDecoration.none,

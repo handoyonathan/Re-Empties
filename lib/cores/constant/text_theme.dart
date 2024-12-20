@@ -3,6 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:re_empties/cores/constant/colors.dart';
 
 class _TextTheme {
+  final countdown = TextStyle(
+    fontSize: 64.sp,
+    height: 1.5,
+    fontWeight: FontWeight.w600,
+    color: colors.bgColor,
+  );
   final headline1 = TextStyle(
     fontSize: 35.sp,
     height: 1.5,
@@ -215,6 +221,12 @@ class _TextTheme {
     height: 1.5,
     fontWeight: FontWeight.normal,
     color: colors.red1,
+  );
+  final orderType = TextStyle(
+    fontSize: 13.sp,
+    height: 1.5,
+    fontWeight: FontWeight.w700,
+    color: colors.green1,
   );
   // buat angka qty waste, tnc & how to redeem title (redeem point detail)
   final subtitle2 = TextStyle(

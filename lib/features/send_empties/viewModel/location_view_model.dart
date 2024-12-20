@@ -131,6 +131,7 @@ class LocationVM extends BaseNotifier with CustomToastMixin {
             const LocationSettings(accuracy: LocationAccuracy.high),
       );
       userPosition = LatLng(position.latitude, position.longitude);
+      print(userPosition);
       userController.text = await getAddressFromLongLat(position);
       notifyListeners();
     } catch (e) {
@@ -192,40 +193,77 @@ class LocationVM extends BaseNotifier with CustomToastMixin {
   }
 
   Future<void> calculateDistancesForAllWasteStations() async {
-  // Check if user position is available
-  if (userPosition == null) {
-    print('User position is null.');
-    return;
+    // Check if user position is available
+    if (userPosition == null) {
+      print('User position is null.');
+      return;
+    }
+
+    // Iterate through all waste stations and calculate the distance for each
+    for (var station in _wasteStations) {
+      final wasteLocation = station.wasteLocation;
+      double lat1 = userPosition!.latitude;
+      double lon1 = userPosition!.longitude;
+      double lat2 = wasteLocation.latitude;
+      double lon2 = wasteLocation.longitude;
+
+      // Calculate the distance
+      double distanceInMeters =
+          Geolocator.distanceBetween(lat1, lon1, lat2, lon2);
+      double distanceInKm =
+          distanceInMeters / 1000; // Convert meters to kilometers
+
+      // Format the distance to two decimal places
+      String formattedDistance = distanceInKm.toStringAsFixed(2);
+
+      // Save the formatted distance to the waste station
+      station.distance = double.tryParse(
+          formattedDistance); // Store as double or as string if you prefer
+    }
+
+    // Notify listeners to update the UI
+    notifyListeners();
   }
-
-  // Iterate through all waste stations and calculate the distance for each
-  for (var station in _wasteStations) {
-    final wasteLocation = station.wasteLocation;
-    double lat1 = userPosition!.latitude;
-    double lon1 = userPosition!.longitude;
-    double lat2 = wasteLocation.latitude;
-    double lon2 = wasteLocation.longitude;
-
-    // Calculate the distance
-    double distanceInMeters = await Geolocator.distanceBetween(lat1, lon1, lat2, lon2);
-    double distanceInKm = distanceInMeters / 1000; // Convert meters to kilometers
-
-    // Format the distance to two decimal places
-    String formattedDistance = distanceInKm.toStringAsFixed(2);
-
-    // Save the formatted distance to the waste station
-    station.distance = double.tryParse(formattedDistance); // Store as double or as string if you prefer
-  }
-
-  // Notify listeners to update the UI
-  notifyListeners();
-}
-
 
   @override
-  FutureOr<void> init() {
-    _determinePosition();
-    fetchWasteStations();
+  FutureOr<void> init() async {
+    try {
+      await _determinePosition(); // Dapatkan lokasi pengguna terlebih dahulu
+      if (userPosition != null) {
+        await fetchWasteStations(); // Ambil data waste stations dan hitung jarak
+        _sortWasteStations(); // Urutkan berdasarkan open hours dan jarak
+      } else {
+        print('User position is still null after determination.');
+      }
+    } catch (e) {
+      print('Error during initialization: $e');
+    }
+  }
+
+  void _sortWasteStations() {
+    _wasteStations.sort((a, b) {
+      // Prioritaskan berdasarkan status open hours (Open diurutkan lebih awal)
+      int openHoursComparison = a.openHours.contains('Open')
+          ? (b.openHours.contains('Open') ? 0 : -1)
+          : (b.openHours.contains('Open') ? 1 : 0);
+
+      if (openHoursComparison != 0) {
+        return openHoursComparison;
+      }
+
+      // Jika sama, urutkan berdasarkan jarak (ascending)
+      if (a.distance != null && b.distance != null) {
+        return a.distance!.compareTo(b.distance!);
+      } else if (a.distance != null) {
+        return -1; // a lebih dulu jika hanya a memiliki jarak
+      } else if (b.distance != null) {
+        return 1; // b lebih dulu jika hanya b memiliki jarak
+      } else {
+        return 0; // Tidak ada jarak yang tersedia, tetap sama
+      }
+    });
+
+    notifyListeners();
   }
 
   void onStationSearchChanged(String query) {

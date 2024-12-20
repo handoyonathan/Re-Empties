@@ -24,10 +24,10 @@ class DeliveryDetailContainer extends StatelessWidget {
       children: [
         Container(
           width: double.infinity,
-          padding: EdgeInsets.all(8.w),
+          padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 12.w),
           decoration: BoxDecoration(
             color: !isUser ? colors.green6 : colors.yellow3,
-            borderRadius: BorderRadius.circular(10.r),
+            borderRadius: BorderRadius.circular(20.r),
             border: Border.all(
               color: !isUser ? colors.green3 : colors.yellow1,
               width: 2,

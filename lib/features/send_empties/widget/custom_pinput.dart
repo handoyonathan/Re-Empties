@@ -4,14 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
 import 'package:pinput/pinput.dart';
+import 'package:re_empties/cores/components/string_extension.dart';
 import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
+import 'package:re_empties/features/send_empties/widget/bottom_sheet.dart';
 
 class CustomPinput extends StatefulWidget {
   final Key formKey;
   final Function(String) onFilled;
   final Function() getErrorText;
   final bool isAdmin;
+  final String value;
   // final SmsRetrieverImpl smsRetrieverImpl;
   // final Function() requestOtp;
 
@@ -21,6 +24,7 @@ class CustomPinput extends StatefulWidget {
     required this.onFilled,
     required this.getErrorText,
     required this.isAdmin,
+    this.value = '',
     // required this.smsRetrieverImpl,
     // required this.requestOtp,
   });
@@ -33,7 +37,7 @@ class _CustomPinputState extends State<CustomPinput> {
   late final defaultPinTheme;
   late final focusedPinTheme;
   late final errorPinTheme;
-  final TextEditingController _pinController = TextEditingController();
+  late final TextEditingController _pinController;
 
   @override
   void initState() {
@@ -59,6 +63,13 @@ class _CustomPinputState extends State<CustomPinput> {
       border: Border.all(color: colors.red1),
     );
 
+    if (widget.value.isNullOrEmpty) {
+      // Jika nilai kosong, inisialisasi controller dengan string kosong
+      _pinController = TextEditingController();
+    } else {
+      _pinController = TextEditingController(text: widget.value);
+    }
+
     // Listener to convert text to uppercase
   _pinController.addListener(() {
     final text = _pinController.text.toUpperCase();
@@ -74,25 +85,25 @@ class _CustomPinputState extends State<CustomPinput> {
     }
   });
 
-    if (!widget.isAdmin) {
-      // Generate random PIN and set it to the controller
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _generateAndFillPin(); // Pastikan widget dibangun sebelum diisi
-      });
-    }
+    // if (!widget.isAdmin) {
+    //   // Generate random PIN and set it to the controller
+    //   WidgetsBinding.instance.addPostFrameCallback((_) {
+    //     _generateAndFillPin(); // Pastikan widget dibangun sebelum diisi
+    //   });
+    // }
   }
 
-  void _generateAndFillPin() {
-    final randomPin = _generateRandomPin();
-    _pinController.text = randomPin;
-    widget.onFilled(randomPin);
-  }
+  // void _generateAndFillPin() {
+  //   final randomPin = _generateRandomPin();
+  //   _pinController.text = randomPin;
+  //   widget.onFilled(randomPin);
+  // }
 
-  String _generateRandomPin() {
-    final random = Random();
-    final numbers = List.generate(5, (_) => random.nextInt(10)).join();
-    return 'DO$numbers';
-  }
+  // String _generateRandomPin() {
+  //   final random = Random();
+  //   final numbers = List.generate(5, (_) => random.nextInt(10)).join();
+  //   return 'DO$numbers';
+  // }
 
   @override
   Widget build(BuildContext context) => Form(

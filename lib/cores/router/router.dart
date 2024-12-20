@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:re_empties/features/send_empties/views/countdown_view.dart';
 import 'package:re_empties/cores/components/splash_screen.dart';
 import 'package:re_empties/cores/components/success_page.dart';
 import 'package:re_empties/cores/router/router_constant.dart';
@@ -11,6 +12,8 @@ import 'package:re_empties/features/article/view/article_view.dart';
 import 'package:re_empties/features/authentication/views/login_view.dart';
 import 'package:re_empties/features/authentication/views/register_view.dart';
 import 'package:re_empties/features/home/view/home_view.dart';
+import 'package:re_empties/features/order/view/order_history_view.dart';
+import 'package:re_empties/features/order/view/order_summary_view.dart';
 import 'package:re_empties/features/profile/view/edit_profile.dart';
 import 'package:re_empties/features/profile/view/profile_view.dart';
 // import 'package:re_empties/cores/components/test.dart';
@@ -93,6 +96,17 @@ setupRouter({required String initialRoute}) {
             );
           }),
       GoRoute(
+          path: '/countDown',
+          name: paths.countDown,
+          builder: (context, state) {
+            final extra = state.extra as Map<String, dynamic>;
+
+            return CountdownView(
+              transactionId: extra['transactionId'],
+              point: extra['point'],
+            );
+          }),
+      GoRoute(
           path: '/location',
           name: paths.location,
           builder: (context, state) => LocationView(
@@ -115,6 +129,9 @@ setupRouter({required String initialRoute}) {
               transactionData: extra['transactionData'],
               point: extra['point'],
               weight: extra['weight'],
+              plasticWeight: extra['plasticWeight'],
+              cardboardWeight: extra['cardboardWeight'],
+              glassWeight: extra['glassWeight'],
             );
           }),
       GoRoute(
@@ -143,8 +160,11 @@ setupRouter({required String initialRoute}) {
 
             return DropPointDetailView(
               wasteLocation: extra['wasteLocation'] as Admin,
-              isSend: extra['isSend'] ?? false,
+              dropID: extra['dropID'],
               transactionId: extra['transactionID'],
+              // isSend: extra['isSend'] ?? false,
+              // transactionIdAdmin: extra['transactionIDAdmin'],
+              // transactionIdUser: extra['transactionIDUser'],
             );
           }),
       GoRoute(
@@ -159,6 +179,21 @@ setupRouter({required String initialRoute}) {
               transaction: extra['transaction'],
             );
           }),
+      GoRoute(
+        path: '/transactionHistory',
+        name: paths.transactionHistory,
+        builder: (context, state) => OrderHistoryView(),
+      ),
+      GoRoute(
+        path: '/transactionHistoryDetail',
+        name: paths.transactionHistoryDetail,
+        builder: (context, state) {
+          final extra = state.extra as Map<String, dynamic>;
+          return OrderSummaryView(
+            transactionID: extra['transactionID'],
+          );
+        },
+      ),
     ],
     initialLocation: initialRoute,
   );
