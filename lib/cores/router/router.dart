@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:re_empties/features/send_empties/views/countdown_view.dart';
@@ -23,6 +24,10 @@ import 'package:re_empties/features/send_empties/views/drop_point_detail_view.da
 import 'package:re_empties/features/send_empties/views/user_form_view.dart';
 import 'package:re_empties/features/send_empties/views/intro_page_view.dart';
 import 'package:re_empties/features/send_empties/views/location_view.dart';
+import 'package:re_empties/features/voucher/model/voucher_model.dart';
+import 'package:re_empties/features/voucher/viewModel/voucher_view_model.dart';
+import 'package:re_empties/features/voucher/views/voucher_detail_page_view.dart';
+import 'package:re_empties/features/voucher/views/voucher_page_view.dart';
 
 late GoRouter _router;
 GoRouter get router => _router;
@@ -41,7 +46,7 @@ setupRouter({required String initialRoute}) {
         path: '/test',
         name: paths.test,
         builder: (context, state) =>
-            const TestWidget(), // Tambahkan builder untuk halaman utama
+            VoucherPageView(), // Tambahkan builder untuk halaman utama
       ),
       GoRoute(
         path: '/home',
@@ -193,6 +198,15 @@ setupRouter({required String initialRoute}) {
           );
         },
       ),
+      GoRoute(
+        path: '/voucherDetail',
+        name: 'voucherDetail',
+        builder: (context, state) {
+          return VoucherDetailPageView(
+            voucherId: state.extra as String,
+          );
+        },
+      )
     ],
     initialLocation: initialRoute,
   );

@@ -22,6 +22,7 @@ class _RouterPaths {
   final String transactionHistory = 'transactionHistory';
   final String transactionHistoryDetail = 'transactionHistoryDetail';
   final String countDown = 'countDown';
+  final String voucherDetail = 'voucherDetail';
 }
 
 final paths = _RouterPaths();
