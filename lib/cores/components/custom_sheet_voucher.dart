@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:go_router/go_router.dart';
+import 'package:re_empties/cores/components/button_main_app.dart';
 import 'package:re_empties/cores/components/image_asset.dart';
 import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
@@ -8,18 +10,33 @@ import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/cores/components/tap_detector.dart';
 
 class CustomSheetVoucher extends StatelessWidget {
-  final String imagePath;
   final String title;
   final String description;
   final String points;
+  final String category;
+  final VoidCallback onTap;
 
   const CustomSheetVoucher({
     super.key,
-    required this.imagePath,
     required this.title,
     required this.description,
     required this.points,
+    required this.category,
+    required this.onTap,
   });
+
+  String getImagePath() {
+    switch (category.toLowerCase()) {
+      case 'food':
+        return images.categoryFoodBev;
+      case 'shopping':
+        return images.categoryShopping;
+      case 'games':
+        return images.categoryGames;
+      default:
+        return images.categoryDefault;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +67,7 @@ class CustomSheetVoucher extends StatelessWidget {
               Gap(16.h),
               // Image
               Image.asset(
-                imagePath,
+                getImagePath(),
                 height: 84.0,
                 width: 84.0,
                 fit: BoxFit.cover,
@@ -75,28 +92,17 @@ class CustomSheetVoucher extends StatelessWidget {
               ),
               Gap(32.h),
               // Button with padding, no shadow, rounded corners, and custom color
-              SizedBox(
-                width:
-                    double.infinity, // Make the button take all available space
-                child: ElevatedButton(
-                  onPressed: () => Navigator.pop(context),
-                  child: Text('Use $points points',
-                      style:
-                          textTheme.formName.copyWith(color: colors.bgColor)),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: colors.green2, // Set button color
-                    foregroundColor:
-                        Colors.white, // Set button text color to white
-                    elevation: 0, // Remove shadow
-                    shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(15), // Set rounded corners
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 12.0), // Add padding to button text
+
+              AppMainButton(
+                  state: ButtonState.primary,
+                  text: 'Use $points points',
+                  onPressed: onTap
+                  // context.pushNamed(
+                  //   'voucherDetail', // Ensure this matches your GoRouter path name
+                  // );
+
                   ),
-                ),
-              ),
+
               Gap(16.h),
             ],
           ),

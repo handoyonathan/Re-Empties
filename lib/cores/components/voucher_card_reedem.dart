@@ -15,6 +15,7 @@ class VoucherCardRedeem extends StatelessWidget {
   final String points;
   final bool isUsed;
   final bool isOutOfStock;
+  final VoidCallback onTap;
 
   const VoucherCardRedeem({
     super.key,
@@ -24,6 +25,7 @@ class VoucherCardRedeem extends StatelessWidget {
     required this.points,
     this.isUsed = false,
     this.isOutOfStock = false,
+    required this.onTap,
   });
 
   // Helper function to select the image based on the category
@@ -58,19 +60,7 @@ class VoucherCardRedeem extends StatelessWidget {
     return GestureDetector(
       onTap: isDisabled
           ? null // Disable interaction if the voucher is used or out of stock
-          : () {
-              showModalBottomSheet(
-                context: context,
-                builder: (BuildContext context) {
-                  return CustomSheetVoucher(
-                    imagePath: getImagePath(),
-                    title: title,
-                    description: description,
-                    points: points,
-                  );
-                },
-              );
-            },
+          : onTap,
       child: Card(
         elevation: 4,
         color: backgroundColor,
