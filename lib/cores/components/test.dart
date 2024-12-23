@@ -64,25 +64,25 @@ class TestWidget extends StatelessWidget {
                   // Uncomment below as needed
                   const ReedemPointsCard(points: '12.000'),
                   const SizedBox(height: 10),
-                  const VoucherCardRedeem(
-                    category: 'games',
-                    title: '100 Diamonds in Game Legends',
-                    description:
-                        'Receive 100 in-game diamonds for Game Legends. efeflke fkdnfl nlfndls kffefefklnedf fefefcdf ffdnfdf fedf sfd',
-                    points: '150',
-                    isUsed: false, // Not used
-                    isOutOfStock: false, // Available to redeem
-                  ),
-                  const VoucherCardRedeem(
-                    category: 'shopping',
-                    title: 'Free Shipping on Orders Over Rp 30.000',
-                    description:
-                        r'Enjoy free shipping on orders over $30 at MegaShop.',
-                    points: '500',
-                    isUsed: false, // Not used
-                    isOutOfStock:
-                        true, // Indicating this voucher is out of stock
-                  ),
+                  // const VoucherCardRedeem(
+                  //   category: 'games',
+                  //   title: '100 Diamonds in Game Legends',
+                  //   description:
+                  //       'Receive 100 in-game diamonds for Game Legends. efeflke fkdnfl nlfndls kffefefklnedf fefefcdf ffdnfdf fedf sfd',
+                  //   points: '150',
+                  //   isUsed: false, // Not used
+                  //   isOutOfStock: false, // Available to redeem
+                  // ),
+                  // const VoucherCardRedeem(
+                  //   category: 'shopping',
+                  //   title: 'Free Shipping on Orders Over Rp 30.000',
+                  //   description:
+                  //       r'Enjoy free shipping on orders over $30 at MegaShop.',
+                  //   points: '500',
+                  //   isUsed: false, // Not used
+                  //   isOutOfStock:
+                  //       true, // Indicating this voucher is out of stock
+                  // ),
                   // const VoucherCardRedeem(
                   //   category: 'food',
                   //   title: 'Discount 20% at Burger Town',
