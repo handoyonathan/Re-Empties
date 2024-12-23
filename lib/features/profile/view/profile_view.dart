@@ -100,7 +100,9 @@ class ProfileViewState extends State<ProfileView> {
                 ),
                 Gap(11.h),
                 BannerHome(
-                  level: 1,
+                  totalPoints: vm.totalPoints,
+                  availablePoints: vm.point,
+                  level: 5,
                   isProfilePage: true,
                 ),
                 Gap(16.h),
@@ -112,6 +114,7 @@ class ProfileViewState extends State<ProfileView> {
                 ),
                 HomePointsCard(
                   onTap: () {},
+                  points: vm.point,
                 ),
                 Gap(16.h),
               ],
@@ -119,7 +122,7 @@ class ProfileViewState extends State<ProfileView> {
           ),
         ),
         bottomNavigationBar: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 16.h),
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
           child: AppMainButton(
             state: ButtonState.primary,
             text: 'logout',

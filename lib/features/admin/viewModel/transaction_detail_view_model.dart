@@ -191,6 +191,23 @@ class TransactionDetailVM extends BaseNotifier with CustomToastMixin {
       // Update dokumen transaksi
       await transactionDocRef.update(transactionUpdateData);
 
+      final userDocRef =
+          FirebaseFirestore.instance.collection('users').doc(userID);
+      final userDocSnapshot = await userDocRef.get();
+      int currentRewardPoints = userDocSnapshot['rewardPoint'];
+      int totalRewardPoints = userDocSnapshot['totalPoints'];
+
+      // Tambahkan poin baru ke poin yang ada
+      final updatedRewardPoints = currentRewardPoints + point;
+      final updatedTotalPoints = totalRewardPoints + point;
+
+      // Update dokumen pengguna dengan poin yang sudah ditambahkan
+      final userUpdateData = {
+        'rewardPoint': updatedRewardPoints,
+        'totalPoints': updatedTotalPoints,
+      };
+      await userDocRef.update(userUpdateData);
+
       // Navigasi berdasarkan kondisi `isSend`
       // if (!isSend) {
       //   ctx.pushNamed(paths.fillDropID);
@@ -199,7 +216,7 @@ class TransactionDetailVM extends BaseNotifier with CustomToastMixin {
       ctx.pushNamed(paths.success, extra: <String, dynamic>{
         'isSend': isSend,
         'isAdmin': true,
-        'point': point
+        // 'point': point
       });
       // }
     } catch (e) {

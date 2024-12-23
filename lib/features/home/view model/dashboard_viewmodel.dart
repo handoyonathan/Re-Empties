@@ -17,6 +17,8 @@ class DashboardVM extends BaseNotifier {
   TransactionModel? transactions;
   Admin? adminData;
   bool isDataLoaded = false; // Flag untuk menandakan data sudah dimuat
+  StreamSubscription? _transactionSubscription;
+  StreamSubscription? _userPointSubscription;
 
   Future<void> checkLoginStatus(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
@@ -31,64 +33,89 @@ class DashboardVM extends BaseNotifier {
     ctx.pushNamed(paths.intro, extra: isSend);
   }
 
+  int point = 0;
+  int totalPoints = 0;
+
+  Future<void> fetchUserPoint() async {
+    try {
+      _userPointSubscription = FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser?.uid)
+          .snapshots()
+          .listen((doc) async {
+        if (doc.exists && doc.data() != null) {
+          // Pastikan rewardPoint ada dan nilainya valid
+          point = doc.data()?['rewardPoint'];
+          totalPoints = doc.data()?['totalPoints'];
+          notifyListeners();
+          print('Updated point: $totalPoints');
+        } else {
+          print('User document does not exist or is null.');
+        }
+      });
+    } catch (e) {
+      print(
+        'Error fetching user data: $e',
+      );
+    }
+  }
+
   Future<void> fetchUserTransactionData() async {
     try {
       currentUser = auth.FirebaseAuth.instance.currentUser;
       if (currentUser != null) {
-        // Ambil semua data transaksi tanpa menggunakan orderBy
-        QuerySnapshot query = await FirebaseFirestore.instance
+        _transactionSubscription = FirebaseFirestore.instance
             .collection('transaction')
-            .where(
-              'userID',
-              isEqualTo: currentUser!.uid,
-            )
+            .where('userID', isEqualTo: currentUser!.uid)
             .where('orderStatus', isEqualTo: 'Delivery')
-            .get();
+            .snapshots()
+            .listen((querySnapshot) async {
+          List<TransactionModel> tempTransactions = [];
+          Map<String, Admin?> tempAdminData = {};
 
-        List<TransactionModel> tempTransactions = [];
-        Map<String, Admin?> tempAdminData = {};
+          for (var doc in querySnapshot.docs) {
+            TransactionModel transaction = TransactionModel.fromFirestore(
+              doc.data() as Map<String, dynamic>,
+              doc.id,
+            );
 
-        for (var doc in query.docs) {
-          TransactionModel transaction = TransactionModel.fromFirestore(
-            doc.data() as Map<String, dynamic>,
-            doc.id,
-          );
+            // Format date dan time
+            final dateFormatter = DateFormat('EEEE, dd MMMM yyyy');
+            final timeFormatter = DateFormat('HH:mm');
 
-          // Format date dan time
-          final dateFormatter = DateFormat('EEEE, dd MMMM yyyy');
-          final timeFormatter = DateFormat('HH:mm');
+            final formattedDate = dateFormatter.format(transaction.dateTime);
+            final formattedTime = timeFormatter.format(transaction.dateTime);
 
-          final formattedDate = dateFormatter.format(transaction.dateTime);
-          final formattedTime = timeFormatter.format(transaction.dateTime);
+            transaction = transaction.copyWith(
+              date: formattedDate,
+              time: formattedTime,
+            );
 
-          transaction = transaction.copyWith(
-            date: formattedDate,
-            time: formattedTime,
-          );
+            // Fetch admin data jika adminID ada
+            if (transaction.adminID.isNotEmpty) {
+              Admin? admin = await fetchAdminData(transaction.adminID);
+              tempAdminData[transaction.transactionId] = admin;
+            }
 
-          // Fetch admin data jika adminID ada
-          if (transaction.adminID.isNotEmpty) {
-            Admin? admin = await fetchAdminData(transaction.adminID);
-            tempAdminData[transaction.transactionId] = admin;
+            tempTransactions.add(transaction);
           }
 
-          tempTransactions.add(transaction);
-        }
+          // Urutkan transaksi berdasarkan dateTime secara lokal
+          tempTransactions.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
-        // Urutkan transaksi berdasarkan dateTime secara lokal
-        tempTransactions.sort((a, b) => b.dateTime.compareTo(a.dateTime));
+          // Ambil transaksi pertama setelah pengurutan, yang paling terkini
+          if (tempTransactions.isNotEmpty) {
+            transactions = tempTransactions.first;
 
-        // Ambil transaksi pertama setelah pengurutan, yang paling terkini
-        if (tempTransactions.isNotEmpty) {
-          transactions = tempTransactions.first;
+            // Perbarui adminData untuk transaksi terkini
+            adminData = tempAdminData[transactions!.transactionId];
+          }
 
-          // Perbarui adminData untuk transaksi terkini
-          adminData = tempAdminData[transactions!.transactionId];
-        }
+          // Menandakan bahwa data telah selesai dimuat
+          isDataLoaded = true;
+          notifyListeners(); // Memperbarui UI jika menggunakan provider
+        });
       }
-
-      // Menandakan bahwa data telah selesai dimuat
-      isDataLoaded = true;
     } catch (e) {
       print('Error fetching transaction data: $e');
     }
@@ -110,17 +137,24 @@ class DashboardVM extends BaseNotifier {
     return null; // Jika tidak ada data admin, kembalikan null
   }
 
-  void gotoDetail(){
-    ctx.pushNamed(paths.transactionHistoryDetail, extra: <String, dynamic>{
-      'transactionID': transactions!.transactionId
-    });
+  void gotoDetail() {
+    ctx.pushNamed(paths.transactionHistoryDetail,
+        extra: <String, dynamic>{'transactionID': transactions!.transactionId});
   }
 
   @override
   FutureOr<void> init() async {
     isLoading = true;
     await fetchUserTransactionData();
+    await fetchUserPoint();
     checkLoginStatus(ctx);
     isLoading = false;
+  }
+
+  @override
+  void dispose() {
+    _transactionSubscription?.cancel(); // Batalkan langganan transaksi
+    _userPointSubscription?.cancel();   // Batalkan langganan user point
+    super.dispose();
   }
 }

@@ -9,8 +9,9 @@ import 'package:re_empties/cores/components/tap_detector.dart';
 
 class HomePointsCard extends StatelessWidget {
   final VoidCallback onTap; // Accept onTap function as a parameter
+  final int points; // Number of points
 
-  const HomePointsCard({super.key, required this.onTap});
+  const HomePointsCard({super.key, required this.onTap, required this.points});
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +41,7 @@ class HomePointsCard extends StatelessWidget {
                   children: [
                     Text('Your points', style: textTheme.pointLabel),
                     Text(
-                      '12,000', // Points value
+                      points.toString(), // Points value
                       style: textTheme.myPoint,
                     ),
                   ],

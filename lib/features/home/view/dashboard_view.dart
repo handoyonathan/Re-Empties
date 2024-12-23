@@ -31,7 +31,7 @@ class _DashboardViewState extends ConsumerState<DashboardView>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final dashboardVM = ref.read(viewModel);
       dashboardVM.checkLoginStatus(context);
-      dashboardVM.fetchUserTransactionData();
+      // dashboardVM.fetchUserTransactionData();
     });
   }
 
@@ -42,94 +42,99 @@ class _DashboardViewState extends ConsumerState<DashboardView>
       disableSafeArea: true,
       provider: viewModel,
       builder: (context, vm) => _buildScreen(context, vm),
-      appBar: (_) => HiddenAppBar(),
+      appBar: (_) => const HiddenAppBar(),
     );
   }
 
   Widget _buildScreen(BuildContext context, DashboardVM vm) {
-    // Jika data belum dimuat, tampilkan loading indicator atau widget lain
-    if (!vm.isDataLoaded) {
-      return const Center(
-        child: CircularProgressIndicator(),
-      );
-    }
-
     final transaction = vm.transactions;
     final admin = vm.adminData;
 
     return Scaffold(
       backgroundColor: colors.bgColor,
-      body: SingleChildScrollView(
-        physics: const ClampingScrollPhysics(),
-        child: Column(
-          children: [
-            BannerHome(
-              level: 5,
-              isProfilePage: false,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 24.h),
+      body: !vm.isDataLoaded
+          ? Center(
+              child: CircularProgressIndicator(
+              color: colors.green2,
+            ))
+          : SingleChildScrollView(
+              physics: const ClampingScrollPhysics(),
               child: Column(
                 children: [
-                  Gap(10.h),
-                  HomePointsCard(onTap: () {
-                    print("points");
-                  }),
-                  Gap(10.h),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      HomeSendDropCard(
-                        state: SendDropState.drop,
-                        onTap: () {
-                          vm.goToIntroPage();
-                        },
-                      ),
-                      HomeSendDropCard(
-                        state: SendDropState.send,
-                        onTap: () {
-                          vm.goToIntroPage(isSend: true);
-                        },
-                      ),
-                    ],
+                  BannerHome(
+                    totalPoints: vm.totalPoints,
+                    availablePoints: vm.point,
+                    level: 5,
+                    isProfilePage: false,
                   ),
-                  Visibility(
-                    visible: transaction != null &&
-                        admin != null, // Menampilkan hanya jika data tersedia
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 24.h),
                     child: Column(
                       children: [
-                        const SizedBox(height: 10),
-                        StatusPreviewHome(
-                          state: transaction?.transactionType ??
-                              'Unknown', // Amankan null
-                          dateTime:
-                              '${transaction?.date} ${transaction?.time ?? 'N/A'}', // Amankan null
-                          wasteStation:
-                              admin?.stationName ?? 'Unknown', // Amankan null
+                        // Gap(10.h),
+                        HomePointsCard(
                           onTap: () {
-                            print("Card tapped!");
-                            vm.gotoDetail();
+                            print("points");
                           },
+                          points: vm.point,
                         ),
+                        Gap(10.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            HomeSendDropCard(
+                              state: SendDropState.drop,
+                              onTap: () {
+                                vm.goToIntroPage();
+                              },
+                            ),
+                            HomeSendDropCard(
+                              state: SendDropState.send,
+                              onTap: () {
+                                vm.goToIntroPage(isSend: true);
+                              },
+                            ),
+                          ],
+                        ),
+                        Gap(10.h),
+                        Visibility(
+                          visible: transaction != null &&
+                              admin !=
+                                  null, // Menampilkan hanya jika data tersedia
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 10),
+                              StatusPreviewHome(
+                                state: transaction?.transactionType ??
+                                    'Unknown', // Amankan null
+                                dateTime:
+                                    '${transaction?.date} ${transaction?.time ?? 'N/A'}', // Amankan null
+                                wasteStation: admin?.stationName ??
+                                    'Unknown', // Amankan null
+                                onTap: () {
+                                  print("Card tapped!");
+                                  vm.gotoDetail();
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        Gap(10.h),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(
+                            "Articles",
+                            style: textTheme.title,
+                          ),
+                        ),
+                        ArticlePreviewHome(),
+                        Gap(30.h),
                       ],
                     ),
                   ),
-                  Gap(10.h),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Articles",
-                      style: textTheme.title,
-                    ),
-                  ),
-                  ArticlePreviewHome(),
-                  Gap(30.h),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
     );
   }
 }

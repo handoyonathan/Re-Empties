@@ -7,6 +7,7 @@ class User {
   final int? rewardsPoint;
   final String? phone;
   final String? email;
+  final int? totalPoints; // Total points user has (for level calculation)
 
   User({
     this.id,
@@ -15,6 +16,7 @@ class User {
     this.rewardsPoint,
     this.phone,
     this.email,
+    this.totalPoints
   });
 }
 
