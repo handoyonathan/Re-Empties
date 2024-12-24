@@ -1,14 +1,38 @@
 import 'dart:convert';
 
-class ArticleDetails {
-  final int articleId;
-  final String articleName;
-  final String author;
-  final String publishedDate;
-  final String articleDescription;
-  final List<ArticleDetail> articleDetails;
+class ArticleModel {
+  List<Article>? articles;
 
-  ArticleDetails({
+  ArticleModel({required this.articles});
+
+  factory ArticleModel.fromJson(Map<String, dynamic> json) {
+    return ArticleModel(
+      articles: json["article"] != null
+          ? [
+              Article.fromJson(json["article"])
+            ] // Wrap a single Article object into a list
+          : [],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "article": articles != null
+          ? articles!.map((article) => article.toJson()).toList()
+          : [],
+    };
+  }
+}
+
+class Article {
+  int articleId;
+  String articleName;
+  String author;
+  String publishedDate;
+  String articleDescription;
+  List<ArticleDetails> articleDetails;
+
+  Article({
     required this.articleId,
     required this.articleName,
     required this.author,
@@ -17,39 +41,41 @@ class ArticleDetails {
     required this.articleDetails,
   });
 
-  factory ArticleDetails.fromJson(Map<String, dynamic> json) {
-    return ArticleDetails(
+  factory Article.fromJson(Map<String, dynamic> json) {
+    return Article(
       articleId: json['articleId'],
       articleName: json['articleName'],
       author: json['author'],
       publishedDate: json['publishedDate'],
       articleDescription: json['articleDescription'],
-      articleDetails: (json['articleDetails'] as List)
-          .map((item) => ArticleDetail.fromJson(item))
-          .toList(),
+      articleDetails: json['articleDetails'] != null
+          ? List<ArticleDetails>.from(
+              json['articleDetails'].map((x) => ArticleDetails.fromJson(x)))
+          : [],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'articleId': articleId,
-      'articleName': articleName,
-      'author': author,
-      'publishedDate': publishedDate,
-      'articleDescription': articleDescription,
-      'articleDetails': articleDetails.map((item) => item.toJson()).toList(),
+      "articleId": articleId,
+      "articleName": articleName,
+      "author": author,
+      "publishedDate": publishedDate,
+      "articleDescription": articleDescription,
+      "articleDetails":
+          articleDetails.map((detail) => detail.toJson()).toList(),
     };
   }
 }
 
-class ArticleDetail {
-  final int articleDetailId;
-  final int articleId;
-  final String articleTitleIsi;
-  final String articleIsi;
-  final String articlePhotos;
+class ArticleDetails {
+  int articleDetailId;
+  int articleId;
+  String articleTitleIsi;
+  String articleIsi;
+  String articlePhotos;
 
-  ArticleDetail({
+  ArticleDetails({
     required this.articleDetailId,
     required this.articleId,
     required this.articleTitleIsi,
@@ -57,8 +83,8 @@ class ArticleDetail {
     required this.articlePhotos,
   });
 
-  factory ArticleDetail.fromJson(Map<String, dynamic> json) {
-    return ArticleDetail(
+  factory ArticleDetails.fromJson(Map<String, dynamic> json) {
+    return ArticleDetails(
       articleDetailId: json['articleDetailId'],
       articleId: json['articleId'],
       articleTitleIsi: json['articleTitleIsi'],
@@ -69,11 +95,11 @@ class ArticleDetail {
 
   Map<String, dynamic> toJson() {
     return {
-      'articleDetailId': articleDetailId,
-      'articleId': articleId,
-      'articleTitleIsi': articleTitleIsi,
-      'articleIsi': articleIsi,
-      'articlePhotos': articlePhotos,
+      "articleDetailId": articleDetailId,
+      "articleId": articleId,
+      "articleTitleIsi": articleTitleIsi,
+      "articleIsi": articleIsi,
+      "articlePhotos": articlePhotos,
     };
   }
 }

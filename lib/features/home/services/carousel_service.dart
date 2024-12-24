@@ -6,13 +6,10 @@ import 'package:re_empties/features/home/model/article_carousel_model.dart';
 import 'package:re_empties/services/base_service.dart';
 
 class CarouselService extends BaseService {
-  late ArticleCarouselList articleCarousel;
-
   Future<ArticleCarouselList?> fetchArticlesFromApi() async {
     try {
       final response = await get(url: '/article');
       if (response != null && response.statusCode == 200) {
-        // final responseData = response.data as Map<String, dynamic>;
         var responseData = response.data;
         if (response.data is String) {
           responseData = json.decode(response.data); // Decode JSON string

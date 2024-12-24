@@ -23,9 +23,9 @@ class ArticleCarouselVM extends ChangeNotifier with CustomToastMixin {
     notifyListeners(); // Notify listeners that loading has started
 
     try {
-      print("LOAD ARTICLE");
+      print("LOAD ARTICLE CAROUSEL");
       final articles = await _carouselService.fetchArticlesFromApi();
-      print(articles);
+      // print(articles);
 
       if (articles != null) {
         carouselList = articles;

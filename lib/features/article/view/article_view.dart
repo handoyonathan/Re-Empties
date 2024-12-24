@@ -22,8 +22,11 @@ class ArticleView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Fetch article data using the articleId passed to the view
-    ref.read(_viewModel).articleDetails;
+    // Fetch article data usticleDeing the articleId passed to the view
+    final vm = ref.watch(_viewModel);
+    if (!vm.isLoading && vm.articleDetails == null) {
+      vm.getDetails(articleId);
+    }
     return BaseView(
         provider: _viewModel,
         appBar: (_) => CustomAppBar(
@@ -47,7 +50,7 @@ class ArticleView extends ConsumerWidget {
           ? Center(
               child: CircularProgressIndicator(
                   color: colors.green1, backgroundColor: colors.background))
-          : vm.articleDetails!.articleDetails.isEmpty
+          : vm.articleDetails!.articles!.isEmpty
               ? Center(
                   child: ImageAsset(
                   imagePath: images.errorIllustration,
@@ -59,24 +62,24 @@ class ArticleView extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      for (var article in vm.articleDetails!.articleDetails)
+                      for (var article in vm.articleDetails!.articles!)
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             // title
                             Text(
-                              vm.articleDetails!.articleName,
+                              article.articleName,
                               style: textTheme.articleTitle,
                               textAlign: TextAlign.left,
                             ),
                             Text(
-                              "${vm.articleDetails!.author} | ${vm.articleDetails!.publishedDate} ",
+                              "${article.author} | ${article.publishedDate} ",
                               style: textTheme.badgesText,
                               textAlign: TextAlign.left,
                             ),
                             Gap(15),
                             Text(
-                              vm.articleDetails!.articleDescription,
+                              article.articleDescription,
                               style: textTheme.articleIntro,
                               textAlign: TextAlign.left,
                             ),
@@ -85,11 +88,13 @@ class ArticleView extends ConsumerWidget {
                             ListView.builder(
                                 physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
-                                itemCount: article.articleTitleIsi.length,
+                                itemCount: article.articleDetails.length,
                                 itemBuilder: (context, stepIndex) {
-                                  final titles = article.articleTitleIsi;
-                                  final descriptions = article.articleIsi;
-                                  final photos = article.articlePhotos;
+                                  final details =
+                                      article.articleDetails[stepIndex];
+                                  final titles = details.articleTitleIsi;
+                                  final descriptions = details.articleIsi;
+                                  final photos = details.articlePhotos;
                                   // Check if the current index is within bounds of each list.
                                   final title = stepIndex < titles.length
                                       ? titles[stepIndex]
