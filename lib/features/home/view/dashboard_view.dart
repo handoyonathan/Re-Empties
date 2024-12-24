@@ -74,6 +74,7 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                         // Gap(10.h),
                         HomePointsCard(
                           onTap: () {
+                            vm.goToVoucherPage();
                             print("points");
                           },
                           points: vm.point,

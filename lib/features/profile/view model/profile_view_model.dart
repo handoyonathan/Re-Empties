@@ -29,6 +29,10 @@ class ProfileVM extends BaseNotifier {
 
     if (ctx.mounted) ctx.goNamed(paths.login);
   }
+  
+  void goToVoucherPage() {
+    ctx.pushNamed(paths.voucher);
+  }
 
   Future<void> fetchUserData() async {
     try {

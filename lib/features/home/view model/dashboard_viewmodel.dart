@@ -33,6 +33,10 @@ class DashboardVM extends BaseNotifier {
     ctx.pushNamed(paths.intro, extra: isSend);
   }
 
+  void goToVoucherPage() {
+    ctx.pushNamed(paths.voucher);
+  }
+
   int point = 0;
   int totalPoints = 0;
 

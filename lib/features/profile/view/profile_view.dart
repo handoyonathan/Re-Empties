@@ -113,7 +113,9 @@ class ProfileViewState extends State<ProfileView> {
                   style: textTheme.title,
                 ),
                 HomePointsCard(
-                  onTap: () {},
+                  onTap: () {
+                    vm.goToVoucherPage();
+                  },
                   points: vm.point,
                 ),
                 Gap(16.h),
