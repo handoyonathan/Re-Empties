@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:gap/gap.dart';
 import 'package:re_empties/cores/constant/colors.dart';
 
 class CustomAlertDialog extends StatelessWidget {
@@ -17,23 +19,24 @@ class CustomAlertDialog extends StatelessWidget {
       backgroundColor: colors.bgColor,
       contentPadding: EdgeInsets.zero,
       content: SizedBox(
-        width: MediaQuery.of(context).size.width / 2,
-        height: MediaQuery.of(context).size.height / 4,
+        // width: MediaQuery.of(context).size.width / 2,
+        // height: MediaQuery.of(context).size.height / 4,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(height: 10),
+            Gap(10.h),
             // Warning icon with circle background
             CircleAvatar(
               backgroundColor: colors.red1, // Circle background color
-              radius: 35, // Adjust size as needed
+              radius: 35.r, // Adjust size as needed
               child: const Icon(
                 Icons.warning, // Warning icon
                 color: Colors.white, // Icon color
                 size: 45, // Icon size
               ),
             ),
-            const SizedBox(height: 10), // Space between icon and text
+            Gap(10.h), // Space between icon and text
             Text(
               'Cancel',
               style: TextStyle(
@@ -53,54 +56,59 @@ class CustomAlertDialog extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 20),
+            Gap(20.h),
             const Divider(
               thickness: 1,
               color: Color(0xFFDADADA),
               height: 0, // Set height to 0 for perfect line fit
             ),
             // Row with two buttons and a vertical divider
-            Expanded(
-              child: Row(
-                children: [
-                  // Back button
-                  Expanded(
-                    child: TextButton(
-                      onPressed: onCancel, // Pass onCancel callback
-                      style: TextButton.styleFrom(
-                          foregroundColor: colors.green1,
-                          overlayColor: Colors.transparent),
-                      child: const Text(
-                        'Back',
-                        style: TextStyle(
-                          fontWeight: FontWeight.normal, // Regular text
-                          fontSize: 16,
-                        ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // Back button
+                Flexible(
+                  child: TextButton(
+                    onPressed: onCancel, // Pass onCancel callback
+                    style: TextButton.styleFrom(
+                        foregroundColor: colors.green1,
+                        overlayColor: Colors.transparent),
+                    child: const Text(
+                      'Back',
+                      style: TextStyle(
+                        fontWeight: FontWeight.normal, // Regular text
+                        fontSize: 16,
                       ),
                     ),
                   ),
-                  Container(
-                    width: 1,
-                    color: const Color(0xFFDADADA), // Vertical line
+                ),
+                Gap(20.w),
+                SizedBox(
+                  height: 40.h,
+                  child: const VerticalDivider(
+                    thickness: 1,
+                    color: Color(0xFFDADADA),
                   ),
-                  // Confirm button
-                  Expanded(
-                    child: TextButton(
-                      onPressed: onConfirm, // Pass onConfirm callback
-                      style: TextButton.styleFrom(
-                          foregroundColor: colors.red1,
-                          overlayColor: Colors.transparent),
-                      child: const Text(
-                        'Cancel',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold, // Bold text
-                          fontSize: 16,
-                        ),
+                ),
+                Gap(20.w),
+                // Confirm button
+                Flexible(
+                  child: TextButton(
+                    onPressed: onConfirm, // Pass onConfirm callback
+                    style: TextButton.styleFrom(
+                        foregroundColor: colors.red1,
+                        // padding: const EdgeInsets.symmetric(vertical: 8),
+                        overlayColor: Colors.transparent),
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold, // Bold text
+                        fontSize: 16,
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),

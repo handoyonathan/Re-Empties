@@ -26,25 +26,19 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Inisialisasi ScreenUtil di sini
-    ScreenUtil.init(
-      context,
+    return ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,
-      splitScreenMode: true,
-    );
-
-    return OKToast(
-      child: MaterialApp.router(
-        title: 'Re-Empties',
-        routerConfig: router,
-        debugShowCheckedModeBanner: false,
+      // splitScreenMode: true,
+      builder: (_, child) => ProviderScope(
+        child: OKToast(
+          child: MaterialApp.router(
+            title: 'Re-Empties',
+            routerConfig: router,
+            debugShowCheckedModeBanner: false,
+          ),
+        ),
       ),
     );
-
-    // return const MaterialApp(
-    //   title: "Re-Empties",
-    //   debugShowCheckedModeBanner: false,
-    //   home: TestWidget(),
-    // );
   }
 }

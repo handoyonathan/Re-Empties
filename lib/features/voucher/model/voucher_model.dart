@@ -1,6 +1,3 @@
-// voucherModel.dart
-import 'package:flutter/material.dart';
-
 class Voucher {
   final String voucherID;
   final String category;
@@ -11,6 +8,7 @@ class Voucher {
   final List<String> howToRedeem;
   final String voucherCode;
   final int stock;
+  final List<String>? userUsed;
 
   Voucher(
       {this.voucherID = "",
@@ -21,11 +19,13 @@ class Voucher {
       required this.termsAndConditions,
       required this.howToRedeem,
       required this.voucherCode,
-      required this.stock});
+      required this.stock,
+      this.userUsed,
+      });
 
-  factory Voucher.fromFireStore(Map<String, dynamic> data, String Id) {
+  factory Voucher.fromFireStore(Map<String, dynamic> data, String id) {
     return Voucher(
-      voucherID: Id,
+      voucherID: id,
       category: data["category"] ?? "",
       title: data["voucherTitle"] ?? "",
       description: data["voucherDescription"] ?? "",
@@ -35,6 +35,7 @@ class Voucher {
       howToRedeem: List<String>.from(data["howToRedeem"] ?? []),
       voucherCode: data["voucherCode"] ?? "",
       stock: data["stock"] ?? 0,
+      userUsed: List<String>.from(data["userUsed"] ?? []),
     );
   }
 }

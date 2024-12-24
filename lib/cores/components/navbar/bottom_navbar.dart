@@ -20,11 +20,11 @@ class BottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) => ClipRRect(
     borderRadius: BorderRadius.only(
-        topLeft: Radius.circular(20.r), // radius untuk sudut kiri atas
-        topRight: Radius.circular(20.r), // radius untuk sudut kanan atas
+        topLeft: Radius.circular(20.r), 
+        topRight: Radius.circular(20.r),
       ),
     child: BottomAppBar(
-      height: 50.h,
+      height: 70.h,
       color: colors.gray2,
       padding: EdgeInsets.zero,
       shape: CircularNotchedRectangle(),
@@ -41,13 +41,16 @@ class BottomNavBar extends StatelessWidget {
                 onTap: () {
                   setIndex(index);
                 },
-                child: Container(
-                  child: ImageAsset(
-                    imagePath: 
-                    e.icon[selected]!,
-                    width: 28.w,
-                    height: 28.w,
-                  ),
+                child: Column(
+                  children: [
+                    ImageAsset(
+                      imagePath: 
+                      e.icon[selected]!,
+                      width: 28.w,
+                      height: 28.w,
+                    ),
+                    Gap(20.h),
+                  ],
                 ),
               );
             }).toList(),

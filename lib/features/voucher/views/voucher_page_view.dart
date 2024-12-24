@@ -27,6 +27,7 @@ class VoucherPageView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return BaseView(
         provider: _viewModel,
+        disableSafeArea: true,
         appBar: (_) => CustomAppBar(
               title: Align(
                 alignment: Alignment.centerLeft,
@@ -56,6 +57,7 @@ class VoucherPageView extends ConsumerWidget {
               : Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: SingleChildScrollView(
+                    physics:  const ClampingScrollPhysics(),
                     // Wrap the entire content in a SingleChildScrollView
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,7 +65,7 @@ class VoucherPageView extends ConsumerWidget {
                         // "Recycle points" text
                         Text('Recycle points', style: textTheme.title),
                         Gap(8.h), // RedeemPointsCard component
-                        ReedemPointsCard(points: "10000"),
+                        ReedemPointsCard(points: vm.point.toString()),
                         Gap(24.h), // Spacer between sections
                         // "Vouchers" text
                         Text('Vouchers', style: textTheme.title),
@@ -73,11 +75,13 @@ class VoucherPageView extends ConsumerWidget {
                         ListView.builder(
                           shrinkWrap: true,
                           physics:
-                              const NeverScrollableScrollPhysics(), // This ensures the list is not taking full height
+                              const ClampingScrollPhysics(), // This ensures the list is not taking full height
                           itemCount: vm.vouchers.length,
                           itemBuilder: (context, index) {
                             final voucher = vm.vouchers[index];
                             return VoucherCardRedeem(
+                              isOutOfStock: vm.isVoucherOutOfStock(voucher),
+                              isUsed: vm.isVoucherUsed(voucher),
                               category: voucher.category,
                               title: voucher.title,
                               description: voucher.description,

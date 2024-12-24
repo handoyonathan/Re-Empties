@@ -98,9 +98,10 @@ class UserFormVM extends BaseNotifier with CustomToastMixin {
         context: ctx,
         price: 'Rp ${fee}',
         options: paymentOptions,
-        selectedValue: selectedPaymentMethod ?? 0,
-        onSelected: (int value) {
-          selectPaymentMethod(value, paymentOptions[value].title);
+        selectedValue: selectedPaymentMethod,
+        onSelected: (int? value) {
+          selectPaymentMethod(value!, paymentOptions[value].title);
+          ctx.pop();
         },
       );
     } catch (e) {
@@ -114,9 +115,10 @@ class UserFormVM extends BaseNotifier with CustomToastMixin {
       showOptionsModal(
         context: ctx,
         options: deliveryOptions,
-        selectedValue: selectedDeliveryMethod ?? 0,
-        onSelected: (int value) {
-          selectDeliveryMethod(value, deliveryOptions[value].title);
+        selectedValue: selectedDeliveryMethod,
+        onSelected: (int? value) {
+          selectDeliveryMethod(value!, deliveryOptions[value].title);
+          ctx.pop();
         },
       );
     } catch (e) {

@@ -7,7 +7,7 @@ import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:re_empties/cores/template/notifer.dart';
 import 'package:re_empties/features/send_empties/model/transaction_model.dart';
 
-class FillOrderIdVM extends BaseNotifier with CustomToastMixin{
+class FillOrderIdVM extends BaseNotifier with CustomToastMixin {
   final String adminID;
   final TransactionModel transactionData;
   final int weight;
@@ -51,7 +51,8 @@ class FillOrderIdVM extends BaseNotifier with CustomToastMixin{
   }
 
   String? getErrorText() {
-    if (showError) return 'DropID does not match. Please fill the DropID correctly';
+    if (showError)
+      return 'DropID does not match. Please fill the DropID correctly';
     return null;
   }
 
@@ -80,16 +81,42 @@ class FillOrderIdVM extends BaseNotifier with CustomToastMixin{
       // Update dokumen transaksi
       await transactionDocRef.update(transactionUpdateData);
 
+      final docSnapshot = await FirebaseFirestore.instance
+          // .collection('admin')
+          // .doc(adminID)
+          .collection('transaction')
+          .doc(transactionData.transactionId)
+          .get();
+
+      final userID = docSnapshot.data()?['userID'];
+
+      final userDocRef =
+          FirebaseFirestore.instance.collection('users').doc(userID);
+      final userDocSnapshot = await userDocRef.get();
+      int currentRewardPoints = userDocSnapshot['rewardPoint'];
+      int totalRewardPoints = userDocSnapshot['totalPoints'];
+
+      // Tambahkan poin baru ke poin yang ada
+      final updatedRewardPoints = currentRewardPoints + point;
+      final updatedTotalPoints = totalRewardPoints + point;
+
+      // Update dokumen pengguna dengan poin yang sudah ditambahkan
+      final userUpdateData = {
+        'rewardPoint': updatedRewardPoints,
+        'totalPoints': updatedTotalPoints,
+      };
+      await userDocRef.update(userUpdateData);
+
       // Navigasi berdasarkan kondisi `isSend`
       // if (!isSend) {
       //   ctx.pushNamed(paths.fillDropID);
       // } else {
-        showCustomToast('Transaction verified successfully');
-        ctx.pushNamed(paths.success, extra: <String, dynamic>{
-          'isSend': false,
-          'isAdmin': true,
-          'point': point
-        });
+      showCustomToast('Transaction verified successfully');
+      ctx.pushNamed(paths.success, extra: <String, dynamic>{
+        'isSend': false,
+        'isAdmin': true,
+        'point': point
+      });
       // }
     } catch (e) {
       // Tangani error dan tampilkan notifikasi error

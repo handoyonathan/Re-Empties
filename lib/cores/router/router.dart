@@ -199,6 +199,12 @@ setupRouter({required String initialRoute}) {
         },
       ),
       GoRoute(
+        path: '/voucher',
+        name: paths.voucher,
+        builder: (context, state) =>
+            VoucherPageView(),
+      ),
+      GoRoute(
         path: '/voucherDetail',
         name: 'voucherDetail',
         builder: (context, state) {

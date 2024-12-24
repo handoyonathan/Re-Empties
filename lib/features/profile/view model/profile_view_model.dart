@@ -13,12 +13,15 @@ class ProfileVM extends BaseNotifier {
   String userFullName = '';
   String userEmail = '';
   String userPhoneNum = '';
+  StreamSubscription? _userPointSubscription;
 
   @override
   Future<void> init() async {
+    isLoading = true;
     await fetchUserData();
+    await fetchUserPoint();
+    isLoading = false;
   }
-  
 
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
@@ -26,7 +29,10 @@ class ProfileVM extends BaseNotifier {
 
     if (ctx.mounted) ctx.goNamed(paths.login);
   }
-
+  
+  void goToVoucherPage() {
+    ctx.pushNamed(paths.voucher);
+  }
 
   Future<void> fetchUserData() async {
     try {
@@ -49,11 +55,44 @@ class ProfileVM extends BaseNotifier {
     }
   }
 
+  int point = 0;
+  int totalPoints = 0;
+
+  Future<void> fetchUserPoint() async {
+    try {
+      _userPointSubscription = FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser?.uid)
+          .snapshots()
+          .listen((doc) async {
+        if (doc.exists && doc.data() != null) {
+          // Pastikan rewardPoint ada dan nilainya valid
+          point = doc.data()?['rewardPoint'];
+          totalPoints = doc.data()?['totalPoints'];
+          notifyListeners();
+          print('Updated point: $point');
+        } else {
+          print('User document does not exist or is null.');
+        }
+      });
+    } catch (e) {
+      print(
+        'Error fetching user data: $e',
+      );
+    }
+  }
+
   void goToEdit() {
-    ctx.pushNamed(paths.editProfile, extra: <String, String?> {
+    ctx.pushNamed(paths.editProfile, extra: <String, String?>{
       'fullName': userFullName,
       'email': userEmail,
       'phoneNumber': userPhoneNum,
     }).then((_) => fetchUserData()); // re-fetch datanya
+  }
+
+  @override
+  void dispose() {
+    _userPointSubscription?.cancel(); // Batalkan langganan point user
+    super.dispose();
   }
 }

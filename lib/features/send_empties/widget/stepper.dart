@@ -114,13 +114,13 @@ class WasteCategoryStepper extends StatelessWidget {
                         constraints: const BoxConstraints(),
                       ),
                     ),
-                    if (isAdmin) ...[
+                    // if (isAdmin) ...[
                       Gap(8.w),
                       Text(
-                        'Kg',
+                        isAdmin ? 'Kg' : 'Pcs',
                         style: textTheme.voucher.copyWith(color: colors.green4),
                       )
-                    ]
+                    // ]
                   ],
                 ),
               ],

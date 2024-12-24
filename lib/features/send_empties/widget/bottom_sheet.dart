@@ -9,9 +9,9 @@ import 'package:re_empties/features/send_empties/model/payment_model.dart';
 void showOptionsModal<T>({
   required BuildContext context,
   required List<T> options,
-  required Function(int) onSelected,
-  required int selectedValue,
-  String? price, // Add this parameter
+  required Function(int?) onSelected, // Mengizinkan null untuk initial value
+  int? selectedValue, // Ubah menjadi nullable
+  String? price, // Tambahkan parameter ini
 }) {
   showModalBottomSheet(
     context: context,
@@ -29,30 +29,40 @@ void showOptionsModal<T>({
             children: options.asMap().entries.map((entry) {
               int idx = entry.key;
               var data = entry.value;
-              
-              final imageUrl = (data is PaymentOptionModel) ? data.image : (data as DeliveryOptionModel).image;
-              final optionTitle = (data is PaymentOptionModel) ? data.title : (data as DeliveryOptionModel).title;
-              final description = (data is PaymentOptionModel) ? data.desc : (data as DeliveryOptionModel).desc;
+
+              final imageUrl = (data is PaymentOptionModel)
+                  ? data.image
+                  : (data as DeliveryOptionModel).image;
+              final optionTitle = (data is PaymentOptionModel)
+                  ? data.title
+                  : (data as DeliveryOptionModel).title;
+              final description = (data is PaymentOptionModel)
+                  ? data.desc
+                  : (data as DeliveryOptionModel).desc;
 
               return ListTile(
                 leading: ClipOval(
-                    child: Image.network(
-                  imageUrl,
-                  width: 55.w,
-                  height: 55.h,
-                )),
+                  child: Image.network(
+                    imageUrl,
+                    width: 55.w,
+                    height: 55.h,
+                  ),
+                ),
                 title: Text(optionTitle, style: textTheme.trackingStepTitle),
-                subtitle: Text(price.isNotNullOrEmpty ? price! : description, style: textTheme.textFieldLabel),
+                subtitle: Text(
+                  price.isNotNullOrEmpty ? price! : description,
+                  style: textTheme.textFieldLabel,
+                ),
                 trailing: Radio<int>(
                   value: idx,
-                  groupValue: selectedValue,
+                  groupValue: selectedValue, // Nilai yang dipilih
                   activeColor: colors.green4,
                   fillColor: WidgetStateProperty.all(colors.green4),
                   onChanged: (int? value) {
                     setState(() {
-                      selectedValue = value!;
+                      selectedValue = value; // Ubah nilai yang dipilih
                     });
-                    onSelected(value!);
+                    onSelected(value); // Panggil callback
                   },
                 ),
               );

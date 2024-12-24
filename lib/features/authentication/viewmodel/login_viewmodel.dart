@@ -31,11 +31,11 @@ class LoginVM extends BaseFormNotifier<LoginModel> with FormValidatorMixin {
 
         SharedPreferences preferences = await SharedPreferences.getInstance();
         await preferences.setString('userId', userCredential.user?.uid ?? '');
-        print('User Logged in: ${userCredential.user?.uid}');
+        // print('User Logged in: ${userCredential.user?.uid}');
 
         String email = form.email.text;
         // Logic login admin
-        if (email.endsWith('@ReEmpties.com')) {
+        if (email.toLowerCase().endsWith('@ReEmpties.com'.toLowerCase())) {
           // check admin terdaftar atau engga
           DocumentSnapshot adminDoc = await _firestore
               .collection('admin')
@@ -50,10 +50,24 @@ class LoginVM extends BaseFormNotifier<LoginModel> with FormValidatorMixin {
           } else {
             print("Admin not found in the database.");
           }
+        } else {
+          DocumentSnapshot userDoc = await _firestore
+              .collection('users')
+              .doc(userCredential.user?.uid)
+              .get();
+
+          if (userDoc.exists) {
+            print("User Logged in : ${userCredential.user?.uid}");
+            await preferences.setBool('isUserLoggedIn', true);
+            ctx.goNamed(paths.home);
+            return;
+          } else {
+            print("User not found in the database.");
+          }
         }
 
-        ctx.goNamed(paths.home);
-        await preferences.setBool('isUserLoggedIn', true);
+        // ctx.goNamed(paths.home);
+        // await preferences.setBool('isUserLoggedIn', true);
       } on FirebaseAuthException catch (e) {
         // Tangani kesalahan login
         print('Failed with error code: ${e.code}');

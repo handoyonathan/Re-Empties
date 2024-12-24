@@ -39,15 +39,17 @@ class SuccessPageState extends State<SuccessPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Positioned.fill(
-          child: ImageAsset(imagePath: images.successBg),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 18.w),
-          child: Column(
+    return Scaffold(
+      backgroundColor: colors.bgColor,
+      body: Stack(
+        alignment: Alignment.center,
+        children: [
+          // Positioned.fill(
+            
+            // child: 
+            ImageAsset(imagePath: images.successBg),
+          // ),
+          Column(
             children: [
               Gap(100.h),
               ImageAsset(
@@ -67,6 +69,7 @@ class SuccessPageState extends State<SuccessPage> {
                 style: textTheme.successTitle.copyWith(
                   decoration: TextDecoration.none,
                 ),
+                textAlign: TextAlign.center,
               ),
               Gap(5.h),
               Padding(
@@ -110,8 +113,8 @@ class SuccessPageState extends State<SuccessPage> {
               ]
             ],
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

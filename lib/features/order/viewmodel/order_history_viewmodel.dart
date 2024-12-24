@@ -18,51 +18,44 @@ class OrderHistoryVM extends BaseNotifier {
   late List<Admin> adminData;
   String _selectedFilter = 'All';
   String selectedTab = 'All';
+  bool isDataLoaded = false;
 
   String get selectedFilter => _selectedFilter;
 
   List<TransactionModel> get filteredTransactions => transactions;
+
+  StreamSubscription? _transactionSubscription;
 
   @override
   FutureOr<void> init() async {
     isLoading = true;
     await fetchUserTransactionData();
     isLoading = false;
+    notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    _transactionSubscription?.cancel();
+    super.dispose();
   }
 
   void setFilter(String filter) async {
     _selectedFilter = filter;
-    // isLoading = true;
     notifyListeners();
-
-    try {
-      await fetchUserTransactionData(filter: filter, tab: selectedTab);
-    } catch (e) {
-      print('Error fetching data during filter: $e');
-    } finally {
-      // isLoading = false;
-      notifyListeners();
-    }
+    await fetchUserTransactionData(filter: filter, tab: selectedTab);
   }
 
   void refreshData() async {
     isLoading = true;
     notifyListeners();
-
-    try {
-      await fetchUserTransactionData(filter: _selectedFilter, tab: selectedTab);
-    } catch (e) {
-      print('Error refreshing data: $e');
-    } finally {
-      isLoading = false;
-      notifyListeners();
-    }
+    await fetchUserTransactionData(filter: _selectedFilter, tab: selectedTab);
+    isLoading = false;
+    notifyListeners();
   }
 
   void gotoDetail(int index) async {
-    // print(filteredTransactions[index].transactionId);
-    final result = await ctx
-        .pushNamed(paths.transactionHistoryDetail, extra: <String, dynamic>{
+    final result = await ctx.pushNamed(paths.transactionHistoryDetail, extra: {
       'transactionID': filteredTransactions[index].transactionId,
     });
 
@@ -73,17 +66,8 @@ class OrderHistoryVM extends BaseNotifier {
 
   void setTab(String tab) async {
     selectedTab = tab;
-    // isLoading = true;
     notifyListeners();
-
-    try {
-      await fetchUserTransactionData(filter: _selectedFilter, tab: tab);
-    } catch (e) {
-      print('Error fetching data during tab switch: $e');
-    } finally {
-      // isLoading = false;
-      notifyListeners();
-    }
+    await fetchUserTransactionData(filter: _selectedFilter, tab: tab);
   }
 
   Future<void> fetchUserTransactionData({
@@ -93,7 +77,8 @@ class OrderHistoryVM extends BaseNotifier {
     try {
       currentUser = auth.FirebaseAuth.instance.currentUser;
       if (currentUser != null) {
-        // Query Firestore untuk transaksi berdasarkan userID dan filter
+        _transactionSubscription?.cancel();
+
         Query query = FirebaseFirestore.instance
             .collection('transaction')
             .where('userID', isEqualTo: currentUser!.uid);
@@ -106,48 +91,52 @@ class OrderHistoryVM extends BaseNotifier {
           query = query.where('transactionType', isEqualTo: filter);
         }
 
-        QuerySnapshot querySnapshot = await query.get();
+        _transactionSubscription =
+            query.snapshots().listen((querySnapshot) async {
+          List<TransactionModel> tempTransactions = [];
+          Map<String, Admin?> tempAdminData = {};
 
-        List<TransactionModel> tempTransactions = [];
-        Map<String, Admin?> tempAdminData = {};
+          for (var doc in querySnapshot.docs) {
+            TransactionModel transaction = TransactionModel.fromFirestore(
+              doc.data() as Map<String, dynamic>,
+              doc.id,
+            );
 
-        for (var doc in querySnapshot.docs) {
-          TransactionModel transaction = TransactionModel.fromFirestore(
-            doc.data() as Map<String, dynamic>,
-            doc.id,
-          );
+            // Format date dan time
+            final dateFormatter = DateFormat('EEEE, dd MMMM yyyy');
+            final timeFormatter = DateFormat('HH:mm');
 
-          // Format date dan time
-          final dateFormatter = DateFormat('EEEE, dd MMMM yyyy');
-          final timeFormatter = DateFormat('HH:mm');
+            final formattedDate = dateFormatter.format(transaction.dateTime);
+            final formattedTime = timeFormatter.format(transaction.dateTime);
 
-          final formattedDate = dateFormatter.format(transaction.dateTime);
-          final formattedTime = timeFormatter.format(transaction.dateTime);
+            transaction = transaction.copyWith(
+              date: formattedDate,
+              time: formattedTime,
+            );
 
-          transaction = transaction.copyWith(
-            date: formattedDate,
-            time: formattedTime,
-          );
+            // Fetch admin data jika adminID ada
+            if (transaction.adminID.isNotEmpty) {
+              Admin? admin = await fetchAdminData(transaction.adminID);
+              tempAdminData[transaction.transactionId] = admin;
+            }
 
-          // Fetch admin data jika adminID ada
-          if (transaction.adminID.isNotEmpty) {
-            Admin? admin = await fetchAdminData(transaction.adminID);
-            tempAdminData[transaction.transactionId] = admin;
+            tempTransactions.add(transaction);
           }
 
-          tempTransactions.add(transaction);
-        }
+          // Sort transactions berdasarkan dateTime (descending)
+          tempTransactions.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
-// Sort transactions berdasarkan dateTime (descending)
-        tempTransactions.sort((a, b) => b.dateTime.compareTo(a.dateTime));
+          // Update transaksi dan admin data ke state
+          transactions = tempTransactions;
 
-// Update transaksi dan admin data ke state
-        transactions = tempTransactions;
+          // Perbarui adminData berdasarkan urutan transaction
+          adminData = transactions.map((transaction) {
+            return tempAdminData[transaction.transactionId]!;
+          }).toList();
 
-// Perbarui adminData berdasarkan urutan transaction
-        adminData = transactions.map((transaction) {
-          return tempAdminData[transaction.transactionId]!;
-        }).toList();
+          isDataLoaded = true;
+          notifyListeners();
+        });
       }
     } catch (e) {
       print('Error fetching transaction data: $e');
@@ -167,6 +156,6 @@ class OrderHistoryVM extends BaseNotifier {
     } catch (e) {
       print('Error fetching admin data: $e');
     }
-    return null; // Jika tidak ada data admin, kembalikan null
+    return null;
   }
 }
