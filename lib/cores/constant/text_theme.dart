@@ -16,7 +16,7 @@ class _TextTheme {
     color: colors.green2,
   );
   final dropID = TextStyle(
-    fontSize: 34.sp,
+    fontSize: 24.sp,
     height: 1.5,
     fontWeight: FontWeight.w900,
     color: colors.green1,

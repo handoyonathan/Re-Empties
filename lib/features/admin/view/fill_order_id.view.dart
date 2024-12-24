@@ -82,7 +82,7 @@ class FillOrderIdState extends ConsumerState<FillOrderID> {
           ),
         ),
         bottomNavigationBar: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 32.w),
+          padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 32.h),
           child: AppMainButton(
             state: ButtonState.primary,
             text: 'Verify Transaction',

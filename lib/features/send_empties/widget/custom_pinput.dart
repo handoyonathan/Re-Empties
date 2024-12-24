@@ -109,6 +109,7 @@ class _CustomPinputState extends State<CustomPinput> {
   Widget build(BuildContext context) => Form(
         key: widget.formKey,
         child: Pinput(
+          keyboardType: TextInputType.text,
           length: 7,
           enabled: widget.isAdmin,
           controller: _pinController,
@@ -124,6 +125,7 @@ class _CustomPinputState extends State<CustomPinput> {
               errorText!,
               style: textTheme.errorText.copyWith(fontSize: 12.sp),
             ),
+          
           ),
         ),
       );
