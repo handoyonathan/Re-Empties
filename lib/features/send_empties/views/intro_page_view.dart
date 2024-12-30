@@ -32,7 +32,7 @@ class IntroView extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    "Let's make sure to pack the rigth way!",
+                    "Let's make sure to pack the right way!",
                     style: textTheme.textButton.copyWith(color: colors.green1),
                     textAlign: TextAlign.left,
                   ),

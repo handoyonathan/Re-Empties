@@ -25,7 +25,7 @@ mixin FormValidatorMixin on BaseNotifier {
 
     if (validationList.contains(Validator.phoneFormat) &&
         !phoneRegex.hasMatch(value)) {
-      return '$label hmust be number and start with +62';
+      return '$label must be number and start with +62';
     }
 
     // Email validation
