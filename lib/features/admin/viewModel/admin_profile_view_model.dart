@@ -10,7 +10,7 @@ class AdminProfileVM extends BaseNotifier {
   AdminProfileVM(super.ref);
   auth.User? currentAdmin;
   String adminName = '';
-  String addressStation = '';
+  String addressStation = '';  
 
   @override
   FutureOr<void> init() async {
@@ -22,6 +22,7 @@ class AdminProfileVM extends BaseNotifier {
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();
+    await prefs.setBool('isAdminLoggedIn', false);
 
     ctx.goNamed(paths.login);
   }

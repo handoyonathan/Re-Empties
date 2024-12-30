@@ -11,7 +11,7 @@ class WasteCategoryStepper extends StatelessWidget {
   final int quantity;
   final VoidCallback onIncrease;
   final VoidCallback onDecrease;
-  final bool isAdmin;
+  // final bool isAdmin;
 
   const WasteCategoryStepper({
     super.key,
@@ -21,7 +21,7 @@ class WasteCategoryStepper extends StatelessWidget {
     required this.quantity,
     required this.onIncrease,
     required this.onDecrease,
-    this.isAdmin = false,
+    // this.isAdmin = false,
   });
 
   @override
@@ -117,7 +117,7 @@ class WasteCategoryStepper extends StatelessWidget {
                     // if (isAdmin) ...[
                       Gap(8.w),
                       Text(
-                        isAdmin ? 'Kg' : 'Pcs',
+                        'Pcs',
                         style: textTheme.voucher.copyWith(color: colors.green4),
                       )
                     // ]

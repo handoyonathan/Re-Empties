@@ -96,7 +96,7 @@ class OrderSummaryView extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      '${transaction.date} ${transaction.time}',
+                      '${vm.formattedDate} ${vm.formattedTime}',
                       style: textTheme.homeShipLabel2,
                       textAlign: TextAlign.right,
                       overflow: TextOverflow.fade,
@@ -163,9 +163,9 @@ class OrderSummaryView extends StatelessWidget {
                         'state': transaction.orderStatus == 'Delivery'
                             ? 'ongoing'
                             : 'done',
-                        'plastic': transaction.plasticWeight,
-                        'glass': transaction.glassWeight,
-                        'cardboard': transaction.cardboardWeight,
+                        'plastic': transaction.plasticPcs,
+                        'glass': transaction.glassPcs,
+                        'cardboard': transaction.cardboardPcs,
                         'total': transaction.totalWastePcs,
                         'points': transaction.earnPoints != 0
                             ? transaction.earnPoints

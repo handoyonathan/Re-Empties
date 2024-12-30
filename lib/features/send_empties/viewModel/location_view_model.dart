@@ -7,6 +7,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'package:re_empties/cores/components/alert_dialog.dart';
 import 'package:re_empties/cores/components/custom_toast_mixin.dart';
 import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:re_empties/cores/template/notifer.dart';
@@ -30,7 +32,6 @@ class LocationVM extends BaseNotifier with CustomToastMixin {
 
   LatLng? userPosition;
   GoogleMapController? mapController;
-  // String? stationControllerError;
   late String strAlamat;
   bool isWasteLocationChanged = false;
   late String openHour;
@@ -108,20 +109,78 @@ class LocationVM extends BaseNotifier with CustomToastMixin {
 
       var permission = await Geolocator.checkPermission();
       if (permission == LocationPermission.denied) {
-        permission = await Geolocator.requestPermission();
-        if (permission == LocationPermission.denied) {
-          throw Exception('Location permissions are denied');
-        }
+        // Request permission, and block until granted
+        await _requestLocationPermission();
       }
 
       if (permission == LocationPermission.deniedForever) {
-        throw Exception('Location permissions are permanently denied.');
+        // Permission is denied forever, show a dialog to the user
+        _showPermissionDeniedDialog();
+        return;
       }
 
       await _getCurrentLocation();
     } catch (e) {
       print('Error determining position: $e');
     }
+  }
+
+  Future<void> _requestLocationPermission() async {
+    // Check current permission status
+    var permission = await Geolocator.checkPermission();
+
+    if (permission == LocationPermission.denied) {
+      // Request permission only once if denied
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // If still denied, inform user and guide to settings
+        showCustomToast(
+            'Location permission denied. Please enable it in settings.', isError: true);
+        _showPermissionDeniedDialog();
+      } else if (permission == LocationPermission.deniedForever) {
+        // If permission is denied forever, guide to settings
+        _showPermissionDeniedDialog();
+      }
+    } else if (permission == LocationPermission.deniedForever) {
+      // If permission was denied forever, show the dialog only once
+      _showPermissionDeniedDialog();
+    } else {
+      // Permission granted, continue as normal
+      print('Location permission granted.');
+    }
+  }
+
+  void _showPermissionDeniedDialog() {
+    showDialog(
+      context: ctx,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return PopScope(
+          canPop: false,
+          child: CustomAlertDialog(
+            isLocation: true,
+            onConfirm: () async {
+              await openAppSettings();
+          
+              var permission = await Geolocator.checkPermission();
+          
+              if (permission == LocationPermission.whileInUse ||
+                  permission == LocationPermission.always) {
+                print(
+                    'Location permission granted after returning from settings.');
+                ctx.pop();
+                await _determinePosition(); 
+                if (userPosition != null) {
+                  await fetchWasteStations(); // Re-fetch the waste stations data
+                  _sortWasteStations(); // Re-sort the stations based on new data
+                }
+              }
+            },
+            onCancel: () {},
+          ),
+        );
+      },
+    );
   }
 
   Future<void> _getCurrentLocation() async {
@@ -181,7 +240,8 @@ class LocationVM extends BaseNotifier with CustomToastMixin {
       final end = DateFormat('HH:mm').parse(endTime);
       final current = DateFormat('HH:mm').parse(nowFormatted);
 
-      if (current.isAfter(start) && current.isBefore(end)) {
+      if ((current.isAfter(start) || current.isAtSameMomentAs(start)) &&
+          (current.isBefore(end) || current.isAtSameMomentAs(end))) {
         return 'Open | $openHours';
       } else {
         return 'Closed | $openHours';
@@ -311,22 +371,6 @@ class LocationVM extends BaseNotifier with CustomToastMixin {
     }
 
     notifyListeners();
-  }
-
-  void calculateDistance() async {
-    double lat1 = -6.1751; // Latitude Jakarta
-    double lon1 = 106.8650; // Longitude Jakarta
-    double lat2 = -7.2504; // Latitude Bandung
-    double lon2 = 112.7688; // Longitude Bandung
-
-    // Menghitung jarak antara dua titik
-    double distanceInMeters =
-        await Geolocator.distanceBetween(lat1, lon1, lat2, lon2);
-    double distanceInKm =
-        distanceInMeters / 1000; // Mengonversi meter ke kilometer
-
-    print(
-        'Jarak antara Jakarta dan Bandung adalah: ${distanceInKm.toStringAsFixed(2)} km');
   }
 
   @override

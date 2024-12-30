@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart';
 import 'package:re_empties/cores/components/custom_toast_mixin.dart';
 import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:re_empties/cores/template/notifer.dart';
@@ -12,6 +11,7 @@ import 'package:re_empties/features/send_empties/model/transaction_model.dart';
 
 class AdminViewVM extends BaseNotifier with CustomToastMixin {
   AdminViewVM(super.ref);
+
   auth.User? currentAdmin;
   List<TransactionModel> transactions = [];
   String userFullName = '';
@@ -20,6 +20,11 @@ class AdminViewVM extends BaseNotifier with CustomToastMixin {
   String userAddress = '';
   late Admin adminData;
   bool loading = false;
+  Map<String, String> transactionUserName = {};
+  Map<String, String> transactionUserAddress = {};
+  bool isDataLoaded = false;
+
+  StreamSubscription? _transactionStreamSubscription;
 
   @override
   FutureOr<void> init() async {
@@ -28,23 +33,12 @@ class AdminViewVM extends BaseNotifier with CustomToastMixin {
     isLoading = false;
   }
 
-  Future<void> fetchUserData(String currentUserUid) async {
-    try {
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(currentUserUid)
-          .get();
-
-      if (userDoc.exists) {
-        userFullName = userDoc['userName'] ?? '';
-        userEmail = userDoc['userEmail'] ?? '';
-        userPhoneNum = userDoc['userPhoneNumber'] ?? '';
-        userAddress = userDoc['userAddress'] ?? '';
-        notifyListeners();
-      }
-    } catch (e) {
-      print('Error fetching user data: $e');
-    }
+  @override
+  void dispose() {
+    // Batalkan stream listener ketika ViewModel dihapus
+    _transactionStreamSubscription?.cancel();
+    _transactionStreamSubscription = null;
+    super.dispose();
   }
 
   Future<void> fetchAdminData(String currentAdminUid) async {
@@ -84,77 +78,87 @@ class AdminViewVM extends BaseNotifier with CustomToastMixin {
 
   void setFilter(String filter) async {
     _selectedFilter = filter;
-    loading = true;
-    notifyListeners();
+    isDataLoaded = false;
 
     try {
-      await fetchAdminTransactionData(filter: _selectedFilter); // Fetch ulang data dari Firestore
-      _filteredTransactions = filteredTransactions; // Terapkan filter
+      await fetchAdminTransactionData(filter: _selectedFilter);
+      _filteredTransactions = filteredTransactions;
     } catch (e) {
       print('Error fetching data during filter: $e');
     } finally {
-      loading = false;
-      notifyListeners(); // Perbarui UI
+      isDataLoaded = true;
+      notifyListeners();
     }
   }
 
   Future<void> fetchAdminTransactionData({String? filter}) async {
-  try {
-    currentAdmin = auth.FirebaseAuth.instance.currentUser;
-    if (currentAdmin != null) {
-      // Ambil adminID dari admin yang sedang login
-      final adminID = currentAdmin!.uid;
+    try {
+      isDataLoaded = false;
+      currentAdmin = auth.FirebaseAuth.instance.currentUser;
+      if (currentAdmin != null) {
+        final adminID = currentAdmin!.uid;
 
-      // Query Firestore untuk mendapatkan transaksi berdasarkan adminID
-      Query query = FirebaseFirestore.instance
-          .collection('transaction')
-          .where('adminID', isEqualTo: adminID)
-          ;
+        Query query = FirebaseFirestore.instance
+            .collection('transaction')
+            .where('adminID', isEqualTo: adminID)
+            .where('orderStatus', isEqualTo: 'Delivery');
 
-          if (filter != null && filter != 'All') {
+        if (filter != null && filter != 'All') {
           query = query.where('transactionType', isEqualTo: filter);
         }
 
-        QuerySnapshot querySnapshot = await query.get();
+        // Batalkan listener sebelumnya jika ada
+        _transactionStreamSubscription?.cancel();
 
-      // Mapping transactions
-      List<TransactionModel> tempTransactions = [];
-      for (var doc in querySnapshot.docs) {
-        TransactionModel transaction = TransactionModel.fromFirestore(
-            doc.data() as Map<String, dynamic>, doc.id);
+        _transactionStreamSubscription = query.snapshots().listen((querySnapshot) async {
+          List<TransactionModel> tempTransactions = [];
+          Map<String, String> tempName = {};
+          Map<String, String> tempAddress = {};
 
-            final dateFormatter = DateFormat('EEEE, dd MMMM yyyy');
-          final timeFormatter = DateFormat('HH:mm');
+          for (var doc in querySnapshot.docs) {
+            TransactionModel transaction = TransactionModel.fromFirestore(
+                doc.data() as Map<String, dynamic>, doc.id);
 
-          final formattedDate = dateFormatter.format(transaction.dateTime);
-          final formattedTime = timeFormatter.format(transaction.dateTime);
+            transaction = transaction.copyWith(transactionId: doc.id);
 
-        // Assign the document ID (transactionId)
-        transaction = transaction.copyWith(transactionId: doc.id);
+            if (transaction.userID.isNotEmpty) {
+              try {
+                DocumentSnapshot userDoc = await FirebaseFirestore.instance
+                    .collection('users')
+                    .doc(transaction.userID)
+                    .get();
 
-        // Fetch user data untuk melengkapi detail transaksi
-        if (transaction.userID.isNotEmpty) {
-          await fetchUserData(transaction.userID);
-          transaction = transaction.copyWith(
-            name: userFullName,
-            address: userAddress,
-          );
-        }
+                if (userDoc.exists) {
+                  tempName[transaction.transactionId] =
+                      userDoc['userName'] ?? 'Unknown';
+                  tempAddress[transaction.transactionId] =
+                      userDoc['userAddress'] ?? 'Unknown';
+                }
+              } catch (e) {
+                print(
+                    'Error fetching user data for transaction ${transaction.transactionId}: $e');
+              }
+            }
 
-        tempTransactions.add(transaction);
+            tempTransactions.add(transaction);
+          }
+
+          tempTransactions.sort((a, b) => b.dateTime.compareTo(a.dateTime));
+
+          transactions = tempTransactions;
+          transactionUserName = tempName;
+          transactionUserAddress = tempAddress;
+          _filteredTransactions = filteredTransactions;
+          isDataLoaded = true;
+
+          // Pastikan hanya memanggil notifyListeners jika masih ada listener
+          if (hasListeners) notifyListeners();
+        });
       }
-
-      tempTransactions.sort((a, b) => b.dateTime.compareTo(a.dateTime));
-
-      transactions = tempTransactions;
-      _filteredTransactions = filteredTransactions; // Terapkan filter awal
-      notifyListeners();
+    } catch (e) {
+      print('Error fetching transaction admin data: $e');
     }
-  } catch (e) {
-    print('Error fetching transaction admin data: $e');
   }
-}
-
 
   late bool send;
 

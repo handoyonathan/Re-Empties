@@ -26,7 +26,6 @@ class IntroView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     ref.read(_viewModel).fetchArticleData();
     return BaseView(
-        disableSafeArea: true,
         provider: _viewModel,
         appBar: (_) => CustomAppBar(
               title: Row(
@@ -45,6 +44,18 @@ class IntroView extends ConsumerWidget {
 
   Widget _buildScreen(BuildContext context, IntroVM vm) => Scaffold(
       backgroundColor: colors.bgColor,
+      bottomNavigationBar: Container(
+              color: colors.bgColor,
+              alignment: Alignment.center,
+              height: 70.h,
+              child: AppMainButton(
+                state: ButtonState.primary,
+                text: 'Continue',
+                onPressed: () {
+                  vm.goToLocationPage(isSend: isSend);
+                },
+              ),
+            ),
       body: vm.isLoading
           ? Center(
               child: CircularProgressIndicator(
@@ -89,17 +100,17 @@ class IntroView extends ConsumerWidget {
                           },
                         ),
                       ],
-                      Align(
-                        alignment: Alignment.center,
-                        child: AppMainButton(
-                          state: ButtonState.primary,
-                          text: 'Continue',
-                          onPressed: () {
-                            vm.goToLocationPage(isSend: isSend);
-                          },
-                        ),
-                      ),
-                      Gap(30.h)
+                      // Align(
+                      //   alignment: Alignment.center,
+                      //   child: AppMainButton(
+                      //     state: ButtonState.primary,
+                      //     text: 'Continue',
+                      //     onPressed: () {
+                      //       vm.goToLocationPage(isSend: isSend);
+                      //     },
+                      //   ),
+                      // ),
+                      // Gap(30.h)
                     ],
                   ),
                 ));

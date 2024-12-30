@@ -64,10 +64,10 @@ class _FormTextFieldState extends State<FormTextField> {
                 contentPadding: widget.contentPadding,
                 onOutOfFocus: widget.onOutOfFocus,
                 validator: (value) {
-                  if (value!.isEmpty) {
-                    return null;
-                  }
-                  return model.validator?.call(value);
+                  // if (value!.isEmpty) {
+                  //   return null;
+                  // }
+                  return model.validator?.call(value!);
                 },
                 onValidate: (String? error) {
                   setState(() {
@@ -78,9 +78,9 @@ class _FormTextFieldState extends State<FormTextField> {
                   if (errorMessage != null) {
                     setState(() {
                       errorMessage = null;
-                      if (widget.setPhoneDropdownBorderError != null) {
-                        widget.setPhoneDropdownBorderError!();
-                      }
+                      // if (widget.setPhoneDropdownBorderError != null) {
+                      //   widget.setPhoneDropdownBorderError!();
+                      // }
                     });
                   }
                   widget.onChanged?.call(value);

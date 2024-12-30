@@ -30,7 +30,7 @@ class TransactionDetailVM extends BaseNotifier with CustomToastMixin {
   String adminID = '';
 
   // Properti terkait quantity
-  Map<String, int> wasteWeight = {};
+  Map<String, int> wastePcs = {};
 
   Future<void> fetchUserData() async {
     try {
@@ -106,33 +106,56 @@ class TransactionDetailVM extends BaseNotifier with CustomToastMixin {
   }
 
   // Fungsi untuk mengatur kuantitas awal
-  void initializeWasteQuantities(List<WasteCategoryModel> categories) {
-    for (var category in categories) {
-      wasteWeight[category.id] = 1; // Default quantity untuk setiap kategori
+  Future<void> initializeWasteQuantitiesFromTransaction() async {
+  try {
+    // Ambil data transaksi berdasarkan transactionID
+    DocumentSnapshot transactionDoc = await FirebaseFirestore.instance
+        .collection('transaction')
+        .doc(transactionID)
+        .get();
+
+    if (transactionDoc.exists) {
+      // Ambil nilai kuantitas dari dokumen transaksi
+      int cardboardPcs = transactionDoc['cardboardPcs'];
+      int glassPcs = transactionDoc['glassPcs'];
+      int plasticPcs = transactionDoc['plasticPcs'];
+
+      // Tetapkan nilai ke wastePcs berdasarkan kategori
+      wastePcs = {
+        'IwoJoghBYQQrmTRThjlk': cardboardPcs, // ID kategori untuk cardboard
+        'uuk14PI0XvaD5jZfouvy': glassPcs,     // ID kategori untuk glass
+        'JEO10T6Zlo3tmYcIYIMR': plasticPcs,  // ID kategori untuk plastic
+      };
+
+      notifyListeners();
+    } else {
+      showCustomToast('Transaction not found', isError: true);
     }
-    notifyListeners();
+  } catch (e) {
+    showCustomToast('Error initializing waste quantities: $e', isError: true);
   }
+}
 
   // Fungsi untuk meningkatkan kuantitas
   void increaseQuantity(String categoryId) {
-    if (wasteWeight.containsKey(categoryId)) {
-      wasteWeight[categoryId] = (wasteWeight[categoryId] ?? 0) + 1;
+    if (wastePcs.containsKey(categoryId)) {
+      wastePcs[categoryId] = (wastePcs[categoryId] ?? 0) + 1;
       notifyListeners();
     }
   }
 
   // Fungsi untuk mengurangi kuantitas
   void decreaseQuantity(String categoryId) {
-    if (wasteWeight.containsKey(categoryId) &&
-        (wasteWeight[categoryId] ?? 0) > 0) {
-      wasteWeight[categoryId] = (wasteWeight[categoryId] ?? 0) - 1;
+    if (wastePcs.containsKey(categoryId) &&
+        (wastePcs[categoryId] ?? 0) > 0) {
+      wastePcs[categoryId] = (wastePcs[categoryId] ?? 0) - 1;
       notifyListeners();
     }
   }
 
   bool validateForm() {
     int totalQty = 0;
-    for (var quantity in wasteWeight.values) {
+    for (var quantity in wastePcs.values) {
       totalQty += quantity;
     }
 
@@ -154,21 +177,21 @@ class TransactionDetailVM extends BaseNotifier with CustomToastMixin {
       if (!validateForm()) return;
 
       // Hitung total berat dan poin
-      final weight = wasteWeight.values.fold(0, (sum, qty) => sum + qty);
-      final cardboardWeight = wasteWeight['IwoJoghBYQQrmTRThjlk'];
-      final glassWeight = wasteWeight['uuk14PI0XvaD5jZfouvy'];
-      final plasticWeight = wasteWeight['JEO10T6Zlo3tmYcIYIMR'];
-      final point = transactionData.totalWastePcs * 100;
+      final Pcs = wastePcs.values.fold(0, (sum, qty) => sum + qty);
+      final cardboardPcs = wastePcs['IwoJoghBYQQrmTRThjlk'];
+      final glassPcs = wastePcs['uuk14PI0XvaD5jZfouvy'];
+      final plasticPcs = wastePcs['JEO10T6Zlo3tmYcIYIMR'];
+      final point = Pcs * 100;
 
       if (!isSend) {
         ctx.pushNamed(paths.fillDropID, extra: <String, dynamic>{
           'adminID': adminID,
-          'weight': weight,
+          'totalPcs': Pcs,
           'point': point,
           'transactionData': transactionData,
-          'cardboardWeight': cardboardWeight,
-          'glassWeight': glassWeight,
-          'plasticWeight': plasticWeight,
+          'cardboardWeight': cardboardPcs,
+          'glassWeight': glassPcs,
+          'plasticWeight': plasticPcs,
         });
         return;
       }
@@ -177,10 +200,10 @@ class TransactionDetailVM extends BaseNotifier with CustomToastMixin {
       final transactionUpdateData = {
         'earnPoints': point,
         'orderStatus': 'Verify',
-        'totalWeight': weight,
-        'cardboardWeight': cardboardWeight,
-        'glassWeight': glassWeight,
-        'plasticWeight': plasticWeight,
+        'totalWastePcs': Pcs,
+        'cardboardPcs': cardboardPcs,
+        'glassPcs': glassPcs,
+        'plasticPcs': plasticPcs,
       };
 
       // Dapatkan referensi dokumen transaksi
@@ -230,6 +253,7 @@ class TransactionDetailVM extends BaseNotifier with CustomToastMixin {
     await fetchWasteCategories();
     await fetchUserData();
     // await fetchAdminData();
-    initializeWasteQuantities(wasteCategories);
+    // initializeWasteQuantities(wasteCategories);
+    await initializeWasteQuantitiesFromTransaction();
   }
 }

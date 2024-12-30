@@ -56,6 +56,7 @@ class EditProfileViewState extends ConsumerState<EditProfileView> {
   Widget _buildScreen(BuildContext context, EditProfileVM vm) => Scaffold(
         backgroundColor: colors.bgColor,
         body: Form(
+          key: vm.formKey,
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 35.h),
             child: Column(
@@ -93,8 +94,8 @@ class EditProfileViewState extends ConsumerState<EditProfileView> {
                 AppMainButton(
                     state: ButtonState.primary,
                     text: 'Save Profile',
-                    onPressed: () async {
-                      await vm.saveProfileData();
+                    onPressed: () {
+                      vm.saveProfileData();
                     })
               ],
             ),

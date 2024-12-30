@@ -19,6 +19,10 @@ class DashboardVM extends BaseNotifier {
   bool isDataLoaded = false; // Flag untuk menandakan data sudah dimuat
   StreamSubscription? _transactionSubscription;
   StreamSubscription? _userPointSubscription;
+  Map<String, String> transactionDates = {};
+  Map<String, String> transactionTimes = {};
+  String firstTransactionDate = '';
+  String firstTransactionTime = '';
 
   Future<void> checkLoginStatus(BuildContext context) async {
     final prefs = await SharedPreferences.getInstance();
@@ -76,6 +80,8 @@ class DashboardVM extends BaseNotifier {
             .listen((querySnapshot) async {
           List<TransactionModel> tempTransactions = [];
           Map<String, Admin?> tempAdminData = {};
+          Map<String, String> tempDates = {};
+          Map<String, String> tempTimes = {};
 
           for (var doc in querySnapshot.docs) {
             TransactionModel transaction = TransactionModel.fromFirestore(
@@ -87,13 +93,10 @@ class DashboardVM extends BaseNotifier {
             final dateFormatter = DateFormat('EEEE, dd MMMM yyyy');
             final timeFormatter = DateFormat('HH:mm');
 
-            final formattedDate = dateFormatter.format(transaction.dateTime);
-            final formattedTime = timeFormatter.format(transaction.dateTime);
-
-            transaction = transaction.copyWith(
-              date: formattedDate,
-              time: formattedTime,
-            );
+            tempDates[transaction.transactionId] =
+                dateFormatter.format(transaction.dateTime);
+            tempTimes[transaction.transactionId] =
+                timeFormatter.format(transaction.dateTime);
 
             // Fetch admin data jika adminID ada
             if (transaction.adminID.isNotEmpty) {
@@ -109,7 +112,19 @@ class DashboardVM extends BaseNotifier {
 
           // Ambil transaksi pertama setelah pengurutan, yang paling terkini
           if (tempTransactions.isNotEmpty) {
+            // Ambil transaksi pertama setelah pengurutan, yang paling terkini
             transactions = tempTransactions.first;
+            transactionDates = tempDates;
+            transactionTimes = tempTimes;
+
+            // Ambil tanggal dan waktu transaksi pertama (yang terkini)
+            String firstTransactionId = tempTransactions.first.transactionId;
+            firstTransactionDate = tempDates[firstTransactionId] ?? '';
+            firstTransactionTime = tempTimes[firstTransactionId] ?? '';
+
+            // Sekarang `firstTransactionDate` dan `firstTransactionTime` sudah memegang data tanggal dan waktu untuk transaksi pertama
+            print('First Transaction Date: $firstTransactionDate');
+            print('First Transaction Time: $firstTransactionTime');
 
             // Perbarui adminData untuk transaksi terkini
             adminData = tempAdminData[transactions!.transactionId];
@@ -149,16 +164,16 @@ class DashboardVM extends BaseNotifier {
   @override
   FutureOr<void> init() async {
     isLoading = true;
+    // checkLoginStatus(ctx);
     await fetchUserTransactionData();
     await fetchUserPoint();
-    checkLoginStatus(ctx);
     isLoading = false;
   }
 
   @override
   void dispose() {
     _transactionSubscription?.cancel(); // Batalkan langganan transaksi
-    _userPointSubscription?.cancel();   // Batalkan langganan user point
+    _userPointSubscription?.cancel(); // Batalkan langganan user point
     super.dispose();
   }
 }

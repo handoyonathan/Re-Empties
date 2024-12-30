@@ -91,7 +91,7 @@ class AdminViewState extends ConsumerState<AdminView> {
               ),
               Gap(16.h),
               Expanded(
-                child: vm.loading
+                child: !vm.isDataLoaded
                     ? Center(
                         child: CircularProgressIndicator(
                         color: colors.green2,
@@ -102,7 +102,8 @@ class AdminViewState extends ConsumerState<AdminView> {
                         ? Center(
                             child: Text(
                               "No transactions available",
-                              style: textTheme.appbarTitle.copyWith(color: colors.gray3),
+                              style: textTheme.appbarTitle
+                                  .copyWith(color: colors.gray3),
                             ),
                           )
                         : ListView.builder(
@@ -110,12 +111,18 @@ class AdminViewState extends ConsumerState<AdminView> {
                             itemBuilder: (context, index) {
                               final transaction =
                                   vm.filteredTransactions[index];
+                              final name = vm.transactionUserName[
+                                      transaction.transactionId] ??
+                                  '';
+                              final address = vm.transactionUserAddress[
+                                      transaction.transactionId] ??
+                                  '';
                               return Visibility(
                                 visible: transaction.orderStatus != 'Verify',
                                 child: TransactionCard(
-                                  name: transaction.name!,
+                                  name: name,
                                   transactionType: transaction.transactionType,
-                                  address: transaction.address!,
+                                  address: address,
                                   onTap: () => vm.goToTransactionDetailPage(
                                     isSend:
                                         transaction.transactionType == 'Send',

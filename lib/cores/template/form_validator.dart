@@ -2,7 +2,7 @@ import 'package:re_empties/cores/template/notifer.dart';
 
 mixin FormValidatorMixin on BaseNotifier {
   final RegExp passwordRegex = RegExp(
-      r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$');
+    r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$');
   final RegExp emailRegex =
       RegExp(r'^[\w-\.]+@[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+$');
   final RegExp phoneRegex = RegExp(r'^\+62\d{9,12}$');
@@ -23,11 +23,6 @@ mixin FormValidatorMixin on BaseNotifier {
       return '$label can not be empty';
     }
 
-    // Length / 8 Characters validation
-    if (validationList.contains(Validator.length) && value.length < 8) {
-      return '$label must be at least 8 characters';
-    }
-
     if (validationList.contains(Validator.phoneFormat) &&
         !phoneRegex.hasMatch(value)) {
       return '$label hmust be number and start with +62';
@@ -40,7 +35,7 @@ mixin FormValidatorMixin on BaseNotifier {
     // Password validation
     if (validationList.contains(Validator.passwordFormat) &&
         !passwordRegex.hasMatch(value)) {
-      return 'Password must be 8 alphanumeric characters';
+      return 'Password must be at least 8 alphanumeric characters';
     }
 
     // Confirm Password validation
@@ -50,9 +45,16 @@ mixin FormValidatorMixin on BaseNotifier {
     }
 
     // full name validation
-    if (validationList.contains(Validator.nameFormat) &&
-        !nameRegex.hasMatch(value)) {
-      return 'name must be at least 4 character';
+    if (validationList.contains(Validator.nameFormat)) {
+      // Check if name length is at least 4 characters
+      if (value.length < 4) {
+        return '$label must be at least 4 characters';
+      }
+      
+      // Check if name contains numbers
+      if (!nameRegex.hasMatch(value)) {
+        return '$label cannot contain numbers';
+      }
     }
 
     return null;
@@ -60,7 +62,6 @@ mixin FormValidatorMixin on BaseNotifier {
 }
 
 enum Validator {
-  length,
   emailFormat,
   passwordFormat,
   confirmPassword,

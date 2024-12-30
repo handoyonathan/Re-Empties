@@ -132,7 +132,7 @@ setupRouter({required String initialRoute}) {
               adminID: extra['adminID'],
               transactionData: extra['transactionData'],
               point: extra['point'],
-              weight: extra['weight'],
+              totalPcs: extra['totalPcs'],
               plasticWeight: extra['plasticWeight'],
               cardboardWeight: extra['cardboardWeight'],
               glassWeight: extra['glassWeight'],

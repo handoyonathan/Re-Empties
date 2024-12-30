@@ -109,7 +109,7 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                                 state: transaction?.transactionType ??
                                     'Unknown', // Amankan null
                                 dateTime:
-                                    '${transaction?.date} ${transaction?.time ?? 'N/A'}', // Amankan null
+                                    '${vm.firstTransactionDate} ${vm.firstTransactionTime}', // Amankan null
                                 wasteStation: admin?.stationName ??
                                     'Unknown', // Amankan null
                                 onTap: () {

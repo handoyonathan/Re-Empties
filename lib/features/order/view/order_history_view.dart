@@ -18,7 +18,7 @@ class OrderHistoryView extends StatelessWidget {
 
   OrderHistoryView({super.key})
       : _viewModel = ChangeNotifierProvider.autoDispose<OrderHistoryVM>(
-            OrderHistoryVM.new);
+          OrderHistoryVM.new);
 
   @override
   Widget build(BuildContext context) => BaseView<OrderHistoryVM>(
@@ -40,7 +40,7 @@ class OrderHistoryView extends StatelessWidget {
 
   Widget _buildScreen(BuildContext context, OrderHistoryVM vm) =>
       DefaultTabController(
-        length: 4, // Tab untuk All, Ongoing, Canceled, Done
+        length: 4,
         child: Scaffold(
           backgroundColor: colors.bgColor,
           appBar: TabBar(
@@ -114,6 +114,8 @@ class OrderHistoryView extends StatelessWidget {
                       itemCount: orders.length,
                       itemBuilder: (context, index) {
                         final order = orders[index];
+                        final date = vm.transactionDates[order.transactionId] ?? '';
+                        final time = vm.transactionTimes[order.transactionId] ?? '';
                         bool isCanceled = order.orderStatus == 'Canceled';
 
                         return TapDetector(
@@ -140,11 +142,11 @@ class OrderHistoryView extends StatelessWidget {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            order.date!,
+                                            date,
                                             style: textTheme.orderHistory,
                                           ),
                                           Text(
-                                            order.time!,
+                                            time,
                                             style: textTheme.orderHistory,
                                           ),
                                         ],
@@ -152,7 +154,6 @@ class OrderHistoryView extends StatelessWidget {
                                       Gap(10.h),
                                       Row(
                                         children: [
-                                          // Icon Image
                                           Container(
                                             padding: EdgeInsets.all(8.w),
                                             width: 60.w,

@@ -34,7 +34,7 @@ class VoucherDetailViewModel extends BaseNotifier with CustomToastMixin {
           .listen((query) async {
         vouchers = Voucher.fromFireStore(
             query.data() as Map<String, dynamic>, voucherId);
-            isDataLoaded = true;
+        isDataLoaded = true;
         notifyListeners();
       });
     } catch (e) {
@@ -42,65 +42,70 @@ class VoucherDetailViewModel extends BaseNotifier with CustomToastMixin {
     }
   }
 
-  void backToList(){
+  void backToList() {
     ctx.pop();
   }
 
   void useVoucher() async {
-  try {
-    final userId = FirebaseAuth.instance.currentUser?.uid;
+    try {
+      final userId = FirebaseAuth.instance.currentUser?.uid;
 
-    await FirebaseFirestore.instance.runTransaction((transaction) async {
-      final voucherRef = FirebaseFirestore.instance.collection('vouchers').doc(voucherId);
-      final userRef = FirebaseFirestore.instance.collection('users').doc(userId);
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        final voucherRef =
+            FirebaseFirestore.instance.collection('vouchers').doc(voucherId);
+        final userRef =
+            FirebaseFirestore.instance.collection('users').doc(userId);
 
-      final voucherSnapshot = await transaction.get(voucherRef);
-      if (!voucherSnapshot.exists) {
-        throw Exception("Voucher not found");
-      }
+        final voucherSnapshot = await transaction.get(voucherRef);
+        if (!voucherSnapshot.exists) {
+          throw Exception("Voucher not found");
+        }
 
-      final userSnapshot = await transaction.get(userRef);
-      if (!userSnapshot.exists) {
-        throw Exception("User not found");
-      }
+        final userSnapshot = await transaction.get(userRef);
+        if (!userSnapshot.exists) {
+          throw Exception("User not found");
+        }
 
-      final voucherData = voucherSnapshot.data()!;
-      final currentStock = voucherData['stock'] ?? 0;
-      final voucherPoints = int.tryParse(voucherData['voucherPoint'].toString()) ?? 0;
-      final userUsed = List<String>.from(voucherData['userUsed'] ?? []);
+        final voucherData = voucherSnapshot.data()!;
+        final currentStock = voucherData['stock'] ?? 0;
+        final voucherPoints =
+            int.tryParse(voucherData['voucherPoint'].toString()) ?? 0;
+        final userUsed = List<String>.from(voucherData['userUsed'] ?? []);
 
-      final userData = userSnapshot.data()!;
-      final currentPoints = userData['rewardPoint'] ?? 0;
+        final userData = userSnapshot.data()!;
+        final currentPoints = userData['rewardPoint'] ?? 0;
 
+        print('test curr point:' + currentPoints.toString());
+        print('test voucher point:' + voucherPoints.toString());
+        if (currentPoints < voucherPoints) {
+          showCustomToast('Not enough points to redeem this voucher',
+              isError: true);
+          return;
+        }
 
-      if (currentPoints < voucherPoints) {
-        showCustomToast('Not enough points to redeem this voucher');
-        return;
-      }
+        if (!userUsed.contains(userId)) {
+          userUsed.add(userId!);
+        }
 
-      if (!userUsed.contains(userId)) {
-        userUsed.add(userId!);
-      }
+        // Update stok, userUsed di voucher, dan rewardPoint di user
+        transaction.update(voucherRef, {
+          'stock': currentStock - 1,
+          'userUsed': userUsed,
+        });
 
-      // Update stok, userUsed di voucher, dan rewardPoint di user
-      transaction.update(voucherRef, {
-        'stock': currentStock - 1,
-        'userUsed': userUsed,
+        transaction.update(userRef, {
+          'rewardPoint': currentPoints - voucherPoints,
+        });
+        showCustomToast('Voucher claimed successfully');
+        ctx.pop();
       });
 
-      transaction.update(userRef, {
-        'rewardPoint': currentPoints - voucherPoints,
-      });
-    });
-
-    // Notifikasi sukses
-    showCustomToast('Voucher claimed successfully');
-    ctx.pop();
-  } catch (e) {
-    print("Error using voucher: $e");
-    showCustomToast('Failed to claim voucher');
+      // Notifikasi sukses
+      // showCustomToast('Voucher claimed successfully');
+      // ctx.pop();
+    } catch (e) {
+      print("Error using voucher: $e");
+      showCustomToast('Failed to claim voucher');
+    }
   }
-}
-
-
 }

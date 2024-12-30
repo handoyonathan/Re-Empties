@@ -54,6 +54,7 @@ class EditProfileVM extends BaseFormNotifier<ProfileModel>
   late ProfileModel form;
 
   Future<void> saveProfileData() async {
+    if (validate()){
     try {
       final currentUser = FirebaseAuth.instance.currentUser;
       if (currentUser != null) {
@@ -72,7 +73,7 @@ class EditProfileVM extends BaseFormNotifier<ProfileModel>
     } catch (e) {
       print('Error saving profile data: $e');
     }
-  }
+  }}
 
   // void goBack(BuildContext context) {
   //   context.pop(); // This will pop the current screen off the navigation stack

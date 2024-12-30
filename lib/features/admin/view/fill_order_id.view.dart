@@ -14,7 +14,7 @@ import 'package:re_empties/features/send_empties/widget/custom_pinput.dart';
 class FillOrderID extends ConsumerStatefulWidget {
   final String adminID;
   final TransactionModel transactionData;
-  final int weight;
+  final int totalPcs;
   final int point;
   final int cardboardWeight;
   final int glassWeight;
@@ -23,7 +23,7 @@ class FillOrderID extends ConsumerStatefulWidget {
     super.key,
     required this.adminID,
     required this.transactionData,
-    required this.weight,
+    required this.totalPcs,
     required this.point,
     required this.glassWeight,
     required this.cardboardWeight,
@@ -33,7 +33,7 @@ class FillOrderID extends ConsumerStatefulWidget {
                 adminID: adminID,
                 transactionData: transactionData,
                 point: point,
-                weight: weight,
+                totalPcs: totalPcs,
                 cardboardWeight: cardboardWeight,
                 glassWeight: glassWeight,
                 plasticWeight: plasticWeight,

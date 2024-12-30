@@ -6,11 +6,15 @@ import 'package:re_empties/cores/constant/colors.dart';
 class CustomAlertDialog extends StatelessWidget {
   final VoidCallback onConfirm; // Callback for the confirm button
   final VoidCallback onCancel; // Callback for the cancel button
+  final bool logout;
+  final bool isLocation; // New variable for location setting
 
   const CustomAlertDialog({
     super.key,
     required this.onConfirm,
     required this.onCancel,
+    this.logout = false,
+    this.isLocation = false, // Default value set to false
   });
 
   @override
@@ -19,8 +23,6 @@ class CustomAlertDialog extends StatelessWidget {
       backgroundColor: colors.bgColor,
       contentPadding: EdgeInsets.zero,
       content: SizedBox(
-        // width: MediaQuery.of(context).size.width / 2,
-        // height: MediaQuery.of(context).size.height / 4,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
@@ -38,7 +40,7 @@ class CustomAlertDialog extends StatelessWidget {
             ),
             Gap(10.h), // Space between icon and text
             Text(
-              'Cancel',
+              isLocation ? 'Location Permission Required' : 'Cancel',
               style: TextStyle(
                 color: colors.green1,
                 fontWeight: FontWeight.w900,
@@ -46,9 +48,12 @@ class CustomAlertDialog extends StatelessWidget {
               ),
               textAlign: TextAlign.center,
             ),
-
             Text(
-              'Are you sure you want to cancel? \n This can\'t be undone.',
+              isLocation
+                  ? 'This app requires location access to function properly.\nPlease enable location permissions in your device settings.'
+                  : (logout
+                      ? 'Are you sure you want to LOGOUT? \n This can\'t be undone.'
+                      : 'Are you sure you want to cancel? \n This can\'t be undone.'),
               style: TextStyle(
                 color: colors.green1,
                 fontWeight: FontWeight.normal,
@@ -60,49 +65,53 @@ class CustomAlertDialog extends StatelessWidget {
             const Divider(
               thickness: 1,
               color: Color(0xFFDADADA),
-              height: 0, // Set height to 0 for perfect line fit
+              height: 0,
             ),
-            // Row with two buttons and a vertical divider
+            // Conditional row based on isLocation
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // Back button
-                Flexible(
-                  child: TextButton(
-                    onPressed: onCancel, // Pass onCancel callback
-                    style: TextButton.styleFrom(
-                        foregroundColor: colors.green1,
-                        overlayColor: Colors.transparent),
-                    child: const Text(
-                      'Back',
-                      style: TextStyle(
-                        fontWeight: FontWeight.normal, // Regular text
-                        fontSize: 16,
+                if (!isLocation) ...[
+                  // Back button
+                  Flexible(
+                    child: TextButton(
+                      onPressed: onCancel,
+                      style: TextButton.styleFrom(
+                          foregroundColor: colors.green1,
+                          overlayColor: Colors.transparent),
+                      child: const Text(
+                        'Back',
+                        style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Gap(20.w),
-                SizedBox(
-                  height: 40.h,
-                  child: const VerticalDivider(
-                    thickness: 1,
-                    color: Color(0xFFDADADA),
+                  Gap(20.w),
+                  SizedBox(
+                    height: 40.h,
+                    child: const VerticalDivider(
+                      thickness: 1,
+                      color: Color(0xFFDADADA),
+                    ),
                   ),
-                ),
-                Gap(20.w),
+                  Gap(20.w),
+                ],
                 // Confirm button
                 Flexible(
                   child: TextButton(
-                    onPressed: onConfirm, // Pass onConfirm callback
+                    onPressed: onConfirm,
                     style: TextButton.styleFrom(
-                        foregroundColor: colors.red1,
-                        // padding: const EdgeInsets.symmetric(vertical: 8),
+                        foregroundColor:
+                            isLocation ? colors.green1: colors.red1,
                         overlayColor: Colors.transparent),
-                    child: const Text(
-                      'Cancel',
+                    child: Text(
+                      isLocation
+                          ? 'Open App Settings'
+                          : (logout ? 'Logout' : 'Cancel'),
                       style: TextStyle(
-                        fontWeight: FontWeight.bold, // Bold text
+                        fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
                     ),

@@ -13,9 +13,9 @@ class OrderHistoryVM extends BaseNotifier {
 
   auth.User? currentUser;
   List<TransactionModel> transactions = [];
-  String date = '';
-  String time = '';
   late List<Admin> adminData;
+  Map<String, String> transactionDates = {};
+  Map<String, String> transactionTimes = {};
   String _selectedFilter = 'All';
   String selectedTab = 'All';
   bool isDataLoaded = false;
@@ -95,6 +95,8 @@ class OrderHistoryVM extends BaseNotifier {
             query.snapshots().listen((querySnapshot) async {
           List<TransactionModel> tempTransactions = [];
           Map<String, Admin?> tempAdminData = {};
+          Map<String, String> tempDates = {};
+          Map<String, String> tempTimes = {};
 
           for (var doc in querySnapshot.docs) {
             TransactionModel transaction = TransactionModel.fromFirestore(
@@ -106,13 +108,10 @@ class OrderHistoryVM extends BaseNotifier {
             final dateFormatter = DateFormat('EEEE, dd MMMM yyyy');
             final timeFormatter = DateFormat('HH:mm');
 
-            final formattedDate = dateFormatter.format(transaction.dateTime);
-            final formattedTime = timeFormatter.format(transaction.dateTime);
-
-            transaction = transaction.copyWith(
-              date: formattedDate,
-              time: formattedTime,
-            );
+            tempDates[transaction.transactionId] =
+                dateFormatter.format(transaction.dateTime);
+            tempTimes[transaction.transactionId] =
+                timeFormatter.format(transaction.dateTime);
 
             // Fetch admin data jika adminID ada
             if (transaction.adminID.isNotEmpty) {
@@ -126,10 +125,10 @@ class OrderHistoryVM extends BaseNotifier {
           // Sort transactions berdasarkan dateTime (descending)
           tempTransactions.sort((a, b) => b.dateTime.compareTo(a.dateTime));
 
-          // Update transaksi dan admin data ke state
           transactions = tempTransactions;
+          transactionDates = tempDates;
+          transactionTimes = tempTimes;
 
-          // Perbarui adminData berdasarkan urutan transaction
           adminData = transactions.map((transaction) {
             return tempAdminData[transaction.transactionId]!;
           }).toList();

@@ -22,6 +22,8 @@ class OrderSummaryVM extends BaseNotifier with CustomToastMixin {
   String adminFullName = '';
   String adminPhoneNum = '';
   String adminAddress = '';
+  String formattedDate = '';
+  String formattedTime = '';
 
   bool isError = false;
 
@@ -98,17 +100,15 @@ class OrderSummaryVM extends BaseNotifier with CustomToastMixin {
         transaction = TransactionModel.fromFirestore(data, query.id);
 
         // Format date and time
-        final dateFormatter = DateFormat('EEEE, dd MMMM yyyy'); // Example: Monday, 16 December 2024
-        final timeFormatter = DateFormat('HH:mm'); // Example: 23:56
+        final DateFormat dateFormatter = DateFormat('EEEE, dd MMMM yyyy');
+        final DateFormat timeFormatter = DateFormat('HH:mm');
 
-        final formattedDate = dateFormatter.format(transaction!.dateTime);
-        final formattedTime = timeFormatter.format(transaction!.dateTime);
+        formattedDate = dateFormatter.format(transaction!.dateTime);
+        formattedTime = timeFormatter.format(transaction!.dateTime);
 
-        // Update transaction with formatted date and time
-        transaction = transaction!.copyWith(
-          date: formattedDate,
-          time: formattedTime,
-        );
+        // Log or use the formatted date and time as needed
+        print('Formatted Date: $formattedDate');
+        print('Formatted Time: $formattedTime');
       } else {
         print('Transaction not found for ID: $transactionID');
       }
@@ -118,6 +118,7 @@ class OrderSummaryVM extends BaseNotifier with CustomToastMixin {
       notifyListeners();
     }
   }
+
 
   void deleteTransaction() async {
     try {

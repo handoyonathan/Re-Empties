@@ -128,7 +128,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               focusedErrorBorder: getBorder(colors.red2),
               errorStyle: const TextStyle(
                 fontSize: 0,
-                color: Colors.transparent,
+                // color: Colors.transparent,
                 height: 0.001,
               ),
               prefixIcon: widget.prefixIcon,

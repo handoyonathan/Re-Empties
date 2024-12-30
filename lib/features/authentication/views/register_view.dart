@@ -24,6 +24,7 @@ class RegisterPage extends StatelessWidget {
         backgroundColor: colors.bgColor,
         body: SingleChildScrollView(
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+          physics: const ClampingScrollPhysics(),
           child: Container(
             color: colors.background,
             padding: EdgeInsets.symmetric(horizontal: 40.w, vertical: 100.h),

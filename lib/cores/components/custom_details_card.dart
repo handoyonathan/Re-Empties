@@ -86,11 +86,11 @@ class CustomDetailsCard extends StatelessWidget {
   // Build rows for Transaction type
   List<Widget> _buildTransactionRows(Map<String, dynamic> data) {
     return [
-      _buildRow("Plastic", "${data['plastic']} kg"),
-      _buildRow("Glass", "${data['glass']} kg"),
-      _buildRow("Cardboard", "${data['cardboard']} kg"),
+      _buildRow("Plastic", "${data['plastic']} pcs"),
+      _buildRow("Glass", "${data['glass']} pcs"),
+      _buildRow("Cardboard", "${data['cardboard']} pcs"),
       Gap(5.h),
-      _buildRow("Total", "${data['total']} kg"),
+      _buildRow("Total", "${data['total']} pcs"),
     ];
   }
 

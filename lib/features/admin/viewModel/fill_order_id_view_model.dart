@@ -10,7 +10,7 @@ import 'package:re_empties/features/send_empties/model/transaction_model.dart';
 class FillOrderIdVM extends BaseNotifier with CustomToastMixin {
   final String adminID;
   final TransactionModel transactionData;
-  final int weight;
+  final int totalPcs;
   final int point;
   final int cardboardWeight;
   final int glassWeight;
@@ -24,7 +24,7 @@ class FillOrderIdVM extends BaseNotifier with CustomToastMixin {
     super.ref, {
     required this.adminID,
     required this.transactionData,
-    required this.weight,
+    required this.totalPcs,
     required this.point,
     required this.cardboardWeight,
     required this.glassWeight,
@@ -65,7 +65,7 @@ class FillOrderIdVM extends BaseNotifier with CustomToastMixin {
       final transactionUpdateData = {
         'earnPoints': point,
         'orderStatus': 'Verify',
-        'totalWeight': weight,
+        'totalPcs': totalPcs,
         'cardboardWeight': cardboardWeight,
         'glassWeight': glassWeight,
         'plasticWeight': plasticWeight,

@@ -142,7 +142,7 @@ class UserFormVM extends BaseNotifier with CustomToastMixin {
   void initializeWasteQuantities(List<WasteCategoryModel> categories) {
     for (var category in categories) {
       wasteQuantities[category.id] =
-          1; // Default quantity untuk setiap kategori
+          0; // Default quantity untuk setiap kategori
     }
     notifyListeners();
   }
@@ -226,23 +226,23 @@ class UserFormVM extends BaseNotifier with CustomToastMixin {
     if (validateForm()) {
       final pcs = wasteQuantities.values.fold(0, (sum, qty) => sum + qty);
       final dropID = _generateRandomPin();
-      final fee = wasteLocation.distance! * 1000;
+      // final fee = wasteLocation.distance! * 1000;
       print(fee);
       final point = pcs * 100;
       final transactionData = {
         'userID': currentUser?.uid ?? '',
         'adminID': adminID,
-        // 'cardboardWeight': wasteQuantities['IwoJoghBYQQrmTRThjlk'],
+        'cardboardPcs': wasteQuantities['IwoJoghBYQQrmTRThjlk'],
         'currentLocationLat': currentLat,
         'currentLocationLong': currentLong,
         'dateTime': DateTime.now(),
         'deliveryFee': send ? fee.toInt() : null,
         'deliveryOption': send ? selectedDeliveryTitle : null,
         // 'earnPoints': point,
-        // 'glassWeight': wasteQuantities['uuk14PI0XvaD5jZfouvy'],
+        'glassPcs': wasteQuantities['uuk14PI0XvaD5jZfouvy'],
         'orderStatus': 'Delivery',
         'paymentType': send ? selectedPaymentTitle : null,
-        // 'plasticWeight': wasteQuantities['JEO10T6Zlo3tmYcIYIMR'],
+        'plasticPcs': wasteQuantities['JEO10T6Zlo3tmYcIYIMR'],
         // 'totalWeight': weight,
         'dropID': !send ? dropID : null,
         'transactionType': send ? 'Send' : 'Drop',
