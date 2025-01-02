@@ -1,11 +1,11 @@
 import 'package:re_empties/cores/template/notifer.dart';
 
 mixin FormValidatorMixin on BaseNotifier {
-  final RegExp passwordRegex = RegExp(
-    r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$');
+  final RegExp passwordRegex =
+      RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$');
   final RegExp emailRegex =
       RegExp(r'^[\w-\.]+@[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+$');
-  final RegExp phoneRegex = RegExp(r'^\+62\d{9,12}$');
+  final RegExp phoneRegex = RegExp(r'^(?:\+62|08)\d{10,12}$');
   final RegExp nameRegex = RegExp(r'^[a-zA-Z]{4,}(?: [a-zA-Z]+){0,2}$');
 
   String? getValidation({
@@ -25,7 +25,7 @@ mixin FormValidatorMixin on BaseNotifier {
 
     if (validationList.contains(Validator.phoneFormat) &&
         !phoneRegex.hasMatch(value)) {
-      return '$label must be number and start with +62';
+      return '$label must be number and start with +62 or 08';
     }
 
     // Email validation
@@ -50,7 +50,7 @@ mixin FormValidatorMixin on BaseNotifier {
       if (value.length < 4) {
         return '$label must be at least 4 characters';
       }
-      
+
       // Check if name contains numbers
       if (!nameRegex.hasMatch(value)) {
         return '$label cannot contain numbers';
