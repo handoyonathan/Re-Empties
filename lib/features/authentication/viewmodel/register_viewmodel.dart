@@ -22,6 +22,10 @@ class RegisterVM extends BaseFormNotifier<RegisterModel>
 
   RegisterVM(super.ref);
 
+  void gotoLogin() {
+    ctx.goNamed(paths.login);
+  }
+
   void onRegister(BuildContext context) async {
     if (validate()) {
       try {

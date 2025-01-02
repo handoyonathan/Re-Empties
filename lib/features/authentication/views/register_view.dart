@@ -133,7 +133,8 @@ class RegisterPage extends StatelessWidget {
                       Gap(5.w),
                       TapDetector(
                         onTap: () {
-                          ctx.goNamed(paths.login);
+                          // ctx.goNamed(paths.login);
+                          vm.gotoLogin();
                         },
                         child: Text(
                           "Login Here",

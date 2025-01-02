@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:re_empties/features/send_empties/views/countdown_view.dart';
@@ -17,15 +16,11 @@ import 'package:re_empties/features/order/view/order_history_view.dart';
 import 'package:re_empties/features/order/view/order_summary_view.dart';
 import 'package:re_empties/features/profile/view/edit_profile.dart';
 import 'package:re_empties/features/profile/view/profile_view.dart';
-// import 'package:re_empties/cores/components/test.dart';
-import 'package:re_empties/cores/components/test.dart';
 import 'package:re_empties/features/send_empties/model/location_model.dart';
 import 'package:re_empties/features/send_empties/views/drop_point_detail_view.dart';
 import 'package:re_empties/features/send_empties/views/user_form_view.dart';
 import 'package:re_empties/features/send_empties/views/intro_page_view.dart';
 import 'package:re_empties/features/send_empties/views/location_view.dart';
-import 'package:re_empties/features/voucher/model/voucher_model.dart';
-import 'package:re_empties/features/voucher/viewModel/voucher_view_model.dart';
 import 'package:re_empties/features/voucher/views/voucher_detail_page_view.dart';
 import 'package:re_empties/features/voucher/views/voucher_page_view.dart';
 
@@ -41,12 +36,6 @@ setupRouter({required String initialRoute}) {
         name: paths.splash,
         builder: (context, state) =>
             const SplashScreen(), // Tambahkan builder untuk halaman utama
-      ),
-      GoRoute(
-        path: '/test',
-        name: paths.test,
-        builder: (context, state) =>
-            VoucherPageView(), // Tambahkan builder untuk halaman utama
       ),
       GoRoute(
         path: '/home',

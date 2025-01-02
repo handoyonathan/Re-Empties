@@ -6,7 +6,6 @@ class _RouterPaths {
   final String article = 'article';
   final String login = 'login';
   final String register = 'register';
-  final String test = 'test';
   final String success = 'success';
   final String adminView = 'adminView';
   final String adminProfile = 'adminProfile';

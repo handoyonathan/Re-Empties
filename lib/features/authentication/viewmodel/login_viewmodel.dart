@@ -21,6 +21,10 @@ class LoginVM extends BaseFormNotifier<LoginModel> with FormValidatorMixin {
 
   LoginVM(super.ref);
 
+  void gotoRegister(){
+    ctx.goNamed(paths.register);
+  }
+
   void onLogin(BuildContext context) async {
     if (validate()) {
       try {
