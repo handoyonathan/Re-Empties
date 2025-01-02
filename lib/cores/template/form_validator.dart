@@ -5,7 +5,7 @@ mixin FormValidatorMixin on BaseNotifier {
       RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$');
   final RegExp emailRegex =
       RegExp(r'^[\w-\.]+@[a-zA-Z0-9-]+(\.[a-zA-Z]{2,})+$');
-  final RegExp phoneRegex = RegExp(r'^(?:\+62|08)\d{10,12}$');
+  final RegExp phoneRegex = RegExp(r'^\d{10,12}$');
   final RegExp nameRegex = RegExp(r'^[a-zA-Z]{4,}(?: [a-zA-Z]+){0,2}$');
 
   String? getValidation({
@@ -25,7 +25,7 @@ mixin FormValidatorMixin on BaseNotifier {
 
     if (validationList.contains(Validator.phoneFormat) &&
         !phoneRegex.hasMatch(value)) {
-      return '$label must be number and start with +62 or 08';
+      return '$label must be a number with a length between 10 and 12 digits.';
     }
 
     // Email validation

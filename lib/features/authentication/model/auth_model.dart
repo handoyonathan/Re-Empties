@@ -25,7 +25,9 @@ class RegisterModel {
     return {
       'userName': fullName.text,
       'userEmail': email.text,
-      'userPhoneNumber': phoneNumber.text,
+      'userPhoneNumber': '+62${phoneNumber.text}',
+      'rewardPoint': 0,
+      'totalPoints': 0,
     };
   }
 }

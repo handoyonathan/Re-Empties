@@ -88,7 +88,7 @@ class BannerHome extends StatelessWidget {
     }
 
 
-    String percentageText = '${((1 -progressPercent) * 100).clamp(0, 100).toStringAsFixed(0)}%';
+    String percentageText = '${(progressPercent * 100).clamp(0, 100).toStringAsFixed(0)}%';
 
     return Card(
       margin: EdgeInsets.zero,

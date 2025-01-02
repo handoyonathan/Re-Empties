@@ -78,6 +78,7 @@ class RegisterPage extends StatelessWidget {
                           ),
                           Gap(10.h),
                           FormTextField(
+                            showPhoneField: true,
                             hint: 'Phone Number',
                             inputModel: vm.form.phoneNumber,
                             prefixWidget: Icon(

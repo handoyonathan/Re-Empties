@@ -21,6 +21,7 @@ class FormTextField extends StatefulWidget {
   final Function()? setPhoneDropdownBorderError;
   final EdgeInsets? contentPadding;
   final Function(bool)? onOutOfFocus;
+  final bool showPhoneField; // Boolean to determine if the phone field should be shown
 
   const FormTextField({
     super.key,
@@ -37,6 +38,7 @@ class FormTextField extends StatefulWidget {
     this.setPhoneDropdownBorderError,
     this.contentPadding,
     this.onOutOfFocus,
+    this.showPhoneField = false,
   });
 
   @override
@@ -55,44 +57,66 @@ class _FormTextFieldState extends State<FormTextField> {
         children: [
           Stack(
             children: [
-              CustomTextField(
-                hint: widget.hint,
-                controller: model.controller,
-                isPassword: widget.isPassword,
-                keyboardType: widget.keyboardType,
-                hasError: hasError,
-                contentPadding: widget.contentPadding,
-                onOutOfFocus: widget.onOutOfFocus,
-                validator: (value) {
-                  // if (value!.isEmpty) {
-                  //   return null;
-                  // }
-                  return model.validator?.call(value!);
-                },
-                onValidate: (String? error) {
-                  setState(() {
-                    errorMessage = error;
-                  });
-                },
-                onChanged: (value) {
-                  if (errorMessage != null) {
-                    setState(() {
-                      errorMessage = null;
-                      // if (widget.setPhoneDropdownBorderError != null) {
-                      //   widget.setPhoneDropdownBorderError!();
-                      // }
-                    });
-                  }
-                  widget.onChanged?.call(value);
-                },
-                onSubmit: widget.onSubmit,
-                prefixIcon: widget.prefixWidget,
-                suffixIcon: widget.suffixWidget,
-                // prefixWidget: widget.prefixWidget,
-                // suffixWidget: widget.suffixWidget,
-                onSuffixPressed: widget.onSuffixPressed,
-                inputAction: TextInputAction.next,
-                isMultiline: widget.isMultiline,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  if (widget.showPhoneField)
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 10.h),
+                      decoration: BoxDecoration(
+                        color: colors.gray2,
+                        borderRadius: BorderRadius.circular(8.r),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.phone,
+                            color: colors.blueText,
+                            size: 20.sp,
+                          ),
+                          Gap(8.w),
+                          Text(
+                            "+62",
+                            style: textTheme.formName,
+                          ),
+                        ],
+                      ),
+                    ),
+                  if (widget.showPhoneField) Gap(8.w),
+                  Expanded(
+                    child: CustomTextField(
+                      hint: widget.hint,
+                      controller: model.controller,
+                      isPassword: widget.isPassword,
+                      keyboardType: widget.keyboardType,
+                      hasError: hasError,
+                      contentPadding: widget.contentPadding,
+                      onOutOfFocus: widget.onOutOfFocus,
+                      validator: (value) {
+                        return model.validator?.call(value!);
+                      },
+                      onValidate: (String? error) {
+                        setState(() {
+                          errorMessage = error;
+                        });
+                      },
+                      onChanged: (value) {
+                        if (errorMessage != null) {
+                          setState(() {
+                            errorMessage = null;
+                          });
+                        }
+                        widget.onChanged?.call(value);
+                      },
+                      onSubmit: widget.onSubmit,
+                      prefixIcon: widget.showPhoneField ? null : widget.prefixWidget,
+                      suffixIcon: widget.suffixWidget,
+                      onSuffixPressed: widget.onSuffixPressed,
+                      inputAction: TextInputAction.next,
+                      isMultiline: widget.isMultiline,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
