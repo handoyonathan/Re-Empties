@@ -30,7 +30,7 @@ mixin FormValidatorMixin on BaseNotifier {
 
     // Email validation
     if (validationList.contains(Validator.emailFormat) &&
-        !emailRegex.hasMatch(value)) return 'Email must be a valid email';
+        !emailRegex.hasMatch(value)) return 'Email must contain @ and subdomain';
 
     // Password validation
     if (validationList.contains(Validator.passwordFormat) &&

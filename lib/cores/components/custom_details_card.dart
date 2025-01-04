@@ -60,14 +60,14 @@ class CustomDetailsCard extends StatelessWidget {
               ],
             ),
           ),
-    
+
           // Horizontal Divider spanning full width
           Divider(
             color: colors.yellow6,
             thickness: 1,
             height: 1, // No additional spacing
           ),
-    
+
           // Bottom Section with padding
           Padding(
             padding: EdgeInsets.all(12.0.r),
@@ -104,12 +104,13 @@ class CustomDetailsCard extends StatelessWidget {
   }
 
   String _formatCurrency(String amount) {
-  final double parsedAmount = double.tryParse(amount) ?? 0.0; // Mengonversi string ke double
-  final formatter = NumberFormat('#,##0', 'id_ID'); // Format dengan pemisah ribuan untuk Indonesia
+    amount = amount.replaceAll('.', '').replaceAll(',', '.');
 
-  // Menggunakan formatter untuk memformat angka menjadi format yang diinginkan
-  return formatter.format(parsedAmount);
-}
+    final double parsedAmount = double.tryParse(amount) ?? 0.0;
+    final formatter = NumberFormat('#,##0', 'id_ID');
+
+    return formatter.format(parsedAmount);
+  }
 
   // Helper method to build a row with left and right text
   Widget _buildRow(String left, String right) {

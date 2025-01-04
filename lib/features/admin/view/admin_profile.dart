@@ -73,7 +73,7 @@ class AdminProfileState extends State<AdminProfile> {
             state: ButtonState.primary,
             text: 'logout',
             onPressed: () {
-              vm.logout();
+              vm.logout(context);
             },
           ),
         ),

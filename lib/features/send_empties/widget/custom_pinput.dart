@@ -71,19 +71,19 @@ class _CustomPinputState extends State<CustomPinput> {
     }
 
     // Listener to convert text to uppercase
-  _pinController.addListener(() {
-    final text = _pinController.text.toUpperCase();
-    if (_pinController.text != text) {
-      _pinController.value = _pinController.value.copyWith(
-        text: text,
-        selection: TextSelection(
-          baseOffset: text.length,
-          extentOffset: text.length,
-        ),
-        composing: TextRange.empty,
-      );
-    }
-  });
+    _pinController.addListener(() {
+      final text = _pinController.text.toUpperCase();
+      if (_pinController.text != text) {
+        _pinController.value = _pinController.value.copyWith(
+          text: text,
+          selection: TextSelection(
+            baseOffset: text.length,
+            extentOffset: text.length,
+          ),
+          composing: TextRange.empty,
+        );
+      }
+    });
 
     // if (!widget.isAdmin) {
     //   // Generate random PIN and set it to the controller
@@ -113,7 +113,13 @@ class _CustomPinputState extends State<CustomPinput> {
           length: 7,
           enabled: widget.isAdmin,
           controller: _pinController,
-          onCompleted: (pin) => widget.onFilled(pin),
+          onCompleted: (pin) {
+            if (pin.isEmpty || pin.length < 7) {
+              widget.onFilled(pin); // Validasi akan dilakukan di ViewModel
+            } else {
+              widget.onFilled(pin);
+            }
+          },
           defaultPinTheme: defaultPinTheme,
           focusedPinTheme: focusedPinTheme,
           errorPinTheme: errorPinTheme,
@@ -125,7 +131,6 @@ class _CustomPinputState extends State<CustomPinput> {
               errorText!,
               style: textTheme.errorText.copyWith(fontSize: 12.sp),
             ),
-          
           ),
         ),
       );

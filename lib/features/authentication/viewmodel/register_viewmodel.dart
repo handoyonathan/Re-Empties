@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/src/change_notifier_provider.dart';
 import 'package:go_router/go_router.dart';
+import 'package:re_empties/cores/components/custom_toast_mixin.dart';
 import 'package:re_empties/cores/router/router_constant.dart';
 
 import 'package:re_empties/cores/template/form_notifier.dart';
@@ -16,7 +17,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 final registerVM = ChangeNotifierProvider.autoDispose(RegisterVM.new);
 
 class RegisterVM extends BaseFormNotifier<RegisterModel>
-    with FormValidatorMixin {
+    with FormValidatorMixin, CustomToastMixin {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -57,6 +58,15 @@ class RegisterVM extends BaseFormNotifier<RegisterModel>
         // Tangani kesalahan login
         print('Failed with error code: ${e.code}');
         print(e.message);
+
+        if (e.code == 'email-already-in-use') {
+          print('${e.message}');
+          showCustomToast('${e.message}', isError: true);
+        } else {
+          print('Error code: ${e.code}');
+          print('Error message: ${e.message}');
+          showCustomToast('Login failed. Please try again.');
+        }
       }
     }
   }

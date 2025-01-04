@@ -41,39 +41,47 @@ class EditProfileVM extends BaseFormNotifier<ProfileModel>
     );
   }
 
+  String removePrefix(String phoneNumber) {
+    if (phoneNumber.startsWith('+62')) {
+      return phoneNumber.substring(3);
+    }
+    return phoneNumber; // Jika tidak diawali '+62', kembalikan string aslinya
+  }
+
   void initializeForm(
       {required String fullName,
       required String email,
       required String phoneNumber}) {
     form.fullName.text = fullName;
     form.email.text = email;
-    form.phoneNumber.text = phoneNumber;
+    form.phoneNumber.text = removePrefix(phoneNumber);
   }
 
   @override
   late ProfileModel form;
 
   Future<void> saveProfileData() async {
-    if (validate()){
-    try {
-      final currentUser = FirebaseAuth.instance.currentUser;
-      if (currentUser != null) {
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(currentUser.uid)
-            .update({
-          'userName': form.fullName.text,
-          'userEmail': form.email.text,
-          'userPhoneNumber': form.phoneNumber.text,
-        });
+    if (validate()) {
+      try {
+        final currentUser = FirebaseAuth.instance.currentUser;
+        if (currentUser != null) {
+          await FirebaseFirestore.instance
+              .collection('users')
+              .doc(currentUser.uid)
+              .update({
+            'userName': form.fullName.text,
+            'userEmail': form.email.text,
+            'userPhoneNumber': form.phoneNumber.text,
+          });
+        }
+        print("INI TOMBOL SAVEEEEEEEEEEE");
+        ctx.pop();
+        notifyListeners();
+      } catch (e) {
+        print('Error saving profile data: $e');
       }
-      print("INI TOMBOL SAVEEEEEEEEEEE");
-      ctx.pop();
-      notifyListeners();
-    } catch (e) {
-      print('Error saving profile data: $e');
     }
-  }}
+  }
 
   // void goBack(BuildContext context) {
   //   context.pop(); // This will pop the current screen off the navigation stack

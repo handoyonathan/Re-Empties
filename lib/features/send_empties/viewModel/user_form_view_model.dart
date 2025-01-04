@@ -31,7 +31,7 @@ class UserFormVM extends BaseNotifier with CustomToastMixin {
 
   // Properti terkait quantity
   Map<String, int> wasteQuantities = {};
-  late final fee;
+  late final String fee;
 
   Future<void> fetchUserData() async {
     try {
@@ -236,7 +236,7 @@ class UserFormVM extends BaseNotifier with CustomToastMixin {
         'currentLocationLat': currentLat,
         'currentLocationLong': currentLong,
         'dateTime': DateTime.now(),
-        'deliveryFee': send ? fee.toInt() : null,
+        'deliveryFee': send ? fee : null,
         'deliveryOption': send ? selectedDeliveryTitle : null,
         // 'earnPoints': point,
         'glassPcs': wasteQuantities['uuk14PI0XvaD5jZfouvy'],

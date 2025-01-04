@@ -19,7 +19,6 @@ class AdminViewVM extends BaseNotifier with CustomToastMixin {
   String userPhoneNum = '';
   String userAddress = '';
   late Admin adminData;
-  bool loading = false;
   Map<String, String> transactionUserName = {};
   Map<String, String> transactionUserAddress = {};
   bool isDataLoaded = false;

@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:re_empties/cores/components/custom_toast_mixin.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:re_empties/cores/router/router_constant.dart';
@@ -15,7 +16,7 @@ import 'package:re_empties/features/authentication/model/auth_model.dart';
 
 final loginVM = ChangeNotifierProvider.autoDispose(LoginVM.new);
 
-class LoginVM extends BaseFormNotifier<LoginModel> with FormValidatorMixin {
+class LoginVM extends BaseFormNotifier<LoginModel> with FormValidatorMixin, CustomToastMixin {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -75,6 +76,7 @@ class LoginVM extends BaseFormNotifier<LoginModel> with FormValidatorMixin {
       } on FirebaseAuthException catch (e) {
         // Tangani kesalahan login
         print('Failed with error code: ${e.code}');
+        showCustomToast('Email or Password is invalid', isError:  true);
         print(e.message);
       }
     }

@@ -83,6 +83,7 @@ class EditProfileViewState extends ConsumerState<EditProfileView> {
                 ),
                 Gap(20.h),
                 FormTextField(
+                  showPhoneField: true,
                   hint: 'Phone Number',
                   inputModel: vm.form.phoneNumber,
                   prefixWidget: Icon(

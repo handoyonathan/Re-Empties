@@ -8,7 +8,7 @@ class TransactionModel {
   final double currentLocationLat;
   final double currentLocationLong;
   final DateTime dateTime;
-  final int deliveryFee;
+  final String deliveryFee;
   final String? deliveryOption;
   final int earnPoints;
   final int? glassPcs;
@@ -50,7 +50,7 @@ class TransactionModel {
       currentLocationLat: (data['currentLocationLat'] as num?)?.toDouble() ?? 0.0,
       currentLocationLong: (data['currentLocationLong'] as num?)?.toDouble() ?? 0.0,
       dateTime: (data['dateTime'] as Timestamp?)?.toDate() ?? DateTime.now(),
-      deliveryFee: data['deliveryFee'] ?? 0,
+      deliveryFee: data['deliveryFee'] ?? '0',
       deliveryOption: data['deliveryOption'],
       earnPoints: data['earnPoints'] ?? 0,
       glassPcs: data['glassPcs'],
@@ -72,7 +72,7 @@ class TransactionModel {
     double? currentLocationLat,
     double? currentLocationLong,
     DateTime? dateTime,
-    int? deliveryFee,
+    String? deliveryFee,
     String? deliveryOption,
     int? earnPoints,
     int? glassPcs,

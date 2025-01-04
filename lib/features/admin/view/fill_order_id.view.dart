@@ -28,15 +28,16 @@ class FillOrderID extends ConsumerStatefulWidget {
     required this.glassWeight,
     required this.cardboardWeight,
     required this.plasticWeight,
-  }) : _viewModel = ChangeNotifierProvider.autoDispose<FillOrderIdVM>((ref) =>
-            FillOrderIdVM(ref,
-                adminID: adminID,
-                transactionData: transactionData,
-                point: point,
-                totalPcs: totalPcs,
-                cardboardWeight: cardboardWeight,
-                glassWeight: glassWeight,
-                plasticWeight: plasticWeight,
+  }) : _viewModel = ChangeNotifierProvider.autoDispose<FillOrderIdVM>(
+            (ref) => FillOrderIdVM(
+                  ref,
+                  adminID: adminID,
+                  transactionData: transactionData,
+                  point: point,
+                  totalPcs: totalPcs,
+                  cardboardWeight: cardboardWeight,
+                  glassWeight: glassWeight,
+                  plasticWeight: plasticWeight,
                 ));
 
   final AutoDisposeChangeNotifierProvider<FillOrderIdVM> _viewModel;
@@ -84,14 +85,18 @@ class FillOrderIdState extends ConsumerState<FillOrderID> {
         bottomNavigationBar: Padding(
           padding: EdgeInsets.symmetric(horizontal: 32.w, vertical: 32.h),
           child: AppMainButton(
-            state: ButtonState.primary,
-            text: 'Verify Transaction',
-            onPressed: () {
-              if (vm.formKey.currentState?.validate() ?? false) {
-                vm.saveTransaction();
-              } 
-            },
-          ),
+  state: ButtonState.primary,
+  text: 'Verify Transaction',
+  onPressed: () {
+    if (vm.formKey.currentState?.validate() ?? false) {
+      vm.onFilled(vm.otp); // Pastikan validasi dijalankan
+      print(vm.otp);
+      if (!vm.showError) {
+        vm.saveTransaction(); // Lanjutkan jika tidak ada error
+      }
+    }
+  },
+),
         ),
       );
 }

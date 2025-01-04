@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:re_empties/cores/components/article_preview_home.dart';
+import 'package:re_empties/features/home/view/article_preview_home.dart';
 import 'package:re_empties/cores/components/banner_home.dart';
 import 'package:re_empties/cores/components/hidden_app_bar.dart';
 import 'package:re_empties/cores/components/points_card_home.dart';
@@ -103,8 +103,11 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                               admin !=
                                   null, // Menampilkan hanya jika data tersedia
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const SizedBox(height: 10),
+                              Gap(5.h),
+                              Text('Ongoing', style: textTheme.title,),
+                              Gap(5.h),
                               StatusPreviewHome(
                                 state: transaction?.transactionType ??
                                     'Unknown', // Amankan null
@@ -120,7 +123,7 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                             ],
                           ),
                         ),
-                        Gap(10.h),
+                        Gap(15.h),
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Text(

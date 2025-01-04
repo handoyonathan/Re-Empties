@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:re_empties/cores/components/article_preview_home.dart';
+import 'package:re_empties/features/home/view/article_preview_home.dart';
 import 'package:re_empties/cores/components/banner_home.dart';
 import 'package:re_empties/cores/components/alert_dialog.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

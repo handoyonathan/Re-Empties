@@ -160,7 +160,7 @@ class TransactionDetailVM extends BaseNotifier with CustomToastMixin {
     }
 
     if (totalQty < 1) {
-      showCustomToast('Waste categories must at least 1 kg', isError: true);
+      showCustomToast('Waste categories must at least 1 pcs', isError: true);
       return false;
     }
 

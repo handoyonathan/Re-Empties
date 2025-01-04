@@ -17,7 +17,7 @@ class FillOrderIdVM extends BaseNotifier with CustomToastMixin {
   final int plasticWeight;
 
   final formKey = GlobalKey<FormState>();
-  bool showError = false;
+  bool showError = true;
   String otp = ''; // The generated OTP code
 
   FillOrderIdVM(
@@ -37,28 +37,42 @@ class FillOrderIdVM extends BaseNotifier with CustomToastMixin {
   }
 
   /// Handle OTP submission
-  onFilled(String otpInput) {
-    if (otpInput == transactionData.dropID) {
-      // OTP matches
-      // showCustomToast('Success! Transaction verified');
-      showError = false; // Reset error
-    } else {
-      // OTP does not match
-      // showCustomToast('DropID does not match', isError: true);
-      showError = true;
-      notifyListeners(); // Trigger UI update to show error
-    }
+onFilled(String otpInput) {
+  if (otpInput.isEmpty) {
+    // OTP kosong
+    showError = true;
+    otp = '';
+  } else if (otpInput.length < 7) {
+    // OTP tidak lengkap
+    showError = true;
+    otp = otpInput; // Simpan OTP saat ini
+  } else if (otpInput == transactionData.dropID) {
+    // OTP matches
+    showError = false; // Reset error
+    otp = otpInput; // Simpan OTP yang benar
+  } else {
+    // OTP does not match
+    showError = true;
   }
+  notifyListeners(); // Trigger UI update to show error
+}
 
   String? getErrorText() {
-    if (showError)
-      return 'DropID does not match. Please fill the DropID correctly';
-    return null;
+  if (showError) {
+    if (otp.isEmpty) {
+      return 'DropID cannot be empty. Please fill the DropID.';
+    } else if (otp.length < 7) {
+      return 'DropID is incomplete. Please enter 7 characters.';
+    }
+    return 'DropID does not match. Please fill the DropID correctly.';
   }
+  return null;
+}
 
   void saveTransaction() async {
     try {
       // Validasi form
+      onFilled(otp);
       if (showError) return;
 
       // Data untuk disimpan ke Firestore
@@ -111,7 +125,6 @@ class FillOrderIdVM extends BaseNotifier with CustomToastMixin {
       // if (!isSend) {
       //   ctx.pushNamed(paths.fillDropID);
       // } else {
-      showCustomToast('Transaction verified successfully');
       ctx.pushNamed(paths.success, extra: <String, dynamic>{
         'isSend': false,
         'isAdmin': true,

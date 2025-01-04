@@ -1,7 +1,9 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:re_empties/cores/components/alert_dialog.dart';
 import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:re_empties/cores/template/notifer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -19,12 +21,35 @@ class AdminProfileVM extends BaseNotifier {
     isLoading = false;
   }
 
-  Future<void> logout() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.clear();
-    await prefs.setBool('isAdminLoggedIn', false);
+  // Future<void> logout() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   await prefs.clear();
+  //   await prefs.setBool('isAdminLoggedIn', false);
 
-    ctx.goNamed(paths.login);
+  //   ctx.goNamed(paths.login);
+  // }
+
+  Future<void> logout(BuildContext context) async {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return CustomAlertDialog(
+          logout: true,
+          onConfirm: () async {
+            final prefs = await SharedPreferences.getInstance();
+            await prefs.clear();
+            await prefs.setBool('isAdminLoggedIn', false);
+
+            if (ctx.mounted) ctx.goNamed(paths.login);
+          },
+          onCancel: () {
+            Navigator.of(context).pop(); // Tutup dialog
+            print('masuk cancel');
+          },
+        );
+      },
+    );
   }
 
   Future<void> fetchAdminData() async {
