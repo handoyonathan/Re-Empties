@@ -59,7 +59,7 @@ class SendFormState extends ConsumerState<TransactionDetailView> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      widget.isSend ? 'Send Waste' : 'Drop Off Waste',
+                      widget.isSend ? 'Send Empties' : 'Drop Empties',
                       style: textTheme.orderStationName,
                     ),
                     Text(

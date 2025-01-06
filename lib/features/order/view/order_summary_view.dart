@@ -91,7 +91,7 @@ class OrderSummaryView extends StatelessWidget {
                   ),
                   Gap(10.w),
                   Text(
-                    '${transaction.transactionType} Your Waste',
+                    '${transaction.transactionType} Empties',
                     style: textTheme.orderType,
                   ),
                   Expanded(

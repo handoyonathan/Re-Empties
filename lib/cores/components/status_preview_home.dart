@@ -24,7 +24,7 @@ class StatusPreviewHome extends StatelessWidget {
   Widget build(BuildContext context) {
     // Determine state-related properties
     bool isSend = state == "Send";
-    String actionText = isSend ? "Send Your Waste" : "Drop Your Waste";
+    String actionText = isSend ? "Send Empties" : "Drop Empties";
     String imageAsset = isSend ? images.sendWaste : images.dropWaste;
 
     return GestureDetector(

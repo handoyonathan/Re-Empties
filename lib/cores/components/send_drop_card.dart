@@ -65,7 +65,7 @@ class HomeSendDropCard extends StatelessWidget {
               ),
               // Text "Your waste"
               Text(
-                'Your waste',
+                'Empties',
                 style: textTheme.featureLabel2.copyWith(height: 0.2),
               ),
             ],
