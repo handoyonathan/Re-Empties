@@ -3,12 +3,13 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:go_router/go_router.dart';
+import 'package:re_empties/cores/components/custom_toast_mixin.dart';
 import 'package:re_empties/cores/router/router_constant.dart';
 import 'package:re_empties/cores/template/notifer.dart';
 import 'package:re_empties/features/voucher/model/voucher_model.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 
-class VoucherViewModel extends BaseNotifier {
+class VoucherViewModel extends BaseNotifier with CustomToastMixin {
   VoucherViewModel(super.ref);
 
   auth.User? currentUser;
@@ -87,6 +88,10 @@ class VoucherViewModel extends BaseNotifier {
 
   void goToDetailVoucher(int index) {
     ctx.pop();
+    if (point < int.parse(vouchers[index].points)) {
+      showCustomToast('Not enough points to redeem this voucher', isError: true);
+      return;
+    }
     ctx.pushNamed(paths.voucherDetail, extra: vouchers[index].voucherID);
   }
 
