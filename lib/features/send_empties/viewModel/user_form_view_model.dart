@@ -96,7 +96,6 @@ class UserFormVM extends BaseNotifier with CustomToastMixin {
       List<PaymentOptionModel> paymentOptions = await fetchPaymentOptions();
       showOptionsModal(
         context: ctx,
-        price: 'Rp ${fee}',
         options: paymentOptions,
         selectedValue: selectedPaymentMethod,
         onSelected: (int? value) {
@@ -114,6 +113,7 @@ class UserFormVM extends BaseNotifier with CustomToastMixin {
       List<DeliveryOptionModel> deliveryOptions = await fetchDeliveryOptions();
       showOptionsModal(
         context: ctx,
+        price: 'Rp ${fee}',
         options: deliveryOptions,
         selectedValue: selectedDeliveryMethod,
         onSelected: (int? value) {
