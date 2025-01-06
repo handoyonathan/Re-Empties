@@ -284,6 +284,9 @@ class UserFormVM extends BaseNotifier with CustomToastMixin {
   }
 
   String _formatCurrency(double amount) {
+    if (amount < 5000) {
+      amount = 5000;
+    }
     final formatter = NumberFormat.currency(
       locale: 'id',
       symbol: '',
