@@ -75,13 +75,13 @@ class ArticleView extends ConsumerWidget {
                               style: textTheme.badgesText,
                               textAlign: TextAlign.left,
                             ),
-                            Gap(15),
+                            const Gap(15),
                             Text(
                               article['articleDescription'] ?? '',
                               style: textTheme.articleIntro,
                               textAlign: TextAlign.left,
                             ),
-                            Gap(10),
+                            const Gap(10),
                             // Text(
                             //   article['articleDescription'] ?? '',
                             //   style: textTheme.articleTitle,

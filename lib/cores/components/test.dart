@@ -21,14 +21,14 @@ class TestWidget extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         backgroundColor: colors.background,
-        body: SafeArea(
+        body: const SafeArea(
           child: SingleChildScrollView(
             child: Padding(
               padding:
-                  const EdgeInsets.all(16.0), // Add padding to the whole page
+                  EdgeInsets.all(16.0), // Add padding to the whole page
               child: Column(
                 children: [
-                  const CustomDetailsCard(
+                  CustomDetailsCard(
                     type: 'transaction',
                     data: {
                       'state': 'ongoing',
@@ -40,7 +40,7 @@ class TestWidget extends StatelessWidget {
                       'points': 1000,
                     },
                   ),
-                  const CustomDetailsCard(
+                  CustomDetailsCard(
                     type: 'transaction',
                     data: {
                       'state': 'done',
@@ -52,7 +52,7 @@ class TestWidget extends StatelessWidget {
                       'points': 1000,
                     },
                   ),
-                  const CustomDetailsCard(
+                  CustomDetailsCard(
                     type: 'payment',
                     data: {
                       'fee': "5.000",
@@ -62,8 +62,8 @@ class TestWidget extends StatelessWidget {
                   ),
 
                   // Uncomment below as needed
-                  const ReedemPointsCard(points: '12.000'),
-                  const SizedBox(height: 10),
+                  ReedemPointsCard(points: '12.000'),
+                  SizedBox(height: 10),
                   // const VoucherCardRedeem(
                   //   category: 'games',
                   //   title: '100 Diamonds in Game Legends',

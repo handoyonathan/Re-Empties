@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
-import 'package:go_router/go_router.dart';
 import 'package:re_empties/cores/components/button_main_app.dart';
-import 'package:re_empties/cores/components/image_asset.dart';
 import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
 import 'package:re_empties/cores/constant/colors.dart';
-import 'package:re_empties/cores/components/tap_detector.dart';
 
 class CustomSheetVoucher extends StatelessWidget {
   final String title;

@@ -131,7 +131,7 @@ class _DashboardViewState extends ConsumerState<DashboardView>
                             style: textTheme.title,
                           ),
                         ),
-                        ArticlePreviewHome(),
+                        const ArticlePreviewHome(),
                         Gap(30.h),
                       ],
                     ),

@@ -52,7 +52,7 @@ class VoucherViewModel extends BaseNotifier with CustomToastMixin {
           .listen((query) async {
         vouchers = query.docs
             .map((doc) =>
-                Voucher.fromFireStore(doc.data() as Map<String, dynamic>, doc.id))
+                Voucher.fromFireStore(doc.data(), doc.id))
             .toList();
         sortVouchers();
       });

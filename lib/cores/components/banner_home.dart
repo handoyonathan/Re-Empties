@@ -121,7 +121,7 @@ class BannerHome extends StatelessWidget {
           // Foreground Content
           Padding(
             padding: isProfilePage
-                ? EdgeInsets.all(8)
+                ? const EdgeInsets.all(8)
                 : EdgeInsets.symmetric(horizontal: 12.w, vertical: 56.h),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -25,7 +25,7 @@ class SplashScreenState extends State<SplashScreen> {
     bool isAdminLoggedIn = pref.getBool('isAdminLoggedIn') ?? false;
 
     // Splash screen loading time
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
 
     if (isUserLoggedIn) {
       if (ctx.mounted) ctx.goNamed(paths.home);

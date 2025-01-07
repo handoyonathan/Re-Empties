@@ -110,7 +110,7 @@ class CustomAlertDialog extends StatelessWidget {
                       isLocation
                           ? 'Open App Settings'
                           : (logout ? 'Logout' : 'Cancel'),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),

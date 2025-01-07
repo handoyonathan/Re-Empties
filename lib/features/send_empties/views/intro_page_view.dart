@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/src/size_extension.dart';
-import 'package:gap/gap.dart';
 
 import 'package:re_empties/cores/components/article_steps.dart';
 import 'package:re_empties/cores/components/button_main_app.dart';

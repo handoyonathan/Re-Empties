@@ -27,7 +27,7 @@ class _HomeViewState extends ConsumerState<HomeView>
   void initState() {
     _tabViewList = [
       NavBarModel(
-        widget: DashboardView(),
+        widget: const DashboardView(),
         icon: images.homeTab,
       ),
       NavBarModel(

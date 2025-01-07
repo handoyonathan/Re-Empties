@@ -75,8 +75,8 @@ class VoucherDetailViewModel extends BaseNotifier with CustomToastMixin {
         final userData = userSnapshot.data()!;
         final currentPoints = userData['rewardPoint'] ?? 0;
 
-        print('test curr point:' + currentPoints.toString());
-        print('test voucher point:' + voucherPoints.toString());
+        print('test curr point:$currentPoints');
+        print('test voucher point:$voucherPoints');
         if (currentPoints < voucherPoints) {
           showCustomToast('Not enough points to redeem this voucher',
               isError: true);

@@ -12,7 +12,6 @@ import 'package:re_empties/cores/template/form_notifier.dart';
 import 'package:re_empties/cores/template/form_validator.dart';
 import 'package:re_empties/cores/template/text_input_model.dart';
 import 'package:re_empties/features/authentication/model/auth_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 final registerVM = ChangeNotifierProvider.autoDispose(RegisterVM.new);
 

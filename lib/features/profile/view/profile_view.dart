@@ -39,7 +39,7 @@ class ProfileViewState extends State<ProfileView> {
   Widget _buildScreen(BuildContext context, ProfileVM vm) => Scaffold(
         backgroundColor: colors.bgColor,
         body: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

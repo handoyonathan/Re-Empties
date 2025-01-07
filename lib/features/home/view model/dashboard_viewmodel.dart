@@ -85,7 +85,7 @@ class DashboardVM extends BaseNotifier {
 
           for (var doc in querySnapshot.docs) {
             TransactionModel transaction = TransactionModel.fromFirestore(
-              doc.data() as Map<String, dynamic>,
+              doc.data(),
               doc.id,
             );
 

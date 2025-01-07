@@ -5,7 +5,6 @@ import 'package:re_empties/cores/components/image_asset.dart';
 import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
 import 'package:re_empties/cores/constant/colors.dart';
-import 'package:re_empties/cores/components/tap_detector.dart';
 
 class ReedemPointsCard extends StatelessWidget {
   final String points; // Add a parameter for the points value

@@ -27,7 +27,7 @@ class BottomNavBar extends StatelessWidget {
       height: 70.h,
       color: colors.gray2,
       padding: EdgeInsets.zero,
-      shape: CircularNotchedRectangle(),
+      shape: const CircularNotchedRectangle(),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
