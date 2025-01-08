@@ -130,46 +130,59 @@ class LocationViewState extends ConsumerState<LocationView> {
               Divider(height: 1.h, color: colors.gray4),
               Gap(16.h),
               Expanded(
-                child: ListView.separated(
-                  itemCount: vm.isWasteLocationChanged
-                      ? vm.queriedWasteStations.length
-                      : vm.wasteStations.length,
-                  separatorBuilder: (_, __) => Gap(8.h),
-                  itemBuilder: (context, index) {
-                    // TODO: KALAU MISAL BISA BUAT EDIT LOKASI USER
-                    // if (vm.showLocations) {
-                    //   final location = vm.locations[index];
-                    //   return UserLocationCard(
-                    //       title: location.name,
-                    //       address:
-                    //           location.address,
-                    //       isSelected: vm.userController.text == location.name ||
-                    //           vm.userController.text == location.address,
-                    //       onTap: () {
-                    //         vm.selectLocation(location.name);
-                    //         vm.toggleShowLocations();
-                    //       });
-                    // } else {
-                    final station = vm.isWasteLocationChanged
-                        ? vm.queriedWasteStations[index]
-                        : vm.wasteStations[index];
-                    return WasteLocationCard(
-                      title: station.stationName,
-                      address: station.addressStation,
-                      openHour: station.openHours,
-                      isSelected: vm.selectedStationId == station.id,
-                      //  vm.stationController.text ==
-                      //         station.stationName ||
-                      //     vm.stationController.text == station.addressStation,
-                      onTap: () {
-                        vm.selectWasteStation(station.id);
-                      },
-                      distance: station.distance != null
-                          ? '${station.distance!.toStringAsFixed(2)} km'
-                          : 'Calculating...',
-                    );
-                  },
-                ),
+                child: vm.isWasteLocationChanged
+                    ? (vm.queriedWasteStations.isEmpty
+                        ? Center(
+                            child: Text(
+                              'No location found',
+                              style: textTheme.appbarTitle.copyWith(color: colors.gray3),
+                            ),
+                          )
+                        : ListView.separated(
+                            itemCount: vm.queriedWasteStations.length,
+                            separatorBuilder: (_, __) => Gap(8.h),
+                            itemBuilder: (context, index) {
+                              final station = vm.queriedWasteStations[index];
+                              return WasteLocationCard(
+                                title: station.stationName,
+                                address: station.addressStation,
+                                openHour: station.openHours,
+                                isSelected: vm.selectedStationId == station.id,
+                                onTap: () {
+                                  vm.selectWasteStation(station.id);
+                                },
+                                distance: station.distance != null
+                                    ? '${station.distance!.toStringAsFixed(2)} km'
+                                    : 'Calculating...',
+                              );
+                            },
+                          ))
+                    : (vm.wasteStations.isEmpty
+                        ? Center(
+                            child: Text(
+                              'No location found',
+                              style: textTheme.appbarTitle.copyWith(color: colors.gray3),
+                            ),
+                          )
+                        : ListView.separated(
+                            itemCount: vm.wasteStations.length,
+                            separatorBuilder: (_, __) => Gap(8.h),
+                            itemBuilder: (context, index) {
+                              final station = vm.wasteStations[index];
+                              return WasteLocationCard(
+                                title: station.stationName,
+                                address: station.addressStation,
+                                openHour: station.openHours,
+                                isSelected: vm.selectedStationId == station.id,
+                                onTap: () {
+                                  vm.selectWasteStation(station.id);
+                                },
+                                distance: station.distance != null
+                                    ? '${station.distance!.toStringAsFixed(2)} km'
+                                    : 'Calculating...',
+                              );
+                            },
+                          )),
               ),
             ],
           ),
