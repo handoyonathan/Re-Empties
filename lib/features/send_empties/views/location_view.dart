@@ -134,7 +134,7 @@ class LocationViewState extends ConsumerState<LocationView> {
                     ? (vm.queriedWasteStations.isEmpty
                         ? Center(
                             child: Text(
-                              'No location found',
+                              'Waste Station not Found',
                               style: textTheme.appbarTitle.copyWith(color: colors.gray3),
                             ),
                           )
@@ -160,7 +160,7 @@ class LocationViewState extends ConsumerState<LocationView> {
                     : (vm.wasteStations.isEmpty
                         ? Center(
                             child: Text(
-                              'No location found',
+                              'Waste Station not Found',
                               style: textTheme.appbarTitle.copyWith(color: colors.gray3),
                             ),
                           )
