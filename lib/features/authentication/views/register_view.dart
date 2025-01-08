@@ -39,6 +39,7 @@ class RegisterPage extends StatelessWidget {
                     style: TextStyle(
                         color: colors.green2,
                         fontSize: 35.0,
+                        fontFamily: 'Inter',
                         fontWeight: FontWeight.bold),
                     textAlign: TextAlign.left,
                   ),
@@ -47,6 +48,7 @@ class RegisterPage extends StatelessWidget {
                     style: TextStyle(
                         color: colors.green2,
                         fontSize: 20.0,
+                        fontFamily: 'Inter',
                         fontWeight: FontWeight.w300),
                     textAlign: TextAlign.left,
                   ),

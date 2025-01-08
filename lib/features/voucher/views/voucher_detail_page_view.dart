@@ -134,7 +134,7 @@ class _VoucherDetailPageViewState extends State<VoucherDetailPageView>
                           labelColor: colors.green1,
                           unselectedLabelColor: colors.gray5,
                           labelStyle:
-                              const TextStyle(fontWeight: FontWeight.bold),
+                              const TextStyle(fontWeight: FontWeight.bold, fontFamily: 'Inter'),
                           tabs: const [
                             Tab(text: "How to Redeem"),
                             Tab(text: "Terms & Conditions"),

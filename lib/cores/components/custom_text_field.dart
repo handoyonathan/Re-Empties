@@ -116,6 +116,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               hintStyle: TextStyle(
                 color: colors.green1,
                 fontSize: 15.0,
+                fontFamily: 'Inter'
               ),
               filled: filledColor,
               fillColor: widget.filledColor,
@@ -128,6 +129,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               focusedErrorBorder: getBorder(colors.red2),
               errorStyle: const TextStyle(
                 fontSize: 0,
+                fontFamily: 'Inter',
                 // color: Colors.transparent,
                 height: 0.001,
               ),

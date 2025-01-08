@@ -45,6 +45,7 @@ class CustomAlertDialog extends StatelessWidget {
                 color: colors.green1,
                 fontWeight: FontWeight.w900,
                 fontSize: 20,
+                fontFamily: 'Inter'
               ),
               textAlign: TextAlign.center,
             ),
@@ -58,6 +59,7 @@ class CustomAlertDialog extends StatelessWidget {
                 color: colors.green1,
                 fontWeight: FontWeight.normal,
                 fontSize: 12,
+                fontFamily: 'Inter'
               ),
               textAlign: TextAlign.center,
             ),
@@ -84,6 +86,7 @@ class CustomAlertDialog extends StatelessWidget {
                         style: TextStyle(
                           fontWeight: FontWeight.normal,
                           fontSize: 16,
+                          fontFamily: 'Inter'
                         ),
                       ),
                     ),
@@ -113,6 +116,7 @@ class CustomAlertDialog extends StatelessWidget {
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
+                        fontFamily: 'Inter'
                       ),
                     ),
                   ),
