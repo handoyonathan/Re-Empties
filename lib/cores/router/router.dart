@@ -133,7 +133,7 @@ setupRouter({required String initialRoute}) {
           builder: (context, state) {
             final extra = state.extra as Map<String, dynamic>;
 
-            return SendFormView(
+            return UserFormView(
               wasteLocation: extra['wasteLocation'] as Admin,
               isSend: extra['isSend'] ?? false,
               currentLocation: extra['currentLocation'] as LatLng,

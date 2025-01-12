@@ -16,11 +16,11 @@ import 'package:re_empties/features/send_empties/viewModel/user_form_view_model.
 import 'package:re_empties/features/send_empties/widget/delivery_detail_container.dart';
 import 'package:re_empties/features/send_empties/widget/stepper.dart';
 
-class SendFormView extends ConsumerStatefulWidget {
+class UserFormView extends ConsumerStatefulWidget {
   final Admin wasteLocation;
   final bool isSend;
   final LatLng currentLocation;
-  SendFormView(
+  UserFormView(
       {super.key,
       required this.wasteLocation,
       required this.isSend,
@@ -34,7 +34,7 @@ class SendFormView extends ConsumerStatefulWidget {
   ConsumerState createState() => SendFormState();
 }
 
-class SendFormState extends ConsumerState<SendFormView> {
+class SendFormState extends ConsumerState<UserFormView> {
   @override
   Widget build(BuildContext context) => BaseView(
         provider: widget._viewModel,
