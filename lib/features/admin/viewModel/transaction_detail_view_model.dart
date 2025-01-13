@@ -32,66 +32,72 @@ class TransactionDetailVM extends BaseNotifier with CustomToastMixin {
   // Properti terkait quantity
   Map<String, int> wastePcs = {};
 
-  Future<void> fetchUserData() async {
-    try {
-      currentAdmin = auth.FirebaseAuth.instance.currentUser;
-      if (currentAdmin != null) {
-        DocumentSnapshot adminDoc = await FirebaseFirestore.instance
-            // .collection('admin')
-            // .doc(currentAdmin!.uid)
-            .collection('transaction')
-            .doc(transactionID)
-            .get();
+  Future<void> fetchTransactionDetail() async {
+  try {
+    currentAdmin = auth.FirebaseAuth.instance.currentUser;
+    if (currentAdmin != null) {
+      DocumentSnapshot transactionDoc = await FirebaseFirestore.instance
+          .collection('transaction')
+          .doc(transactionID)
+          .get();
 
-        if (adminDoc.exists) {
-          userID = adminDoc['userID'] ?? '';
-          adminID = adminDoc['adminID'] ?? '';
-          // print(userID);
-          await fetchUserData2(userID);
-          await fetchAdminData(adminID);
-          notifyListeners();
-        }
-      }
-    } catch (e) {
-      showCustomToast('Error fetching user data: $e', isError: true);
-    }
-  }
+      if (transactionDoc.exists) {
+        userID = transactionDoc['userID'] ?? '';
+        adminID = transactionDoc['adminID'] ?? '';
 
-  Future<void> fetchAdminData(String id) async {
-    try {
-      currentAdmin = auth.FirebaseAuth.instance.currentUser;
-      if (currentAdmin != null) {
-        DocumentSnapshot adminDoc =
-            await FirebaseFirestore.instance.collection('admin').doc(id).get();
+        print('Transaction details fetched successfully.');
+        print('UserID: $userID, AdminID: $adminID');
+        
+        // Call the respective functions to fetch additional data
+        await fetchUserData(userID);
+        await fetchAdminData(adminID);
 
-        if (adminDoc.exists) {
-          adminID = currentAdmin!.uid;
-          adminName = adminDoc['stationName'];
-          adminPhoneNum = adminDoc['adminPhone'];
-          adminAddress = adminDoc['addressStation'];
-          notifyListeners();
-        }
-      }
-    } catch (e) {
-      showCustomToast('Error fetching admin data: $e', isError: true);
-    }
-  }
-
-  Future<void> fetchUserData2(String id) async {
-    try {
-      DocumentSnapshot userDoc =
-          await FirebaseFirestore.instance.collection('users').doc(id).get();
-
-      if (userDoc.exists) {
-        userFullName = userDoc['userName'] ?? '';
-        userPhoneNum = userDoc['userPhoneNumber'] ?? '';
-        userAddress = userDoc['userAddress'] ?? '';
         notifyListeners();
+      } else {
+        print('Transaction document does not exist.');
       }
-    } catch (e) {
-      showCustomToast('Error fetching user data: $e', isError: true);
     }
+  } catch (e) {
+    print('Error fetching transaction details: $e');
   }
+}
+
+Future<void> fetchUserData(String userID) async {
+  try {
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(userID)
+        .get();
+
+    if (userDoc.exists) {
+      // Process user data as needed
+      print('User data fetched successfully: ${userDoc.data()}');
+    } else {
+      print('User document does not exist.');
+    }
+  } catch (e) {
+    print('Error fetching user data: $e');
+  }
+}
+
+Future<void> fetchAdminData(String adminID) async {
+  try {
+    DocumentSnapshot adminDoc = await FirebaseFirestore.instance
+        .collection('admin')
+        .doc(adminID)
+        .get();
+
+    if (adminDoc.exists) {
+      // Process admin data as needed
+      print('Admin data fetched successfully: ${adminDoc.data()}');
+    } else {
+      print('Admin document does not exist.');
+    }
+  } catch (e) {
+    print('Error fetching admin data: $e');
+  }
+}
+
 
   Future<void> fetchWasteCategories() async {
     final wasteCategoryCollection =
@@ -128,9 +134,10 @@ class TransactionDetailVM extends BaseNotifier with CustomToastMixin {
       };
 
       notifyListeners();
-    } else {
-      showCustomToast('Transaction not found', isError: true);
-    }
+    } 
+    // else {
+      // showCustomToast('Transaction not found', isError: true);
+    // }
   } catch (e) {
     showCustomToast('Error initializing waste quantities: $e', isError: true);
   }
@@ -235,7 +242,7 @@ class TransactionDetailVM extends BaseNotifier with CustomToastMixin {
       // if (!isSend) {
       //   ctx.pushNamed(paths.fillDropID);
       // } else {
-      showCustomToast('Transaction verified successfully');
+      // showCustomToast('Transaction verified successfully');
       ctx.pushNamed(paths.success, extra: <String, dynamic>{
         'isSend': isSend,
         'isAdmin': true,
@@ -251,7 +258,7 @@ class TransactionDetailVM extends BaseNotifier with CustomToastMixin {
   @override
   FutureOr<void> init() async {
     await fetchWasteCategories();
-    await fetchUserData();
+    await fetchTransactionDetail();
     // await fetchAdminData();
     // initializeWasteQuantities(wasteCategories);
     await initializeWasteQuantitiesFromTransaction();

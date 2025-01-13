@@ -88,11 +88,15 @@ class VoucherViewModel extends BaseNotifier with CustomToastMixin {
 
   void goToDetailVoucher(int index) {
     ctx.pop();
-    if (point < int.parse(vouchers[index].points)) {
+    if (checkPoint(index)) {
       showCustomToast('Not enough points to redeem this voucher', isError: true);
       return;
     }
     ctx.pushNamed(paths.voucherDetail, extra: vouchers[index].voucherID);
+  }
+
+  bool checkPoint(int index){
+    return point < int.parse(vouchers[index].points) ? true : false;
   }
 
   @override
