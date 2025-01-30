@@ -33,71 +33,76 @@ class TransactionDetailVM extends BaseNotifier with CustomToastMixin {
   Map<String, int> wastePcs = {};
 
   Future<void> fetchTransactionDetail() async {
-  try {
-    currentAdmin = auth.FirebaseAuth.instance.currentUser;
-    if (currentAdmin != null) {
-      DocumentSnapshot transactionDoc = await FirebaseFirestore.instance
-          .collection('transaction')
-          .doc(transactionID)
+    try {
+      currentAdmin = auth.FirebaseAuth.instance.currentUser;
+      if (currentAdmin != null) {
+        DocumentSnapshot transactionDoc = await FirebaseFirestore.instance
+            .collection('transaction')
+            .doc(transactionID)
+            .get();
+
+        if (transactionDoc.exists) {
+          userID = transactionDoc['userID'] ?? '';
+          adminID = transactionDoc['adminID'] ?? '';
+
+          print('Transaction details fetched successfully.');
+          print('UserID: $userID, AdminID: $adminID');
+
+          // Call the respective functions to fetch additional data
+          await fetchUserData(userID);
+          await fetchAdminData(adminID);
+
+          notifyListeners();
+        } else {
+          print('Transaction document does not exist.');
+        }
+      }
+    } catch (e) {
+      print('Error fetching transaction details: $e');
+    }
+  }
+
+  Future<void> fetchUserData(String userID) async {
+    try {
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userID)
           .get();
 
-      if (transactionDoc.exists) {
-        userID = transactionDoc['userID'] ?? '';
-        adminID = transactionDoc['adminID'] ?? '';
-
-        print('Transaction details fetched successfully.');
-        print('UserID: $userID, AdminID: $adminID');
-        
-        // Call the respective functions to fetch additional data
-        await fetchUserData(userID);
-        await fetchAdminData(adminID);
-
+      if (userDoc.exists) {
+        userFullName = userDoc['userName'] ?? '';
+        userPhoneNum = userDoc['userPhoneNumber'] ?? '';
+        userAddress = userDoc['userAddress'] ?? '';
         notifyListeners();
       } else {
-        print('Transaction document does not exist.');
+        print('User document does not exist.');
       }
+    } catch (e) {
+      print('Error fetching user data: $e');
     }
-  } catch (e) {
-    print('Error fetching transaction details: $e');
   }
-}
 
-Future<void> fetchUserData(String userID) async {
-  try {
-    DocumentSnapshot userDoc = await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userID)
-        .get();
+  Future<void> fetchAdminData(String adminID) async {
+    try {
+      currentAdmin = auth.FirebaseAuth.instance.currentUser;
+      if (currentAdmin != null) {
+        DocumentSnapshot adminDoc = await FirebaseFirestore.instance
+            .collection('admin')
+            .doc(adminID)
+            .get();
 
-    if (userDoc.exists) {
-      // Process user data as needed
-      print('User data fetched successfully: ${userDoc.data()}');
-    } else {
-      print('User document does not exist.');
+        if (adminDoc.exists) {
+          adminID = currentAdmin!.uid;
+          adminName = adminDoc['stationName'];
+          adminPhoneNum = adminDoc['adminPhone'];
+          adminAddress = adminDoc['addressStation'];
+          notifyListeners();
+        }
+      }
+    } catch (e) {
+      showCustomToast('Error fetching admin data: $e', isError: true);
     }
-  } catch (e) {
-    print('Error fetching user data: $e');
   }
-}
-
-Future<void> fetchAdminData(String adminID) async {
-  try {
-    DocumentSnapshot adminDoc = await FirebaseFirestore.instance
-        .collection('admin')
-        .doc(adminID)
-        .get();
-
-    if (adminDoc.exists) {
-      // Process admin data as needed
-      print('Admin data fetched successfully: ${adminDoc.data()}');
-    } else {
-      print('Admin document does not exist.');
-    }
-  } catch (e) {
-    print('Error fetching admin data: $e');
-  }
-}
-
 
   Future<void> fetchWasteCategories() async {
     final wasteCategoryCollection =
@@ -113,35 +118,35 @@ Future<void> fetchAdminData(String adminID) async {
 
   // Fungsi untuk mengatur kuantitas awal
   Future<void> initializeWasteQuantitiesFromTransaction() async {
-  try {
-    // Ambil data transaksi berdasarkan transactionID
-    DocumentSnapshot transactionDoc = await FirebaseFirestore.instance
-        .collection('transaction')
-        .doc(transactionID)
-        .get();
+    try {
+      // Ambil data transaksi berdasarkan transactionID
+      DocumentSnapshot transactionDoc = await FirebaseFirestore.instance
+          .collection('transaction')
+          .doc(transactionID)
+          .get();
 
-    if (transactionDoc.exists) {
-      // Ambil nilai kuantitas dari dokumen transaksi
-      int cardboardPcs = transactionDoc['cardboardPcs'];
-      int glassPcs = transactionDoc['glassPcs'];
-      int plasticPcs = transactionDoc['plasticPcs'];
+      if (transactionDoc.exists) {
+        // Ambil nilai kuantitas dari dokumen transaksi
+        int cardboardPcs = transactionDoc['cardboardPcs'];
+        int glassPcs = transactionDoc['glassPcs'];
+        int plasticPcs = transactionDoc['plasticPcs'];
 
-      // Tetapkan nilai ke wastePcs berdasarkan kategori
-      wastePcs = {
-        'IwoJoghBYQQrmTRThjlk': cardboardPcs, // ID kategori untuk cardboard
-        'uuk14PI0XvaD5jZfouvy': glassPcs,     // ID kategori untuk glass
-        'JEO10T6Zlo3tmYcIYIMR': plasticPcs,  // ID kategori untuk plastic
-      };
+        // Tetapkan nilai ke wastePcs berdasarkan kategori
+        wastePcs = {
+          'IwoJoghBYQQrmTRThjlk': cardboardPcs, // ID kategori untuk cardboard
+          'uuk14PI0XvaD5jZfouvy': glassPcs, // ID kategori untuk glass
+          'JEO10T6Zlo3tmYcIYIMR': plasticPcs, // ID kategori untuk plastic
+        };
 
-      notifyListeners();
-    } 
-    // else {
+        notifyListeners();
+      }
+      // else {
       // showCustomToast('Transaction not found', isError: true);
-    // }
-  } catch (e) {
-    showCustomToast('Error initializing waste quantities: $e', isError: true);
+      // }
+    } catch (e) {
+      showCustomToast('Error initializing waste quantities: $e', isError: true);
+    }
   }
-}
 
   // Fungsi untuk meningkatkan kuantitas
   void increaseQuantity(String categoryId) {
@@ -153,8 +158,7 @@ Future<void> fetchAdminData(String adminID) async {
 
   // Fungsi untuk mengurangi kuantitas
   void decreaseQuantity(String categoryId) {
-    if (wastePcs.containsKey(categoryId) &&
-        (wastePcs[categoryId] ?? 0) > 0) {
+    if (wastePcs.containsKey(categoryId) && (wastePcs[categoryId] ?? 0) > 0) {
       wastePcs[categoryId] = (wastePcs[categoryId] ?? 0) - 1;
       notifyListeners();
     }
