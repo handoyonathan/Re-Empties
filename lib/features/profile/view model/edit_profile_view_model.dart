@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:go_router/go_router.dart';
@@ -44,7 +45,7 @@ class EditProfileVM extends BaseFormNotifier<ProfileModel>
     if (phoneNumber.startsWith('+62')) {
       return phoneNumber.substring(3);
     }
-    return phoneNumber;
+    return phoneNumber; // Jika tidak diawali '+62', kembalikan string aslinya
   }
 
   void initializeForm(
@@ -64,22 +65,16 @@ class EditProfileVM extends BaseFormNotifier<ProfileModel>
       try {
         final currentUser = FirebaseAuth.instance.currentUser;
         if (currentUser != null) {
-          final newEmail = form.email.text;
-          if (newEmail != currentUser.email) {
-            await reauthenticateUser();
-            await _updateEmail(currentUser, newEmail);
-          }
-
           await FirebaseFirestore.instance
               .collection('users')
               .doc(currentUser.uid)
               .update({
             'userName': form.fullName.text,
-            'userEmail': newEmail,
+            'userEmail': form.email.text,
             'userPhoneNumber': form.phoneNumber.text,
           });
         }
-
+        print("INI TOMBOL SAVEEEEEEEEEEE");
         ctx.pop();
         notifyListeners();
       } catch (e) {
@@ -88,36 +83,7 @@ class EditProfileVM extends BaseFormNotifier<ProfileModel>
     }
   }
 
-  Future<void> _updateEmail(User user, String newEmail) async {
-  try {
-    await user.verifyBeforeUpdateEmail(newEmail);
-    print('Verification email sent to $newEmail. Please check and confirm.');
-  } on FirebaseAuthException catch (e) {
-    if (e.code == 'requires-recent-login') {
-      print('User needs to re-authenticate before changing email.');
-      // Tambahkan logika untuk meminta user login ulang
-    } else {
-      print('Error updating email: ${e.message}');
-    }
-  }
-}
-
-Future<void> reauthenticateUser() async {
-  final user = FirebaseAuth.instance.currentUser;
-  if (user != null) {
-    try {
-      final credential = EmailAuthProvider.credential(
-        email: user.email!,
-        password: 'Onetry202\$',
-      );
-      await user.reauthenticateWithCredential(credential);
-      print("Re-authentication successful.");
-      print(user.email);
-    } catch (e) {
-      print("Error during re-authentication: $e");
-    }
-  }
-}
-
-
+  // void goBack(BuildContext context) {
+  //   context.pop(); // This will pop the current screen off the navigation stack
+  // }
 }
