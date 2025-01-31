@@ -46,8 +46,8 @@ class BottomNavBar extends StatelessWidget {
                     ImageAsset(
                       imagePath: 
                       e.icon[selected]!,
-                      width: 28.w,
-                      height: 28.w,
+                      width: 26.w,
+                      height: 26.w,
                     ),
                     Gap(20.h),
                   ],
