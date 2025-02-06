@@ -69,19 +69,16 @@ class WasteLocationCard extends StatelessWidget {
                           Gap(5.w),
                           Text(
                             'Collaborated with',
-                            style: textTheme.pointLabel
-                                .copyWith(color: colors.green1),
-                          ),
-                          Gap(5.w),
-                          Text(
-                            'Bank Sampah',
-                            style: textTheme.locationName.copyWith(
-                              fontWeight: FontWeight.w700,
-                              overflow: TextOverflow.ellipsis
-                            ),
-                          ),
+                            style: textTheme.locationDescription,
+                          ),            
                         ],
                       ),
+                      Text(
+                            title,
+                            style: textTheme.locationName.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
                     ],
                     Gap(5.h),
                     Text(
