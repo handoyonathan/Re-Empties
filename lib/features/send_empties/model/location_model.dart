@@ -30,6 +30,7 @@ class Admin {
   final GeoPoint wasteLocation;
   final String openHours;
   double? distance;
+  final bool isCollaborator;
 
   Admin({
     required this.id,
@@ -41,6 +42,7 @@ class Admin {
     required this.wasteLocation,
     required this.openHours,
     this.distance,
+    required this.isCollaborator,
   });
 
   factory Admin.fromFirestore(Map<String, dynamic> json) {
@@ -53,6 +55,7 @@ class Admin {
       openHours: json['openHours'],
       adminName: json['adminName'],
       adminEmail: json['adminEmail'],
+      isCollaborator: json['isCollaborator'] ?? false,
     );
   }
 }

@@ -43,6 +43,7 @@ class _ImagePath {
   final String voucherCoffee = '$_imagePath/voucherCoffee.png';
   final String cancel = '$_imagePath/cancel.png';
   final String countDown = '$_imagePath/countdown.png';
+  final String collab = '$_imagePath/collab.png';
 
   // patterns ///////////////////////////////////////
   final String headerMenuUtama = '$_patternPath/Header_MenuUtama.png';

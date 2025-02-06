@@ -43,32 +43,41 @@ class LocationVM extends BaseNotifier with CustomToastMixin {
     mapController = controller;
   }
 
-  Future<void> fetchQueriedWasteStations(String query) async {
-    try {
-      final snapshot = await _firestore.collection('admin').get();
-      final stations = snapshot.docs.map((doc) {
-        final data = doc.data();
-        final openHours = stationAvailability(data['openHours']);
+  String _selectedFilter = 'All';
+  List<Admin> _filteredAdmin = [];
 
-        return Admin(
-          id: doc.id,
-          addressStation: data['addressStation'],
-          adminPhone: data['adminPhone'],
-          adminName: data['adminName'],
-          adminEmail: data['adminEmail'],
-          stationName: data['stationName'],
-          wasteLocation: data['wasteLocation'],
-          openHours: openHours,
-        );
-      }).toList();
-
-      _queriedWasteStations = stations;
-    } catch (e) {
-      print('Error fetching queried waste stations: $e');
-    } finally {
-      isWasteLocationChanged = true;
-      notifyListeners();
+  String get selectedFilter => _selectedFilter;
+  List<Admin> get filteredAdmin {
+    if (_selectedFilter == 'Collab') {
+      _queriedWasteStations = filterAdminsByCollaborationStatus();
+      return _queriedWasteStations;
     }
+    return _queriedWasteStations;
+  }
+
+  void setFilter(String filter) async {
+    _selectedFilter = filter;
+    if (filter == 'All') {
+      await fetchWasteStations();
+      _sortWasteStations();
+      _queriedWasteStations = List.from(wasteStations);
+      _wasteStations = _queriedWasteStations;
+    } else if (filter == 'Collab') {
+      await fetchWasteStations();
+      _sortWasteStations();
+      _queriedWasteStations =
+          wasteStations.where((station) => station.isCollaborator).toList();
+      _wasteStations = _queriedWasteStations;
+    }
+    print(
+        "Filtered Stations: ${queriedWasteStations.map((e) => e.stationName).toList()}");
+    notifyListeners();
+  }
+
+  List<Admin> filterAdminsByCollaborationStatus() {
+    return _wasteStations
+        .where((admin) => admin.isCollaborator == true)
+        .toList();
   }
 
   Future<void> fetchWasteStations() async {
@@ -87,6 +96,7 @@ class LocationVM extends BaseNotifier with CustomToastMixin {
           stationName: data['stationName'],
           wasteLocation: data['wasteLocation'],
           openHours: openHours,
+          isCollaborator: data['isCollaborator'] ?? false,
         );
       }).toList();
 
@@ -135,7 +145,8 @@ class LocationVM extends BaseNotifier with CustomToastMixin {
       if (permission == LocationPermission.denied) {
         // If still denied, inform user and guide to settings
         showCustomToast(
-            'Location permission denied. Please enable it in settings.', isError: true);
+            'Location permission denied. Please enable it in settings.',
+            isError: true);
         _showPermissionDeniedDialog();
       } else if (permission == LocationPermission.deniedForever) {
         // If permission is denied forever, guide to settings
@@ -161,15 +172,15 @@ class LocationVM extends BaseNotifier with CustomToastMixin {
             isLocation: true,
             onConfirm: () async {
               await openAppSettings();
-          
+
               var permission = await Geolocator.checkPermission();
-          
+
               if (permission == LocationPermission.whileInUse ||
                   permission == LocationPermission.always) {
                 print(
                     'Location permission granted after returning from settings.');
                 ctx.pop();
-                await _determinePosition(); 
+                await _determinePosition();
                 if (userPosition != null) {
                   await fetchWasteStations(); // Re-fetch the waste stations data
                   _sortWasteStations(); // Re-sort the stations based on new data

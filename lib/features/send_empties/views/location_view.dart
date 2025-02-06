@@ -12,6 +12,7 @@ import 'package:re_empties/cores/constant/colors.dart';
 import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
 import 'package:re_empties/cores/template/view.dart';
+import 'package:re_empties/features/admin/widget/filter_button.dart';
 import 'package:re_empties/features/send_empties/viewModel/location_view_model.dart';
 import 'package:re_empties/features/send_empties/widget/waste_location_dart.dart';
 
@@ -80,17 +81,6 @@ class LocationViewState extends ConsumerState<LocationView> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // CustomTextField(
-                        //   hint: 'Search your location...',
-                        //   controller: vm.userController,
-                        //   enabled: false,
-                        //   isMultiline: true,
-                        //   filledColor: colors.yellow3,
-                        //   onTap: () {
-                        //     print('kepencet');
-                        //   },
-                        //   onSubmit: (value) {},
-                        // ),
                         Container(
                           decoration: BoxDecoration(
                             color: colors.yellow3,
@@ -129,6 +119,23 @@ class LocationViewState extends ConsumerState<LocationView> {
               Gap(16.h),
               Divider(height: 1.h, color: colors.gray4),
               Gap(16.h),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  FilterButton(
+                    label: 'All',
+                    isSelected: vm.selectedFilter == 'All',
+                    onTap: () => vm.setFilter('All'),
+                  ),
+                  Gap(8.w),
+                  FilterButton(
+                    label: 'Collaboration Waste Station',
+                    isSelected: vm.selectedFilter == 'Collab',
+                    onTap: () => vm.setFilter('Collab'),
+                  ),
+                ],
+              ),
+              Gap(16.h),
               Expanded(
                 child: vm.isWasteLocationChanged
                     ? (vm.queriedWasteStations.isEmpty
@@ -143,11 +150,14 @@ class LocationViewState extends ConsumerState<LocationView> {
                             separatorBuilder: (_, __) => Gap(8.h),
                             itemBuilder: (context, index) {
                               final station = vm.queriedWasteStations[index];
+                              final isCollab = vm.queriedWasteStations[index].isCollaborator;
+                              print(isCollab);
                               return WasteLocationCard(
-                                title: station.stationName,
+                                title:  station.stationName,
                                 address: station.addressStation,
                                 openHour: station.openHours,
                                 isSelected: vm.selectedStationId == station.id,
+                                isCollab: isCollab,
                                 onTap: () {
                                   vm.selectWasteStation(station.id);
                                 },
@@ -169,11 +179,13 @@ class LocationViewState extends ConsumerState<LocationView> {
                             separatorBuilder: (_, __) => Gap(8.h),
                             itemBuilder: (context, index) {
                               final station = vm.wasteStations[index];
+                              final isCollab = vm.wasteStations[index].isCollaborator;
                               return WasteLocationCard(
                                 title: station.stationName,
                                 address: station.addressStation,
                                 openHour: station.openHours,
                                 isSelected: vm.selectedStationId == station.id,
+                                isCollab: isCollab,
                                 onTap: () {
                                   vm.selectWasteStation(station.id);
                                 },

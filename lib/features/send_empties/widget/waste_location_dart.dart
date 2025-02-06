@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:gap/gap.dart';
+import 'package:re_empties/cores/components/svg_asset.dart';
 import 'package:re_empties/cores/components/tap_detector.dart';
 import 'package:re_empties/cores/constant/colors.dart';
+import 'package:re_empties/cores/constant/image_path.dart';
 import 'package:re_empties/cores/constant/text_theme.dart';
 
 class WasteLocationCard extends StatelessWidget {
@@ -12,6 +14,7 @@ class WasteLocationCard extends StatelessWidget {
   final bool isSelected;
   final VoidCallback onTap;
   final String distance;
+  final bool isCollab;
 
   const WasteLocationCard({
     super.key,
@@ -21,6 +24,7 @@ class WasteLocationCard extends StatelessWidget {
     required this.isSelected,
     required this.onTap,
     required this.distance,
+    this.isCollab = false,
   });
 
   @override
@@ -45,11 +49,40 @@ class WasteLocationCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      title,
-                      style: textTheme.locationName
-                          .copyWith(fontWeight: FontWeight.w700),
-                    ),
+                    if (!isCollab) ...[
+                      Text(
+                        title,
+                        style: textTheme.locationName
+                            .copyWith(fontWeight: FontWeight.w700),
+                      )
+                    ],
+                    if (isCollab) ...[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            images.collab,
+                            width: 16.w,
+                            height: 16.h,
+                          ),
+                          Gap(5.w),
+                          Text(
+                            'Collaborated with',
+                            style: textTheme.pointLabel
+                                .copyWith(color: colors.green1),
+                          ),
+                          Gap(5.w),
+                          Text(
+                            'Bank Sampah',
+                            style: textTheme.locationName.copyWith(
+                              fontWeight: FontWeight.w700,
+                              overflow: TextOverflow.ellipsis
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                     Gap(5.h),
                     Text(
                       openHour,
@@ -66,7 +99,7 @@ class WasteLocationCard extends StatelessWidget {
                   ],
                 ),
               ),
-              Gap(50.h),
+              Gap(5.w),
               Text(
                 distance,
                 textAlign: TextAlign.start,
